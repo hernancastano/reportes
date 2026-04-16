@@ -1,0 +1,715 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏢 Servicios Bolivar - Reporte Semanal</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  min-height: 100vh;
+  padding: 100px;
+}
+.slide {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  padding: 32px;
+  width: 100%;
+  margin: 0;
+}
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  border-bottom: 3px solid #2a5298;
+  padding-bottom: 20px;
+}
+.header h1 { color: #1e3c72; font-size: 2.5rem; font-weight: bold; margin-bottom: 10px; }
+.header .subtitle { color: #666; font-size: 1.2rem; font-style: italic; }
+.sprint-info {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  border-left: 5px solid #2a5298;
+}
+.sprint-info h3 { color: #1e3c72; margin-bottom: 5px; }
+.content-grid { display: flex; flex-direction: column; gap: 25px; margin-top: 30px; }
+.metric-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 15px;
+  padding: 25px;
+  border-left: 5px solid;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.metric-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  opacity: 0.1;
+  transform: translate(30%, -30%);
+}
+.metric-card.summary    { border-left-color: #0d6efd; } .metric-card.summary::before    { background: #0d6efd; }
+.metric-card.initiatives{ border-left-color: #6610f2; } .metric-card.initiatives::before{ background: #6610f2; }
+.metric-card.errors     { border-left-color: #495057; } .metric-card.errors::before     { background: #495057; }
+.metric-card.alerts     { border-left-color: #ffc107; } .metric-card.alerts::before     { background: #ffc107; }
+.metric-card.achievements{ border-left-color: #198754; } .metric-card.achievements::before{ background: #198754; }
+.metric-card.monitoring { border-left-color: #20c997; } .metric-card.monitoring::before { background: #20c997; }
+.metric-card.normative  { border-left-color: #fd7e14; } .metric-card.normative::before  { background: #fd7e14; }
+.metric-card.incidents  { border-left-color: #dc3545; } .metric-card.incidents::before  { background: #dc3545; }
+.metric-card.costs      { border-left-color: #0d6efd; } .metric-card.costs::before      { background: #0d6efd; }
+.metric-card.capacity   { border-left-color: #6f42c1; } .metric-card.capacity::before   { background: #6f42c1; }
+.metric-card.tasks      { border-left-color: #17a2b8; } .metric-card.tasks::before      { background: #17a2b8; }
+.metric-card h3 { color: #1e3c72; font-size: 1.3rem; margin-bottom: 15px; position: relative; z-index: 2; }
+.metric-card .icon { font-size: 2rem; margin-bottom: 10px; position: relative; z-index: 2; }
+.metric-card .description { color: #666; line-height: 1.6; position: relative; z-index: 2; }
+.metric-card .highlight { font-weight: bold; color: #1e3c72; }
+.critical { color: #dc3545; font-weight: bold; }
+.sub-section {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-left: 4px solid;
+}
+.sub-section h4 { color: #1e3c72; margin-bottom: 12px; font-size: 1rem; }
+.sub-section p { margin-bottom: 8px; font-size: 0.9rem; line-height: 1.5; }
+.sub-section p:last-child { margin-bottom: 0; }
+.sub-section.blue   { border-left-color: #0d6efd; }
+.sub-section.green  { border-left-color: #28a745; }
+.sub-section.orange { border-left-color: #fd7e14; }
+.sub-section.red    { border-left-color: #dc3545; }
+.sub-section.yellow { border-left-color: #ffc107; }
+.sub-section.purple { border-left-color: #6610f2; }
+.sub-section.teal   { border-left-color: #20c997; }
+.sub-section ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+.sub-section li {
+  margin: 8px 0;
+  padding-left: 0;
+  line-height: 1.35;
+}
+.sub-section li:first-child { margin-top: 0; }
+.sub-section li:last-child { margin-bottom: 0; }
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+.metric-item {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.metric-item .value { font-size: 2rem; font-weight: bold; color: #1e3c72; display: block; margin-bottom: 5px; }
+.metric-item .label { font-size: 0.85rem; color: #666; }
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.category-item {
+  background: white;
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+.category-item .num {
+  font-weight: 800;
+  color: #1e3c72;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.category-item .name {
+  font-size: 0.85rem;
+  color: #495057;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dual-column { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+.team-section { background: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 4px solid; }
+.team-section h4 { margin-bottom: 15px; }
+.alert-box {
+  background: #fff3cd;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-left: 4px solid #ffc107;
+}
+.alert-box.critical { background: #f8d7da; border-left-color: #dc3545; }
+.alert-box.info     { background: #d1ecf1; border-left-color: #17a2b8; }
+.alert-box.success  { background: #d4edda; border-left-color: #28a745; }
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.experience-card {
+  background: white;
+  border-radius: 10px;
+  padding: 12px;
+  border-left: 4px solid #0d6efd;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  min-width: 0;
+}
+.experience-card h5 {
+  margin: 0 0 10px 0;
+  color: #1e3c72;
+  font-size: 0.95rem;
+}
+.experience-card .mini-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.experience-card .mini {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+}
+.experience-card .mini .v {
+  display: block;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: #1e3c72;
+  font-size: 1.1rem;
+}
+.experience-card .mini .k { font-size: 0.75rem; color: #6c757d; }
+.experience-card .breakdown {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: #495057;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 10px;
+}
+.experience-card .breakdown span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.progress-bar-container {
+  background: #e9ecef;
+  border-radius: 10px;
+  height: 25px;
+  margin: 15px 0;
+  overflow: hidden;
+  position: relative;
+}
+.progress-bar-fill {
+  background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+  height: 100%;
+  border-radius: 10px;
+  position: relative;
+}
+.progress-bar-text {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  color: #333;
+  font-size: 0.85rem;
+  z-index: 10;
+}
+.footer {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 2px solid #e9ecef;
+  color: #666;
+  font-size: 0.9rem;
+}
+.placeholder { color: #999; font-style: italic; }
+@media (max-width: 768px) {
+  body { padding: 4px 12px; }
+  .slide { padding: 20px; margin: 0 auto; }
+  .header h1 { font-size: 2rem; }
+  .content-grid { gap: 20px; }
+  .metric-grid, .dual-column { grid-template-columns: 1fr; }
+  .category-grid { grid-template-columns: 1fr; }
+  .experience-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="slide">
+
+  <div class="header">
+    <h1>🏢 Servicios Bolivar - Reporte Semanal</h1>
+    <p class="subtitle">Semana del 13 de abril de 2026 al 17 de abril de 2026</p>
+  </div>
+
+  <div class="sprint-info">
+    <h3>📋 Equipo y Contexto</h3>
+    <p><strong>🏗️ Ciencuadras - Sprint 8.26:</strong> 16 – 30 abr 2026 | 43 work items totales | Equipo Ciencuadras</p>
+    <p><strong>👥 ESTADO EQUIPO:</strong> Equipo operativo con novedad: John Bayron Castañeda en incapacidad por operación de hombro (9-29 abr). Cita especialista 28/abr — posible extensión.</p>
+  </div>
+
+  <div class="content-grid">
+
+    <!-- 1. RESUMEN MÉTRICAS -->
+    <div class="metric-card summary">
+      <div class="icon">📊</div>
+      <h3>1. Resumen Métricas</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras - Sprint 8.26</h4>
+          <div class="metric-grid">
+            <div class="metric-item"><span class="value" style="color: #28a745;">33%</span><span class="label">Cumplimiento</span></div>
+            <div class="metric-item"><span class="value">43</span><span class="label">HUs Totales</span></div>
+            <div class="metric-item"><span class="value" style="color: #28a745;">14</span><span class="label">Cerradas</span></div>
+          </div>
+          <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px; border-left: 4px solid #0d6efd;">
+            <h4 style="color: #0d6efd; margin-bottom: 10px; font-size: 0.95rem;">📊 Distribución por Categoría</h4>
+            <div class="category-grid">
+              <div class="category-item"><span class="num">7</span><span class="name">Victoria / IA Agentes</span></div>
+              <div class="category-item"><span class="num">8</span><span class="name">Migración Infra</span></div>
+              <div class="category-item"><span class="num">6</span><span class="name">Leads / CRM</span></div>
+              <div class="category-item"><span class="num">5</span><span class="name">Incidentes / Errores</span></div>
+              <div class="category-item"><span class="num">4</span><span class="name">Seguridad / CNTI</span></div>
+              <div class="category-item"><span class="num">3</span><span class="name">Performance / Portal</span></div>
+              <div class="category-item"><span class="num">3</span><span class="name">Personalización / Blog</span></div>
+              <div class="category-item"><span class="num">4</span><span class="name">Gestión / SR / Upstream</span></div>
+              <div class="category-item"><span class="num">3</span><span class="name">Spikes / Investigación</span></div>
+            </div>
+          </div>
+          <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px; border-left: 4px solid #6c757d;">
+            <h4 style="color: #495057; margin-bottom: 10px; font-size: 0.95rem;">📋 Estado General Sprint 8.26</h4>
+            <p style="font-size:0.9rem; line-height:1.6; margin-bottom:8px;">
+              <strong>Cerradas:</strong> 14 (Pendiente PAP: 13, Cerrado: 1) · <strong>En Progreso:</strong> 9 (En Progreso: 7, En Pruebas QA: 1, SR N2: 1) · <strong>Por Hacer:</strong> 20 (Backlog: 15, Por Hacer: 5) · Incluye tipos: Historia, Error Productivo, Spike, SR N2, Upstream
+            </p>
+            <p style="font-size:0.85rem; color:#6c757d;">Sprint 8.26 (16-30 abr) al 33% de cumplimiento. 43 work items totales. 9 items activos en desarrollo/QA. Labels principales: Victoria, Migración Infra, Mejoras CRM/Leads, Incidentes y Seguridad.</p>
+          </div>
+          <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px; border-left: 4px solid #dc3545;">
+            <h4 style="color: #dc3545; margin-bottom: 10px; font-size: 0.95rem;">🛡️ Cumplimiento Normativo TI (CNTI) - Ciencuadras</h4>
+            <div class="metric-grid" style="margin-bottom:12px;">
+              <div class="metric-item"><span class="value" style="color:#dc3545;">1</span><span class="label">Críticos</span></div>
+              <div class="metric-item"><span class="value" style="color:#fd7e14;">1</span><span class="label">Altos</span></div>
+              <div class="metric-item"><span class="value" style="color:#ffc107;">4</span><span class="label">Medios</span></div>
+              <div class="metric-item"><span class="value" style="color:#6c757d;">1</span><span class="label">Bajos</span></div>
+            </div>
+            <div style="font-size:0.82rem; color:#495057;">
+              <p>🔴 <strong>CNTI-1274</strong> — Secreto en repositorio de infra: ciencuadras-dataoperativa-infra (Crítico · To Do)</p>
+              <p>🟠 <strong>CNTI-889</strong> — IDOR Referencia de objeto directo inseguro / tramites.ciencuadras.com (Alto · En validación)</p>
+              <p>🟡 <strong>CNTI-890</strong> — Certificado SSL / Trámites ciencuadras (Medio · To Do)</p>
+              <p>🟡 <strong>CNTI-888</strong> — Retest Ethical Hacking Trámites Ciencuadras (Medio · In Progress)</p>
+              <p>🟡 <strong>CNTI-884</strong> — Retest Ethical Hacking Admin Ciencuadras (Medio · In Progress)</p>
+              <p>🟡 <strong>CNTI-846</strong> — Retest Ethical Hacking Ciencuadras (Medio · In Progress)</p>
+              <p>🔵 <strong>CNTI-883</strong> — Certificado SSL / Pagos ciencuadras (Bajo · To Do)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. MONITOREO DE ERRORES -->
+    <div class="metric-card errors">
+      <div class="icon">🔍</div>
+      <h3>2. Monitoreo de Errores - Top 10</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras — Semana 13 de abril de 2026–17 de abril de 2026 (Prod)</h4>
+          <div style="overflow-x:auto; margin-top:10px;">
+            <table style="width:100%; border-collapse:collapse; font-size:0.82rem;">
+              <thead>
+                <tr style="background:#f8f9fa; border-bottom:2px solid #dee2e6;">
+                  <th style="padding:8px 10px; text-align:left; color:#1e3c72;">Pos.</th>
+                  <th style="padding:8px 10px; text-align:left; color:#1e3c72;">Servicio</th>
+                  <th style="padding:8px 10px; text-align:left; color:#1e3c72;">Recurso / Endpoint</th>
+                  <th style="padding:8px 10px; text-align:right; color:#1e3c72;">Errores</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="background:#fff;">
+                  <td style="padding:8px 10px;">1</td>
+                  <td style="padding:8px 10px;">ciencuadras-resultados-ms</td>
+                  <td style="padding:8px 10px;">SearchController.index</td>
+                  <td style="padding:8px 10px; text-align:right; color:#dc3545; font-weight:bold;">7,379</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                  <td style="padding:8px 10px;">2</td>
+                  <td style="padding:8px 10px;">ciencuadras-auth-ms</td>
+                  <td style="padding:8px 10px;">POST /prod/utilities/habeasData</td>
+                  <td style="padding:8px 10px; text-align:right; color:#dc3545; font-weight:bold;">3,964</td>
+                </tr>
+                <tr style="background:#fff;">
+                  <td style="padding:8px 10px;">3</td>
+                  <td style="padding:8px 10px;">ciencuadras-listing-api-prod</td>
+                  <td style="padding:8px 10px;">CheckPassportEvent</td>
+                  <td style="padding:8px 10px; text-align:right; color:#fd7e14; font-weight:bold;">2,556</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                  <td style="padding:8px 10px;">4</td>
+                  <td style="padding:8px 10px;">ciencuadras-listing-api-prod</td>
+                  <td style="padding:8px 10px;">update_property</td>
+                  <td style="padding:8px 10px; text-align:right; color:#fd7e14; font-weight:bold;">2,532</td>
+                </tr>
+                <tr style="background:#fff;">
+                  <td style="padding:8px 10px;">5</td>
+                  <td style="padding:8px 10px;">ciencuadras-resultados-ms</td>
+                  <td style="padding:8px 10px;">SuggestionController.index</td>
+                  <td style="padding:8px 10px; text-align:right; color:#fd7e14; font-weight:bold;">1,060</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                  <td style="padding:8px 10px;">6</td>
+                  <td style="padding:8px 10px;">ciencuadras-listing-api-prod</td>
+                  <td style="padding:8px 10px;">create_property</td>
+                  <td style="padding:8px 10px; text-align:right; color:#ffc107; font-weight:bold;">945</td>
+                </tr>
+                <tr style="background:#fff;">
+                  <td style="padding:8px 10px;">7</td>
+                  <td style="padding:8px 10px;">ciencuadras-sitios-interes-ms</td>
+                  <td style="padding:8px 10px;">GET /reverse</td>
+                  <td style="padding:8px 10px; text-align:right; color:#ffc107; font-weight:bold;">800</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                  <td style="padding:8px 10px;">8</td>
+                  <td style="padding:8px 10px;">ciencuadras-leads-ms</td>
+                  <td style="padding:8px 10px;">POST /gestionarLeads</td>
+                  <td style="padding:8px 10px; text-align:right; color:#ffc107; font-weight:bold;">592</td>
+                </tr>
+                <tr style="background:#fff;">
+                  <td style="padding:8px 10px;">9</td>
+                  <td style="padding:8px 10px;">ciencuadras-sitios-interes-ms</td>
+                  <td style="padding:8px 10px;">consultNewProperties</td>
+                  <td style="padding:8px 10px; text-align:right; color:#ffc107; font-weight:bold;">551</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                  <td style="padding:8px 10px;">10</td>
+                  <td style="padding:8px 10px;">ciencuadras-integracion-crm-ms</td>
+                  <td style="padding:8px 10px;">POST /SalaVentas/Externo/Visitas</td>
+                  <td style="padding:8px 10px; text-align:right; color:#ffc107; font-weight:bold;">520</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="font-size:0.75rem; color:#6c757d; margin-top:8px;">Fuente: Datadog APM · env:prod · Últimos 7 días · <a href="https://app.datadoghq.com/dashboard/wei-k9v-vkx" style="color:#0d6efd;">Dashboard Observabilidad Ciencuadras</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. INICIATIVAS Y AVANCES -->
+    <div class="metric-card initiatives">
+      <div class="icon">🚀</div>
+      <h3>3. Iniciativas y Avances</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras</h4>
+          <div class="sub-section blue">
+            <h4>🎯 Iniciativas Principales Sprint 8.26</h4>
+            <ul>
+              <li>🤖 <strong>Victoria Asesora / Agentes IA:</strong> Implementación del agente inteligente, configuración DAIA, consulta estado estudio digital, enrutamiento inteligente de consultas.</li>
+              <li>🔄 <strong>Migración Infraestructura:</strong> Levantamiento ECS Java (Core, Autenticación, Clientes, Leads, Publicaciones, Imágenes), ECS PHP Backend 3, subdominio privado, migración consola lambdas.</li>
+              <li>📊 <strong>Leads y CRM:</strong> Enriquecimiento reporte leads con pre-estudio, actualización plantilla leads, notificación automática inmobiliarias, automatización re-engagement Zoho.</li>
+              <li>🛡️ <strong>Seguridad:</strong> Remediación IDOR tramites.ciencuadras.com, IDOR ciencuadras.com (criticidad alta).</li>
+              <li>🌐 <strong>Portal y Performance:</strong> Mejoras Home, mejoras Detalle/Resultados, inyección SDK Personalization, migración blog WordPress fase 2.</li>
+              </ul>
+          </div>
+          <div class="sub-section orange">
+            <h4>🔑 HUs Destacadas del Sprint - Semana 13 de abril de 2026</h4>
+            <ul>
+              <li>✅ <strong>GD768-12986</strong> — Bot-Fix-Agent: ElasticsearchException no capturada en searchNeighborhoodPolygons (Pendiente PAP)</li>
+              <li>✅ <strong>GD768-12700</strong> — Implementación del Agente Inteligente "Victoria Asesora" (Pendiente PAP)</li>
+              <li>✅ <strong>GD768-12694</strong> — Configuración de Menú y Activación de Victoria para Inmobiliarias (Pendiente PAP)</li>
+              <li>✅ <strong>GD768-12674</strong> — Inyección Directa del SDK de Personalization en el Header (Pendiente PAP)</li>
+              <li>✅ <strong>GD768-10952</strong> — IDOR Referencia de objeto directo inseguro ciencuadras.com — Crítico (Pendiente PAP)</li>
+              <li>🔄 <strong>GD768-12847</strong> — Configuración DAIA - Victoria (En Progreso)</li>
+              <li>🔄 <strong>GD768-12732</strong> — Consulta de Estado de Estudio Digital vía Victoria Asesora (En Progreso)</li>
+              <li>🔄 <strong>GD768-12230</strong> — Actualización de Plantilla de Leads con Datos de Pre-estudio (En Pruebas QA)</li>
+              </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. ALERTAS -->
+    <div class="metric-card alerts">
+      <div class="icon">🔔</div>
+      <h3>4. Alertas</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras</h4>
+          <div class="alert-box">
+            <strong>⚠️ Sprint 8.26 - GESTIÓN DE CARGA</strong>
+            <p>⚠️ 5 incidentes activos (2 nuevos esta semana + 3 arrastrados), 2 SR nuevos — se resolvieron 4 tickets esta semana (2 incidentes + 2 SR).</p>
+            <p>⚠️ CNTI-1274 (Crítico): Secreto expuesto en repositorio — requiere remediación urgente.</p>
+            <p>⚠️ Top error Datadog: SearchController.index con 7,379 errores semanales — impacto en experiencia de búsqueda.</p>
+            <p>🏥 <strong>John Bayron Castañeda</strong> — Incapacidad por operación de hombro desde el 9 de abril (20 días). Regreso estimado: 29 de abril. Cita con especialista el 28/abr — posible extensión de incapacidad.</p>
+            <p>📅 <strong>Hackathon IA Bolívar (27 abr)</strong> — Oscar Lobaton no podrá asistir (permiso día de la familia). Reemplazo: Alejandro Tique. Representantes confirmados: Duvan Peñaloza y Alejandro Tique.</p>
+          </div>
+          <div class="alert-box success">
+            <strong>✅ AVANCES Sprint 8.26</strong>
+            <p>✅ 14 HUs cerradas esta semana, incluyendo Victoria Asesora y remediación IDOR crítico.</p>
+            <p>✅ 3 incidentes/SR resueltos durante la semana.</p>
+            <p>✅ SonarQube sin hallazgos HIGH/BLOCKER de seguridad en repos principales.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. LOGROS Y RETOS -->
+    <div class="metric-card achievements">
+      <div class="icon">🏆</div>
+      <h3>5. Logros y Retos</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras</h4>
+          <div class="sub-section green">
+            <h4>🏆 Logros Sprint 8.26 - Semana 13 de abril de 2026</h4>
+            <ul>
+              <li>🔄 Agente inteligente "Victoria Asesora" implementado y en pruebas para inmobiliarias.</li>
+              <li>✅ Inyección directa del SDK de Personalization en el Header completada.</li>
+              <li>✅ Remediación de vulnerabilidad IDOR crítica en ciencuadras.com completada.</li>
+              <li>✅ Creación de agente inmobiliario MVP y ajuste webhook Constructora Bolívar en Dapta.</li>
+              </ul>
+          </div>
+          <div class="sub-section orange">
+            <h4>⚡ Retos Activos Sprint 8.26</h4>
+            <ul>
+              <li>⚠️ Migración ECS Java con múltiples HUs en backlog (Core, Clientes, Publicaciones, Imágenes) — riesgo de no completar en el sprint.</li>
+              <li>⚠️ Top error en Datadog: SearchController.index con 7,379 errores en la semana — requiere investigación.</li>
+              <li>⚠️ CNTI-1274 (Crítico): Secreto expuesto en repositorio ciencuadras-dataoperativa-infra pendiente de remediación.</li>
+              </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. ESTADO MONITOREO E INS, NPS -->
+    <div class="metric-card monitoring">
+      <div class="icon">📈</div>
+      <h3>6. Estado Monitoreo e INS, NPS</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras - INS Semanal</h4>
+          <div class="experience-grid">
+            <div class="experience-card" style="border-left-color:#0d6efd;">
+              <h5>🌐 Portal (Web Ciencuadras)</h5>
+              <div class="mini-metrics">
+                <div class="mini"><span class="v">27</span><span class="k">INS</span></div>
+                <div class="mini"><span class="v">62</span><span class="k">NPS</span></div>
+                <div class="mini"><span class="v">30,113</span><span class="k">Respuestas</span></div>
+              </div>
+              <div class="breakdown">
+                <span>✅ Satisfecho: <strong>8,811</strong></span>
+                <span>😐 Neutro: <strong>1,754</strong></span>
+                <span>⚠️ Insatisfecho: <strong>1,359</strong></span>
+              </div>
+            </div>
+
+            <div class="experience-card" style="border-left-color:#20c997;">
+              <h5>💬 MIA WhatsApp (WA Ciencuadras)</h5>
+              <div class="mini-metrics">
+                <div class="mini"><span class="v">-4</span><span class="k">INS</span></div>
+                <div class="mini"><span class="v">3</span><span class="k">NPS</span></div>
+                <div class="mini"><span class="v">3,729</span><span class="k">Respuestas</span></div>
+              </div>
+              <div class="breakdown">
+                <span>✅ Satisfecho: <strong>1,042</strong></span>
+                <span>😐 Neutro: <strong>571</strong></span>
+                <span>⚠️ Insatisfecho: <strong>959</strong></span>
+              </div>
+            </div>
+
+            <div class="experience-card" style="border-left-color:#fd7e14;">
+              <h5>🤖 MIA Web (Web MIA)</h5>
+              <div class="mini-metrics">
+                <div class="mini"><span class="v">49</span><span class="k">INS</span></div>
+                <div class="mini"><span class="v">47</span><span class="k">NPS</span></div>
+                <div class="mini"><span class="v">37</span><span class="k">Respuestas</span></div>
+              </div>
+              <div class="breakdown">
+                <span>✅ Satisfecho: <strong>20</strong></span>
+                <span>😐 Neutro: <strong>7</strong></span>
+                <span>⚠️ Insatisfecho: <strong>5</strong></span>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 15px; padding: 12px; background: white; border-radius: 8px; border-left: 4px solid #0d6efd;">
+            <h5 style="color: #0d6efd; margin-bottom: 8px; font-size: 0.9rem;">📊 Comportamiento por Canal</h5>
+            <p style="font-size:0.85rem; margin-bottom:0;"><strong>Portal Web:</strong> INS 27, NPS 62 — canal con mejor percepción, 30,113 respuestas. <strong>MIA WhatsApp:</strong> INS -4, NPS 3 — canal con mayor volumen conversacional (3,729 resp.) pero percepción negativa; detractores (959) superan a promotores (1,042) por margen estrecho. <strong>MIA Web:</strong> INS 49, NPS 47 — buena percepción pero bajo volumen (37 resp.), muestra sesgada.</p>
+          </div>
+          <div style="margin-top: 15px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #6c757d;">
+            <h5 style="color: #495057; margin-bottom: 8px; font-size: 0.9rem;">📋 Análisis</h5>
+            <p style="font-size: 0.85rem; margin-bottom: 0;">MIA WhatsApp sigue siendo el canal con mayor fricción (INS -4). El alto volumen de detractores sugiere oportunidades de mejora en la experiencia conversacional. Portal Web mantiene niveles saludables (NPS 62). MIA Web muestra buenos indicadores pero el bajo volumen de respuestas limita la representatividad estadística.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. ESTADO NORMATIVO Y VULNERABILIDADES -->
+    <div class="metric-card normative">
+      <div class="icon">🛡️</div>
+      <h3>7. Estado Normativo y Vulnerabilidades</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras</h4>
+          <div class="sub-section orange">
+            <h4>🔴 Vulnerabilidades Críticas</h4>
+            <p>✅ SonarQube: Sin issues HIGH/BLOCKER de seguridad ni hotspots pendientes en repos principales esta semana.</p>
+            <p>⚠️ CNTI-1274 (Crítico): Secreto expuesto en repositorio ciencuadras-dataoperativa-infra — pendiente remediación.</p>
+            <p>✅ GD768-10952: IDOR ciencuadras.com (Crítico) — remediado, en Pendiente PAP.</p>
+            <p>✅ GD768-10698: IDOR tramites.ciencuadras.com (Alto) — remediado, en Pendiente PAP.</p>
+          </div>
+          <div class="sub-section green">
+            <h4>✅ Vulnerabilidades Altas</h4>
+            <p>✅ Sin vulnerabilidades altas abiertas en Jira GD768. CNTI-889 (IDOR tramites.ciencuadras.com, Alto) en validación.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. ESTADO INCIDENTES -->
+    <div class="metric-card incidents">
+      <div class="icon">🚨</div>
+      <h3>8. Estado Incidentes</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras</h4>
+          <div class="metric-grid">
+            <div class="metric-item"><span class="value" style="color: #dc3545;">5</span><span class="label">Incidentes Activos</span></div>
+            <div class="metric-item"><span class="value" style="color: #28a745;">2</span><span class="label">Service Request</span></div>
+            <div class="metric-item"><span class="value" style="color: #28a745;">4</span><span class="label">Resueltos Semana</span></div>
+          </div>
+          <div class="sub-section red" style="margin-top: 15px;">
+            <h4>🔴 Incidentes Activos</h4>
+            <ul>
+            <li>🔴 <strong>MDSB-1022792</strong> — INC-SOFTWARE-Cien Cuadras · Sin asignar · Open · 15/abr (nuevo)</li>
+            <li>🔴 <strong>MDSB-1022409</strong> — INC-SOFTWARE-Cien Cuadras · Hernan Castaño · Scaled · 15/abr (nuevo)</li>
+            <li>🟡 <strong>MDSB-1019799</strong> — INC-SOFTWARE-Cien Cuadras · Hernan Castaño · Pending · 10/abr (nuevo)</li>
+            <li>🟡 <strong>MDSB-1018081</strong> — INC-SOFTWARE-Cien Cuadras · Hernan Castaño · Scaled · 08/abr (arrastrado sem. anterior)</li>
+            <li>🟡 <strong>MDSB-1018061</strong> — INC-SOFTWARE-Cien Cuadras · Hernan Castaño · Scaled · 08/abr (arrastrado sem. anterior)</li>
+            </ul>
+            <p style="font-size:0.8rem; color:#6c757d; margin-top:8px;">📌 MDSB-1015610 (Ciencuadras Home, 06/abr) sigue activo — arrastrado desde hace 2 semanas.</p>
+          </div>
+          <div class="sub-section green">
+            <h4>🟢 Service Requests Activos</h4>
+            <ul>
+            <li>🟢 <strong>MDSB-1021502</strong> — Solicitud de Cambio de Datos · Hernan Castaño · Scaled · 14/abr (nuevo)</li>
+            <li>🟢 <strong>MDSB-1021248</strong> — Solicitud de Cambio de Datos · Hernan Castaño · Scaled · 14/abr (nuevo)</li>
+            </ul>
+          </div>
+          <div class="sub-section green">
+            <h4>✅ Resueltos esta Semana (13-17 Abr)</h4>
+            <ul>
+            <li>✅ <strong>MDSB-1010915</strong> — INC-SOFTWARE Ciencuadras Home · Hernan Castaño · Resuelto 10/abr (arrastrado desde 26/mar — cerrado inicio de semana)</li>
+            <li>✅ <strong>MDSB-995807</strong> — INC-SOFTWARE-Ciencuadras · Camilo Solano · Resuelto 13/abr (arrastrado desde 05/mar)</li>
+            <li>✅ <strong>MDSB-1018000</strong> — Solicitud de Cambio de Datos · Hernan Castaño · Resuelto 15/abr (SR de sem. anterior)</li>
+            <li>✅ <strong>MDSB-1007704</strong> — Solicitud de Cambio de Datos · Hernan Castaño · Resuelto 15/abr (arrastrado desde 20/mar)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. ESTADOS COSTOS AWS -->
+    <div class="metric-card costs">
+      <div class="icon">💰</div>
+      <h3>9. Estados Costos AWS</h3>
+      <div class="description">
+        <div class="sub-section blue">
+          <h4>💳 Costos AWS - Abril 2026 (Consolidado Portal + IA MIA)</h4>
+          <div class="metric-grid">
+            <div class="metric-item"><span class="value">$7,612.98</span><span class="label">Costo Actual*</span></div>
+            <div class="metric-item"><span class="value" style="color: #ffc107;">$14,006.71</span><span class="label">Proyección**</span></div>
+            <div class="metric-item"><span class="value">$13,424.09</span><span class="label">Promedio Histórico</span></div>
+          </div>
+          <p>Sin cargos atípicos ni costos fuera de lo común este mes.</p>
+        </div>
+        <div class="sub-section green">
+          <h4>📊 Análisis Histórico</h4>
+          <p>Costos estables entre oct-dic 2025 (promedio ~14k US$). Pico en enero 2026 de $15,241.60 US$, seguido de estabilización en feb-mar rondando $14,500 US$.</p>
+        </div>
+        <div class="sub-section orange">
+          <h4>💡 Observaciones</h4>
+          <p>Proyección abril ($14,006.71) es 4.3% superior al promedio histórico, pero se mantiene por debajo de los últimos 3 meses. Ligera tendencia a la baja respecto al inicio del año.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. CAPACITY PLANNER -->
+    <div class="metric-card capacity">
+      <div class="icon">⚙️</div>
+      <h3>10. Capacity Planner</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras - Capacidad</h4>
+          <div class="metric-grid">
+            <div class="metric-item"><span class="value">10.5</span><span class="label">Días Restantes</span></div>
+            <div class="metric-item"><span class="value">394.7h</span><span class="label">Capacidad</span></div>
+            <div class="metric-item"><span class="value">81%</span><span class="label">Utilización</span></div>
+          </div>
+          <div class="sub-section blue" style="margin-top: 15px;">
+            <h4>👥 Equipo</h4>
+            <ul>
+            <li>🟡 <strong>Alejandro Tique</strong> (Dev) — 6.4h/día · 9.5 días rest. · 1.5 days off · <strong>90%</strong> utilización</li>
+            <li>🔴 <strong>andres.herrera</strong> (Dev) — 6.4h/día · 11 días rest. · 0 days off · <strong>97%</strong> utilización</li>
+            <li>🟢 <strong>Daniel S. Chavarria</strong> (Dev) — 6.4h/día · 10 días rest. · 1.5 days off · <strong>63%</strong> utilización</li>
+            <li>🟡 <strong>Duvan Peñaloza</strong> (Dev) — 6.1h/día · 9.5 días rest. · 1.5 days off · <strong>81%</strong> utilización</li>
+            <li>🔴 <strong>Hernan Castaño</strong> (Leader) — 4h/día · 10.5 días rest. · 0.5 days off · <strong>100%</strong> utilización</li>
+            <li>⚪ <strong>John Castañeda</strong> (Dev) — 6.1h/día · 2 días rest. · 9 days off · <strong>0%</strong> utilización (incapacidad)</li>
+            <li>🟡 <strong>Katherine Gamez</strong> (Test) — 2.2h/día · 10.5 días rest. · 0.5 days off · <strong>88%</strong> utilización</li>
+            <li>🟡 <strong>Oscar Lobaton</strong> (Dev) — 6.4h/día · 9.5 días rest. · 1.5 days off · <strong>90%</strong> utilización</li>
+            </ul>
+          </div>
+          <div class="sub-section orange">
+            <h4>⚠️ Alertas de Capacidad</h4>
+            <p>🔴 <strong>andres.herrera al 97%</strong> — casi al límite de capacidad, riesgo de sobrecarga.</p>
+            <p>🔴 <strong>Hernan Castaño al 100%</strong> — capacidad completamente comprometida (Leader).</p>
+            <p>🟡 Alejandro Tique (90%), Oscar Lobaton (90%), Katherine Gamez (88%) — utilización alta pero dentro de rango.</p>
+            <p>🏥 John Castañeda al 0% — incapacidad hasta 29/abr, 9 days off en sprint. Capacidad del equipo reducida.</p>
+            <p>⚠️ Team + Unassigned al 92% — hay 48h 58m de trabajo sin asignar que presiona la capacidad total.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11. TAREAS PENDIENTES -->
+    <div class="metric-card tasks">
+      <div class="icon">📝</div>
+      <h3>11. Tareas Pendientes y Seguimientos</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras</h4>
+          <div class="sub-section orange">
+            <h4>📋 Tareas Pendientes / Validaciones</h4>
+            <ul>
+            <li>⚠️ <strong>Definir fecha estimada infraestructura Ciencuadras estable en Develop</strong> — R/: Estimación generada: <strong>86 componentes (43 ECS + 43 Lambdas) = 215 horas totales</strong> (ECS: 3h/servicio = 129h · Lambdas: 2h/unidad = 86h). Clusters: backend-1 (14 svc), backend-2 (12 svc), backend-3 (8 svc), frontend-1 (8 svc), scheduled-task (1 svc).</li>
+            <li>📋 <strong>Hackathon IA Bolívar (27 abr)</strong> — Iniciativa: <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13105">GD768-13105</a>. ⚠️ Oscar Lobaton no podrá asistir (permiso día de la familia). Reemplazo: Alejandro Tique. Representantes confirmados: Duvan Peñaloza y Alejandro Tique.</li>
+            <li>🤖 <strong>Agentes IA — Parejas definidas:</strong><br>
+              · Oscar Lobaton + John Castañeda → agent-release<br>
+              · Hernan Castaño + Duvan Peñaloza → agent-fix-bug<br>
+              · Daniel Chavarria + Alejandro Tique → agent-evaluation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <p>📅 Semana del 13 de abril de 2026 al 17 de abril de 2026 | 🚀 Proyecto: Ciencuadras | 👥 Equipo Ciencuadras - Servicios Bolivar</p>
+  </div>
+
+</div>
+</body>
+</html>
