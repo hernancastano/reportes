@@ -149,7 +149,7 @@ table.report-table tbody tr:hover { background: #e9ecef; }
           <div class="metric-item"><span class="value" style="color:#28a745;">100%</span><span class="label">Tasa Completitud HUs</span></div>
         </div>
         <p style="margin-top:18px; font-size:0.92rem; color:#495057;">
-          Andrés completó la totalidad de las Historias de Usuario asignadas en ambos sprints. Su trabajo se concentró en mejoras de rendimiento (performance) y correcciones de UX en el portal Ciencuadras. Las tareas del Sprint 8.26 fueron de prioridad Alta y se resolvieron en tiempos cortos, demostrando buena capacidad de respuesta ante tareas críticas.
+          Andrés completó la totalidad de las Historias de Usuario asignadas en ambos sprints. Su trabajo se concentró en mejoras de rendimiento (performance) y correcciones de UX en el portal Ciencuadras. Las tareas del Sprint 8.26 fueron de prioridad Alta y se resolvieron en ciclos de desarrollo de 3-4 días laborales, demostrando buena capacidad de respuesta ante tareas críticas.
         </p>
       </div>
     </div>
@@ -278,7 +278,7 @@ table.report-table tbody tr:hover { background: #e9ecef; }
               <th>Est. Andrés</th>
               <th>Est. Referencial</th>
               <th>Δ</th>
-              <th>Días en tablero</th>
+              <th>Días en tablero (cal.)</th>
               <th>Estado</th>
               <th>Análisis de Coherencia</th>
             </tr>
@@ -359,7 +359,7 @@ table.report-table tbody tr:hover { background: #e9ecef; }
               <th>Est. Andrés</th>
               <th>Est. Referencial</th>
               <th>Δ</th>
-              <th>Días en tablero</th>
+              <th>Días en tablero (cal.)</th>
               <th>Estado</th>
               <th>Análisis de Coherencia</th>
             </tr>
@@ -373,7 +373,7 @@ table.report-table tbody tr:hover { background: #e9ecef; }
               <td style="color:#1e3c72; font-weight:bold;">26–36h</td>
               <td style="color:#28a745;">✅ Coherente</td>
               <td>9 días</td>
-              <td><span class="badge pap">Pendiente PAP</span></td>
+              <td><span class="badge done">Producción</span></td>
               <td style="font-size:0.8rem;">Optimización de performance en Detalle y Resultados: profiling, optimización de bundles, lazy loading, reducción de JS bloqueante (~18–24h dev). Despliegue y validación de métricas de performance en 4 ambientes (dev→qa→pre→prod) con mediciones reales en cada paso (~8–12h). Estimación coherente.</td>
             </tr>
             <tr>
@@ -443,7 +443,7 @@ table.report-table tbody tr:hover { background: #e9ecef; }
               <td><strong>17.3h</strong></td>
             </tr>
             <tr>
-              <td>Promedio días en tablero por HU</td>
+              <td>Promedio días en tablero por HU (calendario)</td>
               <td>36 días</td>
               <td>10.5 días</td>
               <td><strong>25.9 días</strong></td>
@@ -465,9 +465,9 @@ table.report-table tbody tr:hover { background: #e9ecef; }
         <div style="margin-top:18px; padding:15px; background:white; border-radius:8px; border-left:4px solid #fd7e14;">
           <h4 style="color:#fd7e14; margin-bottom:10px; font-size:0.95rem;">📌 Notas sobre tiempos de ciclo</h4>
           <ul style="list-style:disc; padding-left:20px; font-size:0.88rem; color:#495057; line-height:1.7;">
-            <li>Las HUs GD768-11946 y GD768-11965 muestran ciclos largos (~55 días) porque fueron creadas en sprints anteriores y arrastradas hasta el 7.26 donde se cerraron.</li>
-            <li>En el Sprint 8.26, las tareas de performance (prioridad Alta) se resolvieron en 9 y 12 días respectivamente, lo que refleja buena velocidad de entrega en tareas críticas.</li>
-            <li>La HU GD768-12736 (Eliminar botón de crear alerta) tuvo el ciclo más corto: 7 días.</li>
+            <li>Las HUs GD768-11946 y GD768-11965 muestran ciclos largos (~35 días laborales en Backlog) porque fueron creadas en sprints anteriores y arrastradas hasta el 7.26 donde se cerraron.</li>
+            <li>En el Sprint 8.26, las tareas de performance (prioridad Alta) se resolvieron en ciclos de desarrollo efectivo de 3-4 días laborales (En Progreso → QA), lo que refleja buena velocidad de entrega en tareas críticas.</li>
+            <li>La HU GD768-12736 (Eliminar botón de crear alerta) tuvo el ciclo de desarrollo más corto: ~1 día laboral de En Progreso a QA.</li>
           </ul>
         </div>
         <div style="margin-top:18px; padding:15px; background:white; border-radius:8px; border-left:4px solid #0d6efd;">
@@ -500,10 +500,163 @@ table.report-table tbody tr:hover { background: #e9ecef; }
       </div>
     </div>
 
+    <!-- TIEMPOS DE TRANSICIÓN ENTRE ETAPAS -->
+    <div class="metric-card" style="border-left-color: #e83e8c;">
+      <div class="icon">🔄</div>
+      <h3>6. Tiempo de Transición entre Etapas por HU</h3>
+      <div class="description">
+        <p style="font-size:0.88rem; color:#495057; margin-bottom:12px;">
+          Tiempo transcurrido entre cada cambio de estado en el flujo de trabajo de Jira. Permite identificar cuellos de botella y etapas donde las HUs permanecen más tiempo.
+        </p>
+
+        <!-- Nota metodológica -->
+        <div style="background:#e8f4fd; border-radius:8px; padding:14px; border-left:4px solid #0d6efd; margin-bottom:18px;">
+          <h4 style="color:#0d6efd; margin-bottom:8px; font-size:0.9rem;">📐 Metodología de cálculo</h4>
+          <p style="font-size:0.84rem; color:#495057; line-height:1.7; margin-bottom:8px;">
+            Estos tiempos se obtienen directamente del <strong>changelog (historial de cambios)</strong> de cada issue en Jira, consultado vía API con el parámetro <code>expand=changelog</code>. Jira registra automáticamente un timestamp exacto cada vez que alguien cambia el campo <code>status</code> de una HU.
+          </p>
+          <p style="font-size:0.84rem; color:#495057; line-height:1.7; margin-bottom:8px;">
+            El cálculo se realiza en <strong>horas laborales</strong>: jornada de <strong>8 horas efectivas por día</strong> (8:00 AM – 5:00 PM hora Colombia, descontando 1h de almuerzo), <strong>solo días hábiles (lunes a viernes)</strong>. Se excluyen noches, fines de semana y festivos. Un "Día" en este reporte equivale a 8 horas laborales.
+          </p>
+          <p style="font-size:0.84rem; color:#495057; line-height:1.7; margin-bottom:0;">
+            <strong>Nota:</strong> El tiempo en "Backlog → Por Hacer" mide desde la <em>fecha de creación</em> de la HU hasta que se mueve a "Por Hacer". No refleja tiempo de trabajo del desarrollador, sino tiempo de espera en el backlog antes de ser priorizada.
+          </p>
+        </div>
+
+        <!-- GD768-11946 -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#6610f2; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-11946" style="color:#6610f2; text-decoration:none;">GD768-11946</a> — Rendimiento en Resultados (doblecarga menú)
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>34 Días | 7 Horas | 59 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🔨 En Progreso → En Pruebas QA — <strong>0 Días | 7 Horas | 54 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🧪 En Pruebas QA → En Pruebas UAT — <strong>3 Días | 1 Horas | 12 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">✅ En Pruebas UAT → Pendiente PAP — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🚀 Pendiente PAP → Producción — <strong>2 Días | 4 Horas | 29 Min</strong></span>
+          </div>
+        </div>
+
+        <!-- GD768-11965 -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#6610f2; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-11965" style="color:#6610f2; text-decoration:none;">GD768-11965</a> — Miga de pan compra usado por venta en /venta
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>35 Días | 5 Horas | 47 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🔨 En Progreso → En Pruebas QA — <strong>0 Días | 7 Horas | 44 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🧪 En Pruebas QA → En Pruebas UAT — <strong>3 Días | 0 Horas | 47 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">✅ En Pruebas UAT → Pendiente PAP — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🚀 Pendiente PAP → Producción — <strong>0 Días | 5 Horas | 34 Min</strong></span>
+          </div>
+        </div>
+
+        <!-- GD768-12378 -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#6610f2; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-12378" style="color:#6610f2; text-decoration:none;">GD768-12378</a> — Revisar Elementor visualización de publicación
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>11 Días | 1 Horas | 5 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🔨 En Progreso → En Pruebas QA — <strong>2 Días | 2 Horas | 40 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🧪 En Pruebas QA → En Pruebas UAT — <strong>6 Días | 1 Horas | 26 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">✅ En Pruebas UAT → Pendiente PAP — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🚀 Pendiente PAP → Producción — <strong>5 Días | 0 Horas | 21 Min</strong></span>
+          </div>
+        </div>
+
+        <!-- GD768-12382 -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#6610f2; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-12382" style="color:#6610f2; text-decoration:none;">GD768-12382</a> — TBT Detalles
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>22 Días | 0 Horas | 52 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🔨 En Progreso → En Pruebas QA — <strong>1 Días | 7 Horas | 8 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🧪 En Pruebas QA → En Pruebas UAT — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">✅ En Pruebas UAT → Pendiente PAP — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🚀 Pendiente PAP → Producción — <strong>0 Días | 5 Horas | 34 Min</strong></span>
+          </div>
+        </div>
+
+        <!-- GD768-12736 -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#6610f2; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-12736" style="color:#6610f2; text-decoration:none;">GD768-12736</a> — Eliminar botón de crear alerta
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>1 Días | 6 Horas | 53 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🔨 En Progreso → En Pruebas QA — <strong>1 Días | 0 Horas | 33 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🧪 En Pruebas QA → En Pruebas UAT — <strong>2 Días | 1 Horas | 14 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">✅ En Pruebas UAT → Pendiente PAP — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🚀 Pendiente PAP → Producción — <strong>2 Días | 4 Horas | 29 Min</strong></span>
+          </div>
+        </div>
+
+        <!-- GD768-13015 -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #20c997; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#20c997; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13015" style="color:#20c997; text-decoration:none;">GD768-13015</a> — Performance: Mejoras en Detalle y Resultados
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>1 Días | 0 Horas | 44 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🔨 En Progreso → En Pruebas QA — <strong>3 Días | 1 Horas | 38 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🧪 En Pruebas QA → En Pruebas UAT — <strong>2 Días | 6 Horas | 58 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">✅ En Pruebas UAT → Pendiente PAP — <strong>0 Días | 6 Horas | 20 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🚀 Pendiente PAP → Producción — <strong>1 Días | 6 Horas | 18 Min</strong></span>
+          </div>
+        </div>
+
+        <!-- GD768-13019 -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #20c997; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#20c997; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13019" style="color:#20c997; text-decoration:none;">GD768-13019</a> — Performance: Mejoras en el Home de Ciencuadras
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>4 Días | 1 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🔨 En Progreso → En Pruebas QA — <strong>4 Días | 4 Horas | 26 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🧪 En Pruebas QA → En Pruebas UAT — <strong>0 Días | 0 Horas | 3 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">✅ En Pruebas UAT → Pendiente PAP — <strong>0 Días | 0 Horas | 5 Min</strong></span>
+          </div>
+        </div>
+
+        <!-- GD768-12783 -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #dc3545; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#dc3545; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-12783" style="color:#dc3545; text-decoration:none;">GD768-12783</a> — INC - SOFTWARE Ciencuadras - Home (Error Productivo)
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>15 Días | 0 Horas | 24 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#dc3545; margin-top:8px; font-style:italic;">⚠️ Actualmente En Progreso — sin transiciones posteriores aún.</p>
+        </div>
+
+        <!-- Nota de análisis -->
+        <div style="margin-top:18px; padding:15px; background:white; border-radius:8px; border-left:4px solid #e83e8c;">
+          <h4 style="color:#e83e8c; margin-bottom:10px; font-size:0.95rem;">📌 Hallazgos sobre tiempos de transición</h4>
+          <ul style="list-style:disc; padding-left:20px; font-size:0.88rem; color:#495057; line-height:1.7;">
+            <li>Las HUs del Sprint 7.26 (GD768-11946, GD768-11965) acumularon ~35 días laborales en Backlog porque fueron creadas en febrero y no se priorizaron hasta abril. Este tiempo no es atribuible al desarrollador.</li>
+            <li>La transición Por Hacer → En Progreso es instantánea en todas las HUs, indicando que al priorizarse se inician de inmediato.</li>
+            <li>El tiempo de desarrollo efectivo (En Progreso → QA) es consistente: ~1 día laboral para tareas simples (GD768-11946, GD768-12736) y 3-4 días laborales para tareas de performance complejas (GD768-13015, GD768-13019).</li>
+            <li>El cuello de botella más frecuente es la etapa de QA → UAT, con hasta 6 días laborales (GD768-12378), lo que sugiere tiempos de espera en la cola de pruebas.</li>
+            <li>GD768-12382 (TBT Detalles) tuvo transiciones QA→UAT→PAP fuera de horario laboral (17:04-17:05), registrando 0 horas laborales en esas etapas.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
     <!-- OBSERVACIONES Y RECOMENDACIONES -->
     <div class="metric-card observations">
       <div class="icon">💡</div>
-      <h3>6. Observaciones y Recomendaciones</h3>
+      <h3>7. Observaciones y Recomendaciones</h3>
       <div class="description">
         <div style="padding:15px; background:white; border-radius:8px; border-left:4px solid #28a745; margin-bottom:15px;">
           <h4 style="color:#28a745; margin-bottom:10px; font-size:0.95rem;">✅ Aspectos Positivos</h4>
@@ -518,7 +671,7 @@ table.report-table tbody tr:hover { background: #e9ecef; }
           <h4 style="color:#e6a800; margin-bottom:10px; font-size:0.95rem;">⚠️ Puntos de Atención</h4>
           <ul style="list-style:disc; padding-left:20px; font-size:0.88rem; color:#495057; line-height:1.7;">
             <li><strong>Registro de horas:</strong> Andrés registra sus horas a nivel de subtareas, no en la HU padre. El total logueado en subtareas es de 135.58h de las 138h estimadas (98.2% de cobertura), lo que demuestra buen hábito de registro. Solo GD768-12783 no tiene horas logueadas porque aún está en progreso.</li>
-            <li><strong>Error Productivo en progreso:</strong> GD768-12783 (INC - SOFTWARE Ciencuadras - Home) está estimado en 15h, actualmente En Progreso (22 días en tablero). Se sugiere hacer seguimiento para asegurar que avance hacia resolución.</li>
+            <li><strong>Error Productivo en progreso:</strong> GD768-12783 (INC - SOFTWARE Ciencuadras - Home) está estimado en 15h, actualmente En Progreso (15 días laborales en tablero). Se sugiere hacer seguimiento para asegurar que avance hacia resolución.</li>
           </ul>
         </div>
       </div>
