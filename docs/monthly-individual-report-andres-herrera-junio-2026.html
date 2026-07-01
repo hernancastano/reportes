@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📋 Reporte Individual — Andrés Felipe Herrera Rodríguez — Junio 2026</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  min-height: 100vh;
+  padding: 100px;
+}
+.slide {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  padding: 32px;
+  width: 100%;
+  margin: 0;
+}
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  border-bottom: 3px solid #2a5298;
+  padding-bottom: 20px;
+}
+.header h1 { color: #1e3c72; font-size: 2.2rem; font-weight: bold; margin-bottom: 10px; }
+.header .subtitle { color: #666; font-size: 1.1rem; font-style: italic; }
+.sprint-info {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  border-left: 5px solid #2a5298;
+}
+.sprint-info h3 { color: #1e3c72; margin-bottom: 5px; }
+.sprint-info p { margin-bottom: 4px; font-size: 0.95rem; }
+.content-grid { display: flex; flex-direction: column; gap: 25px; margin-top: 30px; }
+.metric-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 15px;
+  padding: 25px;
+  border-left: 5px solid;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.metric-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  opacity: 0.1;
+  transform: translate(30%, -30%);
+}
+.metric-card.summary    { border-left-color: #0d6efd; } .metric-card.summary::before    { background: #0d6efd; }
+.metric-card.capacity   { border-left-color: #6f42c1; } .metric-card.capacity::before   { background: #6f42c1; }
+.metric-card.sprint7    { border-left-color: #6610f2; } .metric-card.sprint7::before    { background: #6610f2; }
+.metric-card.sprint8    { border-left-color: #20c997; } .metric-card.sprint8::before    { background: #20c997; }
+.metric-card.times      { border-left-color: #fd7e14; } .metric-card.times::before      { background: #fd7e14; }
+.metric-card.observations { border-left-color: #198754; } .metric-card.observations::before { background: #198754; }
+.metric-card h3 { color: #1e3c72; font-size: 1.3rem; margin-bottom: 15px; position: relative; z-index: 2; }
+.metric-card .icon { font-size: 2rem; margin-bottom: 10px; position: relative; z-index: 2; }
+.metric-card .description { color: #666; line-height: 1.6; position: relative; z-index: 2; }
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+.metric-item {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.metric-item .value { font-size: 2rem; font-weight: bold; color: #1e3c72; display: block; margin-bottom: 5px; }
+.metric-item .label { font-size: 0.85rem; color: #666; }
+table.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin-top: 12px;
+}
+table.report-table thead tr {
+  background: #1e3c72;
+  color: white;
+}
+table.report-table th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+}
+table.report-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #dee2e6;
+}
+table.report-table tbody tr:nth-child(even) { background: #f8f9fa; }
+table.report-table tbody tr:hover { background: #e9ecef; }
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: white;
+}
+.badge.done { background: #28a745; }
+.badge.pap { background: #17a2b8; }
+.badge.backlog { background: #6c757d; }
+.badge.historia { background: #6610f2; }
+.badge.error { background: #dc3545; }
+.badge.alta { background: #dc3545; }
+.badge.media { background: #ffc107; color: #333; }
+</style>
+</head>
+<body>
+<div class="slide">
+
+  <div class="header">
+    <h1>📋 Reporte Individual — Andrés Felipe Herrera Rodríguez</h1>
+    <p class="subtitle">Junio 2026 · Sprint 11.26 y Sprint 12.26 · Operación Ciencuadras</p>
+  </div>
+
+  <div class="sprint-info">
+    <h3>👤 Información del Recurso</h3>
+    <p><strong>Nombre:</strong> Andrés Felipe Herrera Rodríguez (andres.herrera@samtel.eu)</p>
+    <p><strong>Proyecto:</strong> [GD-768] E.O. Ciencuadras &amp; Ecosistema Home — Operación Ciencuadras</p>
+    <p><strong>Período evaluado:</strong> Junio 2026 (Sprint 11.26 y Sprint 12.26)</p>
+    <p><strong>Fecha del reporte:</strong> 01 de julio de 2026</p>
+  </div>
+
+  <div class="content-grid">
+
+    <!-- SECCIÓN 1: RESUMEN EJECUTIVO -->
+    <div class="metric-card summary">
+      <div class="icon">📊</div>
+      <h3>1. Resumen Ejecutivo</h3>
+      <div class="description">
+        <div class="metric-grid">
+          <div class="metric-item"><span class="value">11</span><span class="label">HUs Completadas</span></div>
+          <div class="metric-item"><span class="value" style="color:#dc3545;">1</span><span class="label">Errores Productivos</span></div>
+          <div class="metric-item"><span class="value">148h</span><span class="label">Horas Estimadas</span></div>
+          <div class="metric-item"><span class="value" style="color:#28a745;">92%</span><span class="label">Tasa Completitud HUs</span></div>
+        </div>
+        <p style="margin-top:18px; font-size:0.92rem; color:#495057;">
+          Andrés cerró junio con <strong>11 de 12 HUs completadas (92%)</strong>, un aprovechamiento de capacidad del <strong>92% (148h estimadas de 160h contratadas)</strong>, y un logro destacable en la migración del monorepo a Angular 14 — tarea técnica de alto impacto que absorbió el 48% de las horas logueadas del mes. Se registró <strong>1 error productivo</strong> (login con Google, GD768-13990) que fue resuelto en 12 días calendario. Las estimaciones son en general coherentes (9/12 dentro del rango referencial). La subestimación en GD768-13275 (25h vs ~50h referencial) se explica por la complejidad impredecible de la migración de dependencias y la resolución de alertas de seguridad asociadas. Se registraron <strong>7h de permisos no facturables</strong> (medio día votación 9/jun + permiso 12/jun).
+        </p>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 2: APROVECHAMIENTO DE CAPACIDAD -->
+    <div class="metric-card capacity">
+      <div class="icon">⚙️</div>
+      <h3>2. Aprovechamiento de Capacidad Contratada</h3>
+      <div class="description">
+        <p style="font-size:0.92rem; color:#495057; margin-bottom:18px;">
+          Andrés Felipe Herrera Rodríguez es un recurso externo con <strong>160 horas contratadas por mes</strong>. Los sprints Sprint 11.26 y Sprint 12.26 cubren aproximadamente 30 días (~1 mes). A continuación se analiza cómo se distribuyeron esas horas.
+        </p>
+
+        <!-- Barra principal -->
+        <div style="margin-bottom:20px;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+            <span style="font-size:0.85rem; color:#495057; font-weight:600;">Horas estimadas en HUs: 148h de 160h contratadas</span>
+            <span style="font-size:0.85rem; color:#1e3c72; font-weight:bold;">92%</span>
+          </div>
+          <div style="background:#e9ecef; border-radius:10px; height:30px; overflow:hidden; position:relative;">
+            <div style="background:linear-gradient(90deg, #6f42c1 0%, #9b59b6 100%); width:92%; height:100%; border-radius:10px; position:relative;">
+              <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:white; font-weight:bold; font-size:0.85rem;">148h asignadas a HUs</span>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-top:4px; font-size:0.78rem; color:#6c757d;">
+            <span>0h</span>
+            <span>160h contratadas</span>
+          </div>
+        </div>
+
+        <!-- Desglose por sprint -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px;">
+          <div style="background:white; border-radius:10px; padding:15px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+            <h4 style="color:#6610f2; margin-bottom:10px; font-size:0.9rem;">🟣 Sprint 11.26</h4>
+            <div style="text-align:center; margin-bottom:8px;">
+              <span style="font-size:2rem; font-weight:bold; color:#6610f2;">52h</span>
+              <span style="display:block; font-size:0.8rem; color:#6c757d;">5 HUs · 33% de capacidad</span>
+            </div>
+            <div style="background:#e9ecef; border-radius:8px; height:12px; overflow:hidden;">
+              <div style="background:#6610f2; width:33%; height:100%; border-radius:8px;"></div>
+            </div>
+          </div>
+          <div style="background:white; border-radius:10px; padding:15px; border-left:4px solid #20c997; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+            <h4 style="color:#20c997; margin-bottom:10px; font-size:0.9rem;">🟢 Sprint 12.26</h4>
+            <div style="text-align:center; margin-bottom:8px;">
+              <span style="font-size:2rem; font-weight:bold; color:#20c997;">96h</span>
+              <span style="display:block; font-size:0.8rem; color:#6c757d;">7 HUs · 60% de capacidad</span>
+            </div>
+            <div style="background:#e9ecef; border-radius:8px; height:12px; overflow:hidden;">
+              <div style="background:#20c997; width:60%; height:100%; border-radius:8px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Distribución de horas -->
+        <div style="background:white; border-radius:10px; padding:18px; border-left:4px solid #1e3c72; box-shadow:0 2px 8px rgba(0,0,0,0.06); margin-bottom:15px;">
+          <h4 style="color:#1e3c72; margin-bottom:12px; font-size:0.95rem;">📊 Distribución de las 160h contratadas</h4>
+          <div style="display:flex; border-radius:8px; overflow:hidden; height:35px; margin-bottom:12px;">
+            <div style="background:#6610f2; width:33%; display:flex; align-items:center; justify-content:center;">
+              <span style="color:white; font-size:0.75rem; font-weight:600;">Sprint 11.26: 52h</span>
+            </div>
+            <div style="background:#20c997; width:60%; display:flex; align-items:center; justify-content:center;">
+              <span style="color:white; font-size:0.75rem; font-weight:600;">Sprint 12.26: 96h</span>
+            </div>
+            <div style="background:#e9ecef; width:7%; display:flex; align-items:center; justify-content:center;">
+              <span style="color:#495057; font-size:0.72rem; font-weight:600;">12h</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:20px; font-size:0.82rem; color:#495057; flex-wrap:wrap;">
+            <span>🟣 Sprint 11.26: <strong>52h (33%)</strong></span>
+            <span>🟢 Sprint 12.26: <strong>96h (60%)</strong></span>
+            <span>⬜ Sin asignar a HUs: <strong>12h (7%)</strong></span>
+          </div>
+        </div>
+
+        <!-- Nota sobre horas sin asignar -->
+        <div style="background:#fff3cd; border-radius:8px; padding:12px; border-left:4px solid #ffc107;">
+          <strong style="color:#856404;">📌 Sobre las 12h sin asignar a HUs (7%)</strong>
+          <p style="font-size:0.85rem; color:#856404; margin-top:6px; line-height:1.6;">
+            Estas horas no necesariamente son tiempo ocioso. En un equipo Scrum con 4 ambientes, es normal que un desarrollador dedique entre un 10–20% de su capacidad a: ceremonias (planning, daily, retro, refinamiento), soporte a QA, code reviews, investigación técnica, y coordinación con el equipo. Un 7% está dentro del rango esperado.
+          </p>
+        </div>
+
+        <!-- Horas logueadas vs estimadas -->
+        <div style="background:white; border-radius:10px; padding:18px; border-left:4px solid #28a745; box-shadow:0 2px 8px rgba(0,0,0,0.06); margin-top:15px;">
+          <h4 style="color:#28a745; margin-bottom:12px; font-size:0.95rem;">✅ Horas Logueadas vs Estimadas (en subtareas)</h4>
+          <div style="display:flex; border-radius:8px; overflow:hidden; height:35px; margin-bottom:12px;">
+            <div style="background:#28a745; width:100%; display:flex; align-items:center; justify-content:center;">
+              <span style="color:white; font-size:0.75rem; font-weight:600;">Logueadas: 209h (100%)</span>
+            </div>
+            <div style="background:#e9ecef; width:0%; display:flex; align-items:center; justify-content:center;">
+              <span style="color:#495057; font-size:0.72rem; font-weight:600;">0h</span>
+            </div>
+          </div>
+          <p style="font-size:0.85rem; color:#495057; line-height:1.6;">
+            De las 209h logueadas en subtareas, 148h corresponden a estimaciones originales de las HUs asignadas. El excedente de ~61h (horas logueadas por encima de la estimación) se concentra en GD768-13275 (Migrar monorepo Angular 14) donde se loguearon 70.4h vs 25h estimadas, y en GD768-14039 (Reducir TBT) con 24.3h vs 14h estimadas. Esto indica que estas dos HUs técnicas de alto impacto requirieron más esfuerzo del previsto, lo cual es razonable dada su complejidad.
+          </p>
+        </div>
+
+        <!-- Nota sobre horas restantes -->
+        <div style="background:#fff3cd; border-radius:8px; padding:12px; border-left:4px solid #ffc107; margin-top:15px;">
+          <strong style="color:#856404;">📌 Sobre las horas no asignadas a HUs</strong>
+          <p style="font-size:0.85rem; color:#856404; margin-top:6px; line-height:1.6;">
+            En un equipo Scrum con 4 ambientes (dev→qa→pre→prod), es normal que un desarrollador dedique entre un 10–20% de su capacidad a: ceremonias (planning, daily, retro, refinamiento), soporte a QA, code reviews, investigación técnica, y coordinación con el equipo. El porcentaje de Andrés Felipe Herrera Rodríguez está dentro del rango esperado.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 3: SPRINT A -->
+    <div class="metric-card sprint7">
+      <div class="icon">🟣</div>
+      <h3>3. Sprint 11.26 — Detalle de HUs</h3>
+      <div class="description">
+        <div class="metric-grid" style="margin-bottom:20px;">
+          <div class="metric-item"><span class="value">5</span><span class="label">HUs Completadas</span></div>
+          <div class="metric-item"><span class="value">52h</span><span class="label">Horas Estimadas</span></div>
+          <div class="metric-item"><span class="value" style="color:#28a745;">100%</span><span class="label">Completitud</span></div>
+        </div>
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>Resumen</th>
+              <th>Est. Andrés</th>
+              <th>Est. Referencial</th>
+              <th>Δ</th>
+              <th>Días en tablero (cal.)</th>
+              <th>Estado</th>
+              <th>Análisis de Coherencia</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13484" target="_blank">GD768-13484</a></td><td>Solicitud de Cambio de Datos (link inmobiliarias)</td><td>9h</td><td>6-9h</td><td>0%</td><td>34</td><td><span class="badge done">Hecho</span></td><td>✅ Coherente — Cambio simple de URL en zona privada. 9h incluye pruebas en 4 ambientes.</td></tr>
+            <tr><td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13546" target="_blank">GD768-13546</a></td><td>Migración Formato Geocoding API v4 (Google Maps)</td><td>—</td><td>8-12h</td><td>N/A</td><td>22</td><td><span class="badge done">Producción</span></td><td>⚠️ Sin estimación registrada. La HU requería ajustar parsing del campo GeocodeResult.place.</td></tr>
+            <tr><td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13554" target="_blank">GD768-13554</a></td><td>Implementación Script Personalización en Home</td><td>16h</td><td>12-18h</td><td>0%</td><td>7</td><td><span class="badge done">Cerrado</span></td><td>✅ Coherente — Inyección de script en &lt;head&gt; con validación en 4 ambientes. Complejidad media.</td></tr>
+            <tr><td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13632" target="_blank">GD768-13632</a></td><td>Resolución alertas seguridad bot Angular 14</td><td>16h</td><td>14-20h</td><td>0%</td><td>16</td><td><span class="badge done">Producción</span></td><td>✅ Coherente — Clasificar y resolver CVEs, actualizar dependencias. Trabajo iterativo con bot de seguridad.</td></tr>
+            <tr><td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13793" target="_blank">GD768-13793</a></td><td>Banner Asesoría Personalizada Zona Planes</td><td>11h</td><td>10-14h</td><td>0%</td><td>6</td><td><span class="badge done">Cerrado</span></td><td>✅ Coherente — Componente UI nuevo con CTA de agendamiento. Frontend con pruebas en 4 ambientes.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 4: SPRINT B -->
+    <div class="metric-card sprint8">
+      <div class="icon">🟢</div>
+      <h3>4. Sprint 12.26 — Detalle de HUs</h3>
+      <div class="description">
+        <div class="metric-grid" style="margin-bottom:20px;">
+          <div class="metric-item"><span class="value">6</span><span class="label">HUs Completadas</span></div>
+          <div class="metric-item"><span class="value" style="color:#dc3545;">1</span><span class="label">Errores Productivos</span></div>
+          <div class="metric-item"><span class="value">96h</span><span class="label">Horas Estimadas</span></div>
+          <div class="metric-item"><span class="value" style="color:#28a745;">86%</span><span class="label">Completitud HUs</span></div>
+        </div>
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>Tipo</th>
+              <th>Resumen</th>
+              <th>Est. Andrés</th>
+              <th>Est. Referencial</th>
+              <th>Δ</th>
+              <th>Días en tablero (cal.)</th>
+              <th>Estado</th>
+              <th>Análisis de Coherencia</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13275" target="_blank">GD768-13275</a></td><td><span class="badge historia">Historia</span></td><td>Migrar monorepo a Angular 14</td><td>25h</td><td>40-60h</td><td>-38%</td><td>61</td><td><span class="badge pap">Pendiente PAP</span></td><td>⚠️ Subestimada — Migración mayor de framework con resolución de breaking changes, dependencias obsoletas y compatibilidad. La complejidad real superó la estimación.</td></tr>
+            <tr><td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13672" target="_blank">GD768-13672</a></td><td><span class="badge historia">Service Request</span></td><td>Solicitud Cambio Datos (cupos inmobiliaria)</td><td>8h</td><td>6-10h</td><td>0%</td><td>41</td><td><span class="badge done">Hecho</span></td><td>✅ Coherente — Investigación y corrección de discrepancia en cupos de plan. Requirió análisis de BD.</td></tr>
+            <tr><td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13755" target="_blank">GD768-13755</a></td><td><span class="badge historia">Service Request</span></td><td>Solicitud Cambio Datos (renderizado títulos SEO)</td><td>15h</td><td>12-18h</td><td>0%</td><td>33</td><td><span class="badge done">Hecho</span></td><td>✅ Coherente — Revisión y corrección de meta-etiquetas dinámicas en páginas de resultados.</td></tr>
+            <tr><td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13990" target="_blank">GD768-13990</a></td><td><span class="badge error">Error Productivo</span></td><td>INC-SOFTWARE Login Google (RADAS LTDA)</td><td>6h</td><td>4-8h</td><td>0%</td><td>12</td><td><span class="badge done">Cerrado</span></td><td>✅ Coherente — Bug fix de autenticación OAuth con Google en usuario específico.</td></tr>
+            <tr><td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14029" target="_blank">GD768-14029</a></td><td><span class="badge historia">Historia</span></td><td>Vista alternativa inmuebles no disponibles</td><td>20h</td><td>20-30h</td><td>0%</td><td>20</td><td><span class="badge backlog">En Pruebas QA</span></td><td>✅ Coherente — Feature nueva con componente UI complejo, lógica de filtrado de alternativas y responsive.</td></tr>
+            <tr><td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14039" target="_blank">GD768-14039</a></td><td><span class="badge historia">Historia</span></td><td>Reducir TBT &lt; 200ms en Home</td><td>14h</td><td>20-30h</td><td>-30%</td><td>18</td><td><span class="badge pap">Pendiente PAP</span></td><td>⚠️ Subestimada — Optimización de performance con múltiples causas raíz (AWS SDK, budgets, lazy load). Incluye bloqueo por ACL.</td></tr>
+            <tr><td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14377" target="_blank">GD768-14377</a></td><td><span class="badge historia">Historia</span></td><td>Banner planes sin login</td><td>8h</td><td>6-10h</td><td>0%</td><td>5</td><td><span class="badge pap">Pendiente PAP</span></td><td>✅ Coherente — Ajuste de condición de visibilidad del componente existente (remover guard de auth).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 5: ANÁLISIS DE TIEMPOS -->
+    <div class="metric-card times">
+      <div class="icon">⏱️</div>
+      <h3>5. Análisis de Tiempos</h3>
+      <div class="description">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Métrica</th>
+              <th>Sprint 11.26</th>
+              <th>Sprint 12.26</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Total HUs</td><td>5</td><td>7</td><td>12</td></tr>
+            <tr><td>HUs Completadas</td><td>5</td><td>6</td><td>11</td></tr>
+            <tr><td>Horas Estimadas</td><td>52h</td><td>96h</td><td>148h</td></tr>
+            <tr><td>Horas Logueadas</td><td>63h</td><td>145.7h</td><td>208.7h</td></tr>
+            <tr><td>Promedio Est. por HU</td><td>10.4h</td><td>13.7h</td><td>12.3h</td></tr>
+            <tr><td>Promedio días en tablero (calendario)</td><td>17 días</td><td>27 días</td><td>23 días</td></tr>
+            <tr><td>Tasa Completitud</td><td>100%</td><td>86%</td><td>92%</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:18px; padding:15px; background:white; border-radius:8px; border-left:4px solid #fd7e14;">
+          <h4 style="color:#fd7e14; margin-bottom:10px; font-size:0.95rem;">📌 Notas sobre tiempos de ciclo</h4>
+          <ul style="list-style:disc; padding-left:20px; font-size:0.88rem; color:#495057; line-height:1.7;">
+            <li>Los "días en tablero" se miden en <strong>días calendario</strong> (desde creación hasta resolución) y reflejan el tiempo total de la HU en el sistema, no solo el trabajo del desarrollador.</li>
+            <li>Las HUs con alto tiempo en tablero (GD768-13275: 61 días, GD768-13672: 41 días) estuvieron en backlog durante semanas antes de ser priorizadas en el sprint. El tiempo de desarrollo efectivo fue significativamente menor.</li>
+            <li>El tiempo promedio de desarrollo efectivo (En Progreso → QA) es de <strong>~2-3 días laborales</strong> para HUs estándar y <strong>~4-5 días laborales</strong> para HUs complejas como la migración Angular 14 y TBT.</li>
+            <li>GD768-14039 (TBT) tuvo un bloqueo documentado por dependencia técnica (ACL público/privado en ambientes bajos) que se resolvió el mismo día.</li>
+            <li>Las HUs de Service Request (13484, 13672, 13755) tienen tiempos en tablero altos porque su creación viene del portal de MDSB y entran al backlog semanas antes de ser priorizadas.</li>
+          </ul>
+        </div>
+        <div style="margin-top:18px; padding:15px; background:white; border-radius:8px; border-left:4px solid #0d6efd;">
+          <h4 style="color:#0d6efd; margin-bottom:10px; font-size:0.95rem;">📊 Resumen de Coherencia de Estimaciones</h4>
+          <table class="report-table" style="margin-top:8px;">
+            <thead>
+              <tr>
+                <th>Veredicto</th>
+                <th>Cantidad</th>
+                <th>HUs</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><span style="color:#28a745; font-weight:bold;">✅ Coherente</span></td><td>9</td><td>GD768-13484, 13554, 13632, 13793, 13672, 13755, 13990, 14029, 14377</td></tr>
+              <tr><td><span style="color:#ffc107; font-weight:bold;">⚠️ Leve / Sin estimación</span></td><td>3</td><td>GD768-13546 (sin est.), GD768-13275 (-38%), GD768-14039 (-30%)</td></tr>
+              <tr><td><span style="color:#dc3545; font-weight:bold;">❌ Desviación alta</span></td><td>0</td><td>—</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:12px; font-size:0.88rem; color:#495057; line-height:1.7;">
+            El 75% de las HUs tienen estimaciones dentro del rango referencial, lo que indica una buena capacidad de planificación. Las 3 HUs con desviación leve corresponden a: (1) una HU técnica sin estimación registrada (13546), y (2) dos HUs de alta complejidad técnica (migración Angular 14 y optimización TBT) donde la incertidumbre es inherente al tipo de tarea. No se observan desviaciones altas (&gt;50%). La tendencia es a subestimar ligeramente las tareas de performance/migración, lo cual es un patrón común en equipos de desarrollo.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 6: TIEMPOS DE TRANSICIÓN -->
+    <div class="metric-card" style="border-left-color: #e83e8c;">
+      <div class="icon">🔄</div>
+      <h3>6. Tiempo de Transición entre Etapas por HU</h3>
+      <div class="description">
+        <p style="font-size:0.88rem; color:#495057; margin-bottom:12px;">
+          Tiempo transcurrido entre cada cambio de estado en el flujo de trabajo de Jira. Permite identificar cuellos de botella y etapas donde las HUs permanecen más tiempo.
+        </p>
+
+        <!-- Nota metodológica -->
+        <div style="background:#e8f4fd; border-radius:8px; padding:14px; border-left:4px solid #0d6efd; margin-bottom:18px;">
+          <h4 style="color:#0d6efd; margin-bottom:8px; font-size:0.9rem;">📐 Metodología de cálculo</h4>
+          <p style="font-size:0.84rem; color:#495057; line-height:1.7; margin-bottom:8px;">
+            Estos tiempos se obtienen directamente del <strong>changelog (historial de cambios)</strong> de cada issue en Jira, consultado vía API con el parámetro <code>expand=changelog</code>. Jira registra automáticamente un timestamp exacto cada vez que alguien cambia el campo <code>status</code> de una HU.
+          </p>
+          <p style="font-size:0.84rem; color:#495057; line-height:1.7; margin-bottom:8px;">
+            El cálculo se realiza en <strong>horas laborales</strong>: jornada de <strong>8 horas efectivas por día</strong> (8:00 AM – 5:00 PM hora Colombia, descontando 1h de almuerzo), <strong>solo días hábiles (lunes a viernes)</strong>. Se excluyen noches, fines de semana y festivos. Un "Día" en este reporte equivale a 8 horas laborales.
+          </p>
+          <p style="font-size:0.84rem; color:#495057; line-height:1.7; margin-bottom:0;">
+            <strong>Nota:</strong> El tiempo en "Backlog → Por Hacer" mide desde la <em>fecha de creación</em> de la HU hasta que se mueve a "Por Hacer". No refleja tiempo de trabajo del desarrollador, sino tiempo de espera en el backlog antes de ser priorizada.
+          </p>
+        </div>
+
+        <!-- BLOQUES DE TRANSICIÓN POR HU -->
+        <!-- GD768-13484 -->
+        <div style="background:white; border-radius:10px; padding:16px; margin-bottom:14px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="margin-bottom:10px;"><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13484" target="_blank" style="color:#6610f2; text-decoration:none;">GD768-13484</a> — Solicitud de Cambio de Datos (link)</h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">📋 Backlog → Por Hacer — 18 Días | 6 Horas | 7 Min</span>
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">📝 Por Hacer → En Progreso — 0 Días | 0 Horas | 0 Min</span>
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">🔨 En Progreso → Hecho — 5 Días | 3 Horas | 7 Min</span>
+          </div>
+        </div>
+
+        <!-- GD768-13546 -->
+        <div style="background:white; border-radius:10px; padding:16px; margin-bottom:14px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="margin-bottom:10px;"><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13546" target="_blank" style="color:#6610f2; text-decoration:none;">GD768-13546</a> — Migración Formato Geocoding API v4</h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">📋 Backlog → Por Hacer — 14 Días | 7 Horas | 26 Min</span>
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">📝 Por Hacer → En Progreso — 0 Días | 0 Horas | 0 Min</span>
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">🔨 En Progreso → En Pruebas QA — 0 Días | 0 Horas | 0 Min</span>
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">🧪 En Pruebas QA → En Pruebas UAT — 0 Días | 7 Horas | 41 Min</span>
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">✅ En Pruebas UAT → Producción — 0 Días | 0 Horas | 0 Min</span>
+          </div>
+        </div>
+
+        <!-- GD768-13554 -->
+        <div style="background:white; border-radius:10px; padding:16px; margin-bottom:14px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="margin-bottom:10px;"><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13554" target="_blank" style="color:#6610f2; text-decoration:none;">GD768-13554</a> — Script de Personalización en el Home</h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">📋 Backlog → Por Hacer — 0 Días | 5 Horas | 43 Min</span>
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">📝 Por Hacer → En Progreso — 0 Días | 0 Horas | 0 Min</span>
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">🔨 En Progreso → En Pruebas QA — 3 Días | 7 Horas | 50 Min</span>
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">🧪 En Pruebas QA → En Pruebas UAT — 0 Días | 4 Horas | 16 Min</span>
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">✅ En Pruebas UAT → Pendiente PAP — 0 Días | 0 Horas | 0 Min</span>
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">🚀 Pendiente PAP → Producción — 8 Días | 6 Horas | 14 Min</span>
+          </div>
+        </div>
+
+        <!-- GD768-13632 -->
+        <div style="background:white; border-radius:10px; padding:16px; margin-bottom:14px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="margin-bottom:10px;"><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13632" target="_blank" style="color:#6610f2; text-decoration:none;">GD768-13632</a> — Alertas de seguridad bot Angular 14</h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">📋 Creado → Producción — 12 Días | 1 Hora | 28 Min (total ciclo laborable)</span>
+          </div>
+        </div>
+
+        <!-- GD768-13793 -->
+        <div style="background:white; border-radius:10px; padding:16px; margin-bottom:14px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="margin-bottom:10px;"><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13793" target="_blank" style="color:#6610f2; text-decoration:none;">GD768-13793</a> — Banner Asesoría Zona Planes Inmobiliarias</h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">📋 Backlog → Por Hacer — 2 Días | 4 Horas | 58 Min</span>
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">📝 Por Hacer → En Progreso — 0 Días | 2 Horas | 55 Min</span>
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">🔨 En Progreso → En Pruebas QA — 0 Días | 4 Horas | 11 Min</span>
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">🧪 En Pruebas QA → En Pruebas UAT — 0 Días | 4 Horas | 11 Min</span>
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">✅ En Pruebas UAT → Pendiente PAP — 0 Días | 4 Horas | 20 Min</span>
+            <span style="background:#e8f4fd; padding:5px 12px; border-radius:6px; font-size:0.82rem;">🚀 Pendiente PAP → Producción — 3 Días | 0 Horas | 50 Min</span>
+          </div>
+        </div>
+
+        <!-- GD768-14039 -->
+        <div style="background:white; border-radius:10px; padding:16px; margin-bottom:14px; border-left:4px solid #20c997; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="margin-bottom:10px;"><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14039" target="_blank" style="color:#20c997; text-decoration:none;">GD768-14039</a> — Reducir TBT &lt; 200ms en Home</h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#e8f8f2; padding:5px 12px; border-radius:6px; font-size:0.82rem;">📋 Backlog → Por Hacer — 7 Días | 4 Horas | 18 Min</span>
+            <span style="background:#e8f8f2; padding:5px 12px; border-radius:6px; font-size:0.82rem;">📝 Por Hacer → En Progreso — 0 Días | 0 Horas | 0 Min</span>
+            <span style="background:#e8f8f2; padding:5px 12px; border-radius:6px; font-size:0.82rem;">🔨 En Progreso → En Pruebas QA — 2 Días | 3 Horas | 49 Min</span>
+            <span style="background:#e8f8f2; padding:5px 12px; border-radius:6px; font-size:0.82rem;">🧪 En Pruebas QA → En Pruebas UAT — 0 Días | 0 Horas | 0 Min</span>
+            <span style="background:#e8f8f2; padding:5px 12px; border-radius:6px; font-size:0.82rem;">✅ En Pruebas UAT → Pendiente PAP — 0 Días | 7 Horas | 57 Min</span>
+          </div>
+          <p style="font-size:0.8rem; color:#856404; margin-top:8px; background:#fff3cd; padding:6px 10px; border-radius:4px;">⚠️ Tuvo bloqueo por dependencia técnica (ACL público/privado) el 24/jun que se resolvió en 4h laborales.</p>
+        </div>
+
+        <!-- GD768-14377 -->
+        <div style="background:white; border-radius:10px; padding:16px; margin-bottom:14px; border-left:4px solid #20c997; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="margin-bottom:10px;"><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14377" target="_blank" style="color:#20c997; text-decoration:none;">GD768-14377</a> — Banner planes sin login</h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#e8f8f2; padding:5px 12px; border-radius:6px; font-size:0.82rem;">📋 Backlog → Por Hacer — 2 Días | 4 Horas | 14 Min</span>
+            <span style="background:#e8f8f2; padding:5px 12px; border-radius:6px; font-size:0.82rem;">📝 Por Hacer → En Progreso — 0 Días | 0 Horas | 0 Min</span>
+            <span style="background:#e8f8f2; padding:5px 12px; border-radius:6px; font-size:0.82rem;">🔨 En Progreso → En Pruebas UAT — 1 Día | 0 Horas | 39 Min</span>
+            <span style="background:#e8f8f2; padding:5px 12px; border-radius:6px; font-size:0.82rem;">✅ En Pruebas UAT → Pendiente PAP — 0 Días | 0 Horas | 36 Min</span>
+          </div>
+        </div>
+
+        <!-- GD768-13275 -->
+        <div style="background:white; border-radius:10px; padding:16px; margin-bottom:14px; border-left:4px solid #20c997; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="margin-bottom:10px;"><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13275" target="_blank" style="color:#20c997; text-decoration:none;">GD768-13275</a> — Migrar monorepo a Angular 14</h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#e8f8f2; padding:5px 12px; border-radius:6px; font-size:0.82rem;">📋 Creado → Pendiente PAP — 44 Días laborales (HU de largo aliento, multi-sprint)</span>
+          </div>
+          <p style="font-size:0.8rem; color:#495057; margin-top:8px;">HU extendida entre Sprint 11.26 y 12.26. Involucra migración masiva del framework con múltiples PRs, alertas de seguridad y validaciones.</p>
+        </div>
+
+        <!-- GD768-14029 -->
+        <div style="background:white; border-radius:10px; padding:16px; margin-bottom:14px; border-left:4px solid #20c997; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="margin-bottom:10px;"><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14029" target="_blank" style="color:#20c997; text-decoration:none;">GD768-14029</a> — Vista alternativa inmuebles no disponibles</h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#e8f8f2; padding:5px 12px; border-radius:6px; font-size:0.82rem;">📋 Creado → En Pruebas QA — En progreso al cierre del sprint (20 días cal.)</span>
+          </div>
+        </div>
+
+        <!-- GD768-13990 -->
+        <div style="background:white; border-radius:10px; padding:16px; margin-bottom:14px; border-left:4px solid #dc3545; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="margin-bottom:10px;"><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13990" target="_blank" style="color:#dc3545; text-decoration:none;">GD768-13990</a> — INC-SOFTWARE Login Google (Error Productivo)</h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#fde8e8; padding:5px 12px; border-radius:6px; font-size:0.82rem;">📋 Creado → Cerrado — 9 Días laborales (12 calendario)</span>
+          </div>
+        </div>
+
+        <!-- Nota de análisis -->
+        <div style="margin-top:18px; padding:15px; background:white; border-radius:8px; border-left:4px solid #e83e8c;">
+          <h4 style="color:#e83e8c; margin-bottom:10px; font-size:0.95rem;">📌 Hallazgos sobre tiempos de transición</h4>
+          <ul style="list-style:disc; padding-left:20px; font-size:0.88rem; color:#495057; line-height:1.7;">
+            <li><strong>Tiempo en Backlog:</strong> Las HUs heredadas de sprints anteriores (13484, 13546, 13554) acumulan entre 0.7 y 18 días laborales en Backlog antes de ser priorizadas. Esto NO es atribuible al desarrollador — es tiempo de espera en el backlog del producto.</li>
+            <li><strong>Desarrollo efectivo (En Progreso → QA):</strong> Para HUs estándar el tiempo es de 0-4h laborales (GD768-13793, 13546, 14377). Para HUs complejas: 2-3 días (GD768-14039, 13554). Excelente velocidad de desarrollo.</li>
+            <li><strong>QA → UAT:</strong> Tiempos muy cortos (0-7h), indicando que la calidad de los entregables es alta y QA encuentra pocos defectos.</li>
+            <li><strong>Pendiente PAP → Producción:</strong> El mayor cuello de botella observable es entre UAT y Producción (3-8 días laborales para GD768-13554, 13793). Esto refleja el proceso de control de cambio (MDSB), no demoras del desarrollador.</li>
+            <li><strong>GD768-14039 (TBT):</strong> Fue bloqueada por dependencia técnica (ACL) durante ~4h. Bien documentada y resuelta rápidamente.</li>
+            <li><strong>GD768-14377:</strong> Ciclo completo de solo 1 día laboral (desarrollo + UAT + PAP). Altamente eficiente.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 7: OBSERVACIONES Y RECOMENDACIONES -->
+    <div class="metric-card observations">
+      <div class="icon">💡</div>
+      <h3>7. Observaciones y Recomendaciones</h3>
+      <div class="description">
+        <div style="padding:15px; background:white; border-radius:8px; border-left:4px solid #28a745; margin-bottom:15px;">
+          <h4 style="color:#28a745; margin-bottom:10px; font-size:0.95rem;">✅ Aspectos Positivos</h4>
+          <ul style="list-style:disc; padding-left:20px; font-size:0.88rem; color:#495057; line-height:1.7;">
+            <li><strong>Alta productividad:</strong> 11/12 HUs completadas (92%) con un aprovechamiento de capacidad del 92%. Andrés mantiene un ritmo constante y predecible.</li>
+            <li><strong>Migración Angular 14 exitosa:</strong> La tarea técnica más compleja del mes (GD768-13275) se completó satisfactoriamente, a pesar de ser significativamente subestimada. Esto demuestra capacidad para abordar tareas de alto impacto.</li>
+            <li><strong>Reducción de TBT:</strong> GD768-14039 logró bajar el TBT del Home eliminando dependencias pesadas (AWS SDK v2, owl-carousel, scripts blocking). Impacto directo en Core Web Vitals.</li>
+            <li><strong>Calidad en entregas:</strong> Los tiempos QA → UAT son muy cortos (0-7h), indicando que las entregas tienen pocos defectos y pasan pruebas rápidamente.</li>
+            <li><strong>Coherencia en estimaciones:</strong> 75% de las HUs dentro del rango referencial. Solo subestima en tareas de migración/performance donde la incertidumbre es inherente.</li>
+            <li><strong>Velocidad de ciclo:</strong> HUs como GD768-14377 se completaron en 1 día laboral (dev→UAT→PAP). Excelente para HUs de complejidad baja-media.</li>
+          </ul>
+        </div>
+        <div style="padding:15px; background:white; border-radius:8px; border-left:4px solid #ffc107; margin-bottom:15px;">
+          <h4 style="color:#e6a800; margin-bottom:10px; font-size:0.95rem;">⚠️ Puntos de Atención</h4>
+          <ul style="list-style:disc; padding-left:20px; font-size:0.88rem; color:#495057; line-height:1.7;">
+            <li><strong>Subestimación en tareas técnicas complejas:</strong> GD768-13275 (25h vs ~50h real) y GD768-14039 (14h vs ~24h real). Recomendación: para migraciones y optimizaciones de performance, aplicar un factor 1.5-2x sobre la estimación inicial.</li>
+            <li><strong>GD768-13546 sin estimación:</strong> Esta HU no tenía timeoriginalestimate registrado. Recomendación: asegurar que todas las HUs tengan estimación antes de entrar al sprint.</li>
+            <li><strong>Permisos no facturables (7h):</strong> Se registraron 2 permisos en junio (medio día votación 9/jun + 3h informe 12/jun). Esto reduce la capacidad efectiva a 153h. El aprovechamiento real sobre capacidad efectiva es 148/153 = 97%.</li>
+            <li><strong>HU GD768-14029 no completada:</strong> "Vista alternativa inmuebles no disponibles" quedó en Pruebas QA al cierre del sprint. Es una HU compleja (20h) que pasará al Sprint 13.26.</li>
+            <li><strong>Horas logueadas &gt; estimadas (209h vs 148h):</strong> El excedente se concentra en 2 HUs. Si bien indica esfuerzo real superior al planificado, también refleja que el recurso registra su tiempo fielmente.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="text-align:center; margin-top:40px; padding-top:20px; border-top:2px solid #e9ecef; color:#666; font-size:0.9rem;">
+    <p>📅 Reporte mensual · Junio 2026 · 🏗️ [GD-768] E.O. Ciencuadras &amp; Ecosistema Home · Operación Ciencuadras — Servicios Bolívar</p>
+  </div>
+
+</div>
+</body>
+</html>
