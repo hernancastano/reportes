@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏢 Servicios Bolivar - Reporte Semanal</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  min-height: 100vh;
+  padding: 100px;
+}
+.slide {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  padding: 32px;
+  width: 100%;
+  margin: 0;
+}
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  border-bottom: 3px solid #2a5298;
+  padding-bottom: 20px;
+}
+.header h1 { color: #1e3c72; font-size: 2.5rem; font-weight: bold; margin-bottom: 10px; }
+.header .subtitle { color: #666; font-size: 1.2rem; font-style: italic; }
+.sprint-info {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  border-left: 5px solid #2a5298;
+}
+.sprint-info h3 { color: #1e3c72; margin-bottom: 5px; }
+.content-grid { display: flex; flex-direction: column; gap: 25px; margin-top: 30px; }
+.metric-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 15px;
+  padding: 25px;
+  border-left: 5px solid;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.metric-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  opacity: 0.1;
+  transform: translate(30%, -30%);
+}
+.metric-card.summary    { border-left-color: #0d6efd; } .metric-card.summary::before    { background: #0d6efd; }
+.metric-card.initiatives{ border-left-color: #6610f2; } .metric-card.initiatives::before{ background: #6610f2; }
+.metric-card.errors     { border-left-color: #495057; } .metric-card.errors::before     { background: #495057; }
+.metric-card.alerts     { border-left-color: #ffc107; } .metric-card.alerts::before     { background: #ffc107; }
+.metric-card.achievements{ border-left-color: #198754; } .metric-card.achievements::before{ background: #198754; }
+.metric-card.monitoring { border-left-color: #20c997; } .metric-card.monitoring::before { background: #20c997; }
+.metric-card.normative  { border-left-color: #fd7e14; } .metric-card.normative::before  { background: #fd7e14; }
+.metric-card.incidents  { border-left-color: #dc3545; } .metric-card.incidents::before  { background: #dc3545; }
+.metric-card.costs      { border-left-color: #0d6efd; } .metric-card.costs::before      { background: #0d6efd; }
+.metric-card.capacity   { border-left-color: #6f42c1; } .metric-card.capacity::before   { background: #6f42c1; }
+.metric-card.tasks      { border-left-color: #17a2b8; } .metric-card.tasks::before      { background: #17a2b8; }
+.metric-card h3 { color: #1e3c72; font-size: 1.3rem; margin-bottom: 15px; position: relative; z-index: 2; }
+.metric-card .icon { font-size: 2rem; margin-bottom: 10px; position: relative; z-index: 2; }
+.metric-card .description { color: #666; line-height: 1.6; position: relative; z-index: 2; }
+.metric-card .highlight { font-weight: bold; color: #1e3c72; }
+.critical { color: #dc3545; font-weight: bold; }
+.sub-section {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-left: 4px solid;
+}
+.sub-section h4 { color: #1e3c72; margin-bottom: 12px; font-size: 1rem; }
+.sub-section p { margin-bottom: 8px; font-size: 0.9rem; line-height: 1.5; }
+.sub-section p:last-child { margin-bottom: 0; }
+.sub-section.blue   { border-left-color: #0d6efd; }
+.sub-section.green  { border-left-color: #28a745; }
+.sub-section.orange { border-left-color: #fd7e14; }
+.sub-section.red    { border-left-color: #dc3545; }
+.sub-section.yellow { border-left-color: #ffc107; }
+.sub-section.purple { border-left-color: #6610f2; }
+.sub-section.teal   { border-left-color: #20c997; }
+.sub-section ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+.sub-section li {
+  margin: 8px 0;
+  padding-left: 0;
+  line-height: 1.35;
+}
+.sub-section li:first-child { margin-top: 0; }
+.sub-section li:last-child { margin-bottom: 0; }
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+.metric-item {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.metric-item .value { font-size: 2rem; font-weight: bold; color: #1e3c72; display: block; margin-bottom: 5px; }
+.metric-item .label { font-size: 0.85rem; color: #666; }
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.category-item {
+  background: white;
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+.category-item .num {
+  font-weight: 800;
+  color: #1e3c72;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.category-item .name {
+  font-size: 0.85rem;
+  color: #495057;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dual-column { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+.team-section { background: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 4px solid; }
+.team-section h4 { margin-bottom: 15px; }
+.alert-box {
+  background: #fff3cd;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-left: 4px solid #ffc107;
+}
+.alert-box.critical { background: #f8d7da; border-left-color: #dc3545; }
+.alert-box.info     { background: #d1ecf1; border-left-color: #17a2b8; }
+.alert-box.success  { background: #d4edda; border-left-color: #28a745; }
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.experience-card {
+  background: white;
+  border-radius: 10px;
+  padding: 12px;
+  border-left: 4px solid #0d6efd;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  min-width: 0;
+}
+.experience-card h5 {
+  margin: 0 0 10px 0;
+  color: #1e3c72;
+  font-size: 0.95rem;
+}
+.experience-card .mini-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.experience-card .mini {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+}
+.experience-card .mini .v {
+  display: block;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: #1e3c72;
+  font-size: 1.1rem;
+}
+.experience-card .mini .k { font-size: 0.75rem; color: #6c757d; }
+.experience-card .breakdown {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: #495057;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 10px;
+}
+.experience-card .breakdown span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.progress-bar-container {
+  background: #e9ecef;
+  border-radius: 10px;
+  height: 25px;
+  margin: 15px 0;
+  overflow: hidden;
+  position: relative;
+}
+.progress-bar-fill {
+  background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+  height: 100%;
+  border-radius: 10px;
+  position: relative;
+}
+.progress-bar-text {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  color: #333;
+  font-size: 0.85rem;
+  z-index: 10;
+}
+.footer {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 2px solid #e9ecef;
+  color: #666;
+  font-size: 0.9rem;
+}
+.placeholder { color: #999; font-style: italic; }
+@media (max-width: 768px) {
+  body { padding: 4px 12px; }
+  .slide { padding: 20px; margin: 0 auto; }
+  .header h1 { font-size: 2rem; }
+  .content-grid { gap: 20px; }
+  .metric-grid, .dual-column { grid-template-columns: 1fr; }
+  .category-grid { grid-template-columns: 1fr; }
+  .experience-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="slide">
+
+  <div class="header">
+    <h1>🏢 Servicios Bolivar - Reporte Semanal</h1>
+    <p class="subtitle">Semana del 29 de junio de 2026 al 3 de julio de 2026</p>
+  </div>
+
+  <div class="sprint-info">
+    <h3>📋 Equipo y Contexto</h3>
+    <p><strong>🏗️ Ciencuadras - Sprint 13.26 Spaces:</strong> 1 Jul – 15 Jul 2026 | 65 HUs totales | Equipo Ciencuadras</p>
+    <p><strong>👥 ESTADO EQUIPO:</strong> Equipo completo, sin novedades de personal.</p>
+  </div>
+
+  <div class="content-grid">
+
+    <!-- 1. RESUMEN MÉTRICAS -->
+    <div class="metric-card summary">
+      <div class="icon">📊</div>
+      <h3>1. Resumen Métricas</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras - Sprint 13.26 Spaces</h4>
+          <div class="metric-grid">
+            <div class="metric-item"><span class="value" style="color: #28a745;">31%</span><span class="label">Cumplimiento</span></div>
+            <div class="metric-item"><span class="value">65</span><span class="label">HUs Totales</span></div>
+            <div class="metric-item"><span class="value" style="color: #28a745;">20</span><span class="label">Cerradas</span></div>
+          </div>
+          <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px; border-left: 4px solid #0d6efd;">
+            <h4 style="color: #0d6efd; margin-bottom: 10px; font-size: 0.95rem;">📊 Distribución por Categoría</h4>
+            <div class="category-grid">
+              <div class="category-item"><span class="num">12</span><span class="name">Planes y Productos</span></div>
+              <div class="category-item"><span class="num">10</span><span class="name">Victoria Gestora</span></div>
+              <div class="category-item"><span class="num">9</span><span class="name">Migración Infraestructura</span></div>
+              <div class="category-item"><span class="num">8</span><span class="name">SEO 2026</span></div>
+              <div class="category-item"><span class="num">7</span><span class="name">Agentes Inmobiliarias</span></div>
+              <div class="category-item"><span class="num">6</span><span class="name">Incidentes y Soluciones</span></div>
+              <div class="category-item"><span class="num">5</span><span class="name">Mejoras Datadog</span></div>
+              <div class="category-item"><span class="num">3</span><span class="name">MIA Arrendadora</span></div>
+              <div class="category-item"><span class="num">3</span><span class="name">Performance Ciencuadras</span></div>
+              <div class="category-item"><span class="num">2</span><span class="name">Automatización QA</span></div>
+            </div>
+          </div>
+          <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px; border-left: 4px solid #6c757d;">
+            <h4 style="color: #495057; margin-bottom: 10px; font-size: 0.95rem;">📋 Estado General Sprint 13.26 Spaces</h4>
+            <p style="font-size:0.85rem; line-height:1.5; margin-bottom:6px;">📊 <strong>Cerradas:</strong> 20 (Pendiente PAP: 10, Cerrado: 8, Hecho: 2)</p>
+            <p style="font-size:0.85rem; line-height:1.5; margin-bottom:6px;">🔄 <strong>En Progreso:</strong> 17 (En Progreso: 9, En Pruebas QA: 6, En Pruebas UAT: 2)</p>
+            <p style="font-size:0.85rem; line-height:1.5; margin-bottom:6px;">📋 <strong>Por Hacer:</strong> 28 (Backlog: 23, Por Hacer: 5)</p>
+            <p style="font-size:0.85rem; line-height:1.5; margin-bottom:0;">⏱️ <strong>Sprint:</strong> Semana 1 de 2 — primera mitad del sprint, inicio normal. El equipo tiene 17 items activos en paralelo.</p>
+          </div>
+          <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px; border-left: 4px solid #dc3545;">
+            <h4 style="color: #dc3545; margin-bottom: 10px; font-size: 0.95rem;">🛡️ Cumplimiento Normativo TI (CNTI) - Ciencuadras</h4>
+            <div class="metric-grid" style="margin-bottom:12px;">
+              <div class="metric-item"><span class="value" style="color:#dc3545;">1</span><span class="label">Críticos</span></div>
+              <div class="metric-item"><span class="value" style="color:#fd7e14;">1</span><span class="label">Altos</span></div>
+              <div class="metric-item"><span class="value" style="color:#ffc107;">7</span><span class="label">Medios</span></div>
+              <div class="metric-item"><span class="value" style="color:#6c757d;">1</span><span class="label">Bajos</span></div>
+            </div>
+            <div style="font-size:0.82rem; color:#495057;">
+              <p>🔴 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/CNTI-1274">CNTI-1274</a></strong> — Secreto en repositorio de infra: ciencuadras-dataoperativa-infra (En evaluación)</p>
+              <p>🟠 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/CNTI-2417">CNTI-2417</a></strong> — Exposición de S3 cuenta Ciencuadras (To Do)</p>
+              <p>🟡 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/CNTI-2437">CNTI-2437</a></strong> — Vulnerabilidad ciencuadras-home-mf PR#3095 (In Progress)</p>
+              <p>🟡 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/CNTI-2436">CNTI-2436</a></strong> — Vulnerabilidad ciencuadras-monorepo-mf PR#10710 (To Do)</p>
+              <p>🟡 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/CNTI-2435">CNTI-2435</a></strong> — Vulnerabilidad ciencuadras-portal-frontend PR#2157 (Plan de acción definido)</p>
+              <p>🟡 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/CNTI-890">CNTI-890</a></strong> — Certificado SSL / Trámites ciencuadras (To Do)</p>
+              <p>🟡 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/CNTI-888">CNTI-888</a></strong> — Retest Ethical Hacking Trámites Ciencuadras (In Progress)</p>
+              <p>🟡 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/CNTI-884">CNTI-884</a></strong> — Retest Ethical Hacking Admin Ciencuadras (In Progress)</p>
+              <p>🟡 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/CNTI-846">CNTI-846</a></strong> — Retest Ethical Hacking Ciencuadras (In Progress)</p>
+              <p>⚪ <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/CNTI-883">CNTI-883</a></strong> — Certificado SSL / Pagos ciencuadras (To Do)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. MONITOREO DE ERRORES -->
+    <div class="metric-card errors">
+      <div class="icon">🔍</div>
+      <h3>2. Monitoreo de Errores - Top 10</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras — Semana 29 de junio de 2026–3 de julio de 2026 (Prod)</h4>
+          <div style="overflow-x:auto; margin-top:10px;">
+            <table style="width:100%; border-collapse:collapse; font-size:0.82rem;">
+              <thead>
+                <tr style="background:#f8f9fa; border-bottom:2px solid #dee2e6;">
+                  <th style="padding:8px 10px; text-align:left; color:#1e3c72;">Pos.</th>
+                  <th style="padding:8px 10px; text-align:left; color:#1e3c72;">Servicio</th>
+                  <th style="padding:8px 10px; text-align:left; color:#1e3c72;">Recurso / Endpoint</th>
+                  <th style="padding:8px 10px; text-align:right; color:#1e3c72;">Errores</th>
+                </tr>
+              </thead>
+              <tbody>
+<tr style="background:#fff;">
+                  <td style="padding:8px 10px;">1</td>
+                  <td style="padding:8px 10px;">ciencuadras-auth-ms</td>
+                  <td style="padding:8px 10px;">POST /prod/utilities/habeasData</td>
+                  <td style="padding:8px 10px; text-align:right; color:#dc3545; font-weight:bold;">3,602</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                  <td style="padding:8px 10px;">2</td>
+                  <td style="padding:8px 10px;">ciencuadras-listing-api-prod</td>
+                  <td style="padding:8px 10px;">CheckPassportEvent (Symfony)</td>
+                  <td style="padding:8px 10px; text-align:right; color:#fd7e14; font-weight:bold;">1,177</td>
+                </tr>
+                <tr style="background:#fff;">
+                  <td style="padding:8px 10px;">3</td>
+                  <td style="padding:8px 10px;">ciencuadras-resultados-ms</td>
+                  <td style="padding:8px 10px;">SearchController.index</td>
+                  <td style="padding:8px 10px; text-align:right; color:#fd7e14; font-weight:bold;">1,009</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                  <td style="padding:8px 10px;">4</td>
+                  <td style="padding:8px 10px;">ciencuadras-resultados-ms</td>
+                  <td style="padding:8px 10px;">SuggestionController.index</td>
+                  <td style="padding:8px 10px; text-align:right; color:#ffc107; font-weight:bold;">880</td>
+                </tr>
+                <tr style="background:#fff;">
+                  <td style="padding:8px 10px;">5</td>
+                  <td style="padding:8px 10px;">ciencuadras-sitios-interes-ms</td>
+                  <td style="padding:8px 10px;">GET /reverse</td>
+                  <td style="padding:8px 10px; text-align:right; color:#ffc107; font-weight:bold;">611</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                  <td style="padding:8px 10px;">6</td>
+                  <td style="padding:8px 10px;">ciencuadras-automatic-auth-ms</td>
+                  <td style="padding:8px 10px;">AutomaticAuthController.automaticAuth</td>
+                  <td style="padding:8px 10px; text-align:right; color:#ffc107; font-weight:bold;">578</td>
+                </tr>
+                <tr style="background:#fff;">
+                  <td style="padding:8px 10px;">7</td>
+                  <td style="padding:8px 10px;">ciencuadras-auth-ms</td>
+                  <td style="padding:8px 10px;">AuthController.loginAutomatic</td>
+                  <td style="padding:8px 10px; text-align:right; color:#ffc107; font-weight:bold;">577</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                  <td style="padding:8px 10px;">8</td>
+                  <td style="padding:8px 10px;">ciencuadras-automatic-auth-ms</td>
+                  <td style="padding:8px 10px;">POST /auth/v1/loginAutomatic</td>
+                  <td style="padding:8px 10px; text-align:right; color:#ffc107; font-weight:bold;">576</td>
+                </tr>
+                <tr style="background:#fff;">
+                  <td style="padding:8px 10px;">9</td>
+                  <td style="padding:8px 10px;">ciencuadras-sitios-interes-ms</td>
+                  <td style="padding:8px 10px;">PropertiesComponent.consultNewProperties</td>
+                  <td style="padding:8px 10px; text-align:right; color:#ffc107; font-weight:bold;">460</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                  <td style="padding:8px 10px;">10</td>
+                  <td style="padding:8px 10px;">ciencuadras-integracion-facturacion-ms</td>
+                  <td style="padding:8px 10px;">POST /prod/.../sap/factura</td>
+                  <td style="padding:8px 10px; text-align:right; color:#ffc107; font-weight:bold;">432</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="font-size:0.75rem; color:#6c757d; margin-top:8px;">Fuente: Datadog APM · env:prod · Últimos 7 días · <a href="https://app.datadoghq.com/dashboard/wei-k9v-vkx" style="color:#0d6efd;">Dashboard Observabilidad Ciencuadras</a></p>
+          <div style="margin-top:15px; padding:12px; background:#d4edda; border-radius:8px; border-left:4px solid #28a745;">
+            <h5 style="color:#155724; margin-bottom:8px; font-size:0.9rem;">🤖 Bot-Fix-Agent — Estadísticas Acumuladas (abr–jul 2026)</h5>
+            <p style="font-size:0.82rem; color:#155724; margin-bottom:6px;"><strong>13 HUs creadas autónomamente</strong> a partir de errores detectados en Datadog APM. El bot analiza los spans con error, identifica la causa raíz en el código, genera el fix y crea la HU con PR listo para revisión.</p>
+            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:8px; margin:8px 0;">
+              <div style="background:white; border-radius:6px; padding:8px; text-align:center;"><strong style="color:#28a745; font-size:1.1rem;">3</strong><br><span style="font-size:0.75rem;">En Producción</span></div>
+              <div style="background:white; border-radius:6px; padding:8px; text-align:center;"><strong style="color:#ffc107; font-size:1.1rem;">1</strong><br><span style="font-size:0.75rem;">En Pruebas QA</span></div>
+              <div style="background:white; border-radius:6px; padding:8px; text-align:center;"><strong style="color:#17a2b8; font-size:1.1rem;">3</strong><br><span style="font-size:0.75rem;">Backlog</span></div>
+              <div style="background:white; border-radius:6px; padding:8px; text-align:center;"><strong style="color:#6c757d; font-size:1.1rem;">6</strong><br><span style="font-size:0.75rem;">Canceladas*</span></div>
+            </div>
+            <p style="font-size:0.82rem; color:#155724; margin-bottom:4px;">📊 <strong>Impacto confirmado:</strong> <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14323">GD768-14323</a> eliminó el error #1 de Datadog (12,049→0 err/sem). <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14363">GD768-14363</a> corrigió coordenadas geo inválidas (Pendiente PAP). <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14022">GD768-14022</a> resolvió HTTP 429 en webhook N8N (Cerrado).</p>
+            <p style="font-size:0.75rem; color:#6c757d; margin:0;">*Canceladas = iteraciones tempranas del bot que se consolidaron en HUs más precisas (aprendizaje del agente).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. INICIATIVAS Y AVANCES -->
+    <div class="metric-card initiatives">
+      <div class="icon">🚀</div>
+      <h3>3. Iniciativas y Avances</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras</h4>
+          <div class="sub-section blue">
+            <h4>🎯 Iniciativas Principales Sprint 13.26 Spaces</h4>
+            <ul>
+              <li>🎯 <strong>Planes y Productos Inmobiliarias:</strong> Control de cupos, validación de plan activo, ocultar Fotos profesionales, banner asesoría sin login</li>
+              <li>🎯 <strong>Victoria Gestora (MIA Voz):</strong> Captura de datos opciones 1-3/2-4, restricción estados menú, optimización recolección traslados</li>
+              <li>🎯 <strong>SEO y Performance 2026:</strong> Reducción TBT &lt;200ms, vista inmuebles no disponibles, direccionamiento por ubicación, sitemap diario</li>
+              <li>🎯 <strong>Migración Infraestructura:</strong> Monorepo Angular 14, Gestor a GitHub, ambiente QA2, estabilización cluster backend-3</li>
+              <li>🎯 <strong>Agentes Inmobiliarias (MIA WhatsApp):</strong> Estudio arrendamiento automático, pushes seguimiento Gavi, leads incompletos 2h, campaña personalizada El Libertador</li>
+              </ul>
+          </div>
+          <div class="sub-section orange">
+            <h4>🔑 HUs Destacadas del Sprint - Semana 29 de junio de 2026</h4>
+            <ul>
+              <li>✅ <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14332">GD768-14332</a></strong> — Corrección de enrutamiento en campaña Victoria (Hecho)</li>
+              <li>✅ <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14334">GD768-14334</a></strong> — Levantar restricción de estados en menú 1-2 (Cerrado)</li>
+              <li>✅ <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14259">GD768-14259</a></strong> — Optimización de Claridad en Recolección de Datos para Traslados (Cerrado)</li>
+              <li>🔄 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14052">GD768-14052</a></strong> — Modal de confirmación al seleccionar plan con menor capacidad de publicaciones (En Pruebas QA)</li>
+              <li>🔄 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14029">GD768-14029</a></strong> — Implementar vista alternativa para inmuebles no disponibles (En Pruebas QA)</li>
+              <li>🔄 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14361">GD768-14361</a></strong> — Priorizar direccionamiento por ubicación sobre tipo de inmueble (En Progreso)</li>
+              <li>🔄 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14400">GD768-14400</a></strong> — Consultar radicado SAI e incluirlo en campaña de generación de lead (En Progreso)</li>
+              <li>🔄 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14143">GD768-14143</a></strong> — Crear estudio arrendamiento automático con El Libertador (En Pruebas QA)</li>
+              <li>🔄 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14192">GD768-14192</a></strong> — Migrar Gestor a GitHub y levantar dev2-gestor.ciencuadras.com (En Pruebas QA)</li>
+              <li>📋 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14377">GD768-14377</a></strong> — Mostrar banner de asesoría en página de planes inmobiliarias sin login (Pendiente PAP)</li>
+              </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. ALERTAS -->
+    <div class="metric-card alerts">
+      <div class="icon">🔔</div>
+      <h3>4. Alertas</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras</h4>
+          <div class="alert-box">
+            <strong>⚠️ Sprint 13.26 Spaces - GESTIÓN DE CARGA</strong>
+            <div style="margin-top:10px; display:grid; gap:8px;">
+<div style="background:white; border-radius:6px; padding:10px 12px; border-left:3px solid #dc3545;">
+  <strong>🚨 P1 — Lambda Authorizer caída total (2 jul, 34 min)</strong><br><span style="font-size:0.85rem; color:#666;">ciencuadras-authorizer-validate-token-prod: Runtime.ExitError por Datadog Extension + nodejs:24.v44. Portal inaccesible 11:00–11:34. ~248,990 errores. Resuelto con redeploy forzado. <a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1071200">MDSB-1071200</a></span>
+</div>
+<div style="background:white; border-radius:6px; padding:10px 12px; border-left:3px solid #ffc107;">
+  <strong>⚠️ Despliegue Home MF con 2 incidentes (1-2 jul)</strong><br><span style="font-size:0.85rem; color:#666;">Fallo de compilación (@smithy/core) + Error 403 por ACL S3 producción. Resuelto con acompañamiento infra. PRE no refleja config PROD — riesgo de paridad de ambientes. <a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1068593">MDSB-1068593</a></span>
+</div>
+<div style="background:white; border-radius:6px; padding:10px 12px; border-left:3px solid #ffc107;">
+  <strong>⚠️ Carga alta segunda semana</strong><br><span style="font-size:0.85rem; color:#666;">28 items en Backlog/Por Hacer (43% del sprint) — riesgo de arrastre si no se priorizan los más críticos.</span>
+</div>
+<div style="background:white; border-radius:6px; padding:10px 12px; border-left:3px solid #dc3545;">
+  <strong>🔴 CNTI-1274 Critical — sigue en evaluación</strong><br><span style="font-size:0.85rem; color:#666;">Secreto en repo infra. Sin cambio de estado desde semana anterior. Requiere remediación para cumplimiento normativo.</span>
+</div>
+<div style="background:white; border-radius:6px; padding:10px 12px; border-left:3px solid #ffc107;">
+  <strong>⚠️ S3 públicos sin remediar</strong><br><span style="font-size:0.85rem; color:#666;"><a href="https://jirasegurosbolivar.atlassian.net/browse/CNTI-2417">CNTI-2417</a> + <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13399">GD768-13399</a>: Exposición S3 pendiente. Ticket MDSB-1065304 sigue en Pending.</span>
+</div>
+            </div>
+          </div>
+          <div class="alert-box success">
+            <strong>✅ AVANCES Sprint 13.26 Spaces</strong>
+            <div style="margin-top:10px; display:grid; gap:8px;">
+<div style="background:white; border-radius:6px; padding:10px 12px; border-left:3px solid #28a745;">
+  <strong>✅ Leads CRM resuelto — GD768-14135 en Producción</strong><br><span style="font-size:0.85rem; color:#666;">663 alertas/semana → 64 esta semana (-90%). Fix desplegado exitosamente.</span>
+</div>
+<div style="background:white; border-radius:6px; padding:10px 12px; border-left:3px solid #28a745;">
+  <strong>✅ Angular 14 — Pendiente PAP</strong><br><span style="font-size:0.85rem; color:#666;"><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-13275">GD768-13275</a> pasó QA exitosamente, listo para paso a producción.</span>
+</div>
+<div style="background:white; border-radius:6px; padding:10px 12px; border-left:3px solid #28a745;">
+  <strong>✅ Home MF desplegado en producción</strong><br><span style="font-size:0.85rem; color:#666;">Optimización de rendimiento (TBT) live. 2 incidentes de infra resueltos el mismo día con acompañamiento preventivo.</span>
+</div>
+<div style="background:white; border-radius:6px; padding:10px 12px; border-left:3px solid #28a745;">
+  <strong>✅ Incidente P1 Authorizer — resuelto en 34 min</strong><br><span style="font-size:0.85rem; color:#666;">Detección, diagnóstico y redeploy en menos de 35 minutos. Portal recuperado completamente.</span>
+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. LOGROS Y RETOS -->
+    <div class="metric-card achievements">
+      <div class="icon">🏆</div>
+      <h3>5. Logros y Retos</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras</h4>
+          <div class="sub-section green">
+            <h4>🏆 Logros Sprint 13.26 Spaces - Semana 29 de junio de 2026</h4>
+            <ul>
+              <li>🏆 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14332">GD768-14332</a></strong> — Corrección de enrutamiento en campaña Victoria desplegado a producción</li>
+              <li>🏆 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14334">GD768-14334</a></strong> — Restricción de estados en menú 1-2 levantada exitosamente</li>
+              <li>🏆 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14259">GD768-14259</a></strong> — Optimización de recolección de datos para traslados completada</li>
+              <li>🏆 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14219">GD768-14219</a></strong> — Ajuste opción 1-2 para corrección de solicitudes cerrado</li>
+              <li>🏆 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14058">GD768-14058</a></strong> — Victoria captura datos y agenda llamada (menú 1-3 y 2-4) cerrado</li>
+              <li>🏆 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14015">GD768-14015</a></strong> — Parametrización longitud campo descripción en gestor cerrada</li>
+              <li>🏆 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14363">GD768-14363</a></strong> — Bot-Fix: Validación coordenadas geo en ciencuadras-resultados-ms (Pendiente PAP)</li>
+              <li>🏆 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14300">GD768-14300</a></strong> — P3: Control Automatizado de Cupos e Inactivación en Cascada (Pendiente PAP)</li>
+              </ul>
+          </div>
+          <div class="sub-section orange">
+            <h4>⚡ Retos Activos Sprint 13.26 Spaces</h4>
+            <ul>
+              <li>⚡ <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14406">GD768-14406</a></strong> — Bot-Fix: Data too long for column fuente (zona-privada-ms): en Backlog, error productivo recurrente</li>
+              <li>⚡ <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-14502">GD768-14502</a></strong> — Bot-Fix: NPE en SuggestionFilter.existsByUrl (resultados-ms): Por Hacer, impacta SEO</li>
+              <li>⚡ Capacity al 98% — 5 de 8 miembros sobre 100% de utilización. Riesgo de sobrecarga en segunda semana del sprint</li>
+              <li>⚡ Paridad de ambientes PRE vs PROD no garantizada — evidenciado por incidente Home MF (ACL S3 divergentes)</li>
+              </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. ESTADO MONITOREO E INS, NPS -->
+    <div class="metric-card monitoring">
+      <div class="icon">📈</div>
+      <h3>6. Estado Monitoreo e INS, NPS</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras - INS Semanal</h4>
+          <div class="experience-grid">
+            <div class="experience-card" style="border-left-color:#0d6efd;">
+              <h5>🌐 Portal (Web Ciencuadras)</h5>
+              <div class="mini-metrics">
+                <div class="mini"><span class="v">48</span><span class="k">INS</span></div>
+                <div class="mini"><span class="v">58</span><span class="k">NPS</span></div>
+                <div class="mini"><span class="v">69</span><span class="k">Respuestas</span></div>
+              </div>
+              <div class="breakdown">
+                <span>✅ Satisfecho: <strong>47</strong></span>
+                <span>😐 Neutro: <strong>8</strong></span>
+                <span>⚠️ Insatisfecho: <strong>14</strong></span>
+              </div>
+            </div>
+
+            <div class="experience-card" style="border-left-color:#20c997;">
+              <h5>💬 MIA WhatsApp (WA Ciencuadras)</h5>
+              <div class="mini-metrics">
+                <div class="mini"><span class="v">-4</span><span class="k">INS</span></div>
+                <div class="mini"><span class="v">-15</span><span class="k">NPS</span></div>
+                <div class="mini"><span class="v">518</span><span class="k">Respuestas</span></div>
+              </div>
+              <div class="breakdown">
+                <span>✅ Satisfecho: <strong>2,191</strong></span>
+                <span>😐 Neutro: <strong>800</strong></span>
+                <span>⚠️ Insatisfecho: <strong>2,434</strong></span>
+              </div>
+            </div>
+
+            <div class="experience-card" style="border-left-color:#fd7e14;">
+              <h5>🤖 MIA Web (Web MIA)</h5>
+              <div class="mini-metrics">
+                <div class="mini"><span class="v">29</span><span class="k">INS</span></div>
+                <div class="mini"><span class="v">62</span><span class="k">NPS</span></div>
+                <div class="mini"><span class="v">5,602</span><span class="k">Respuestas</span></div>
+              </div>
+              <div class="breakdown">
+                <span>✅ Satisfecho: <strong>27,144</strong></span>
+                <span>😐 Neutro: <strong>7,703</strong></span>
+                <span>⚠️ Insatisfecho: <strong>13,032</strong></span>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 15px; padding: 12px; background: white; border-radius: 8px; border-left: 4px solid #0d6efd;">
+            <h5 style="color: #0d6efd; margin-bottom: 8px; font-size: 0.9rem;">📊 Comportamiento por Canal</h5>
+            <p style="font-size:0.85rem; margin-bottom:0;"><strong>Web MIA:</strong> INS 48, NPS 58 — canal con mejor percepción (69 respuestas junio, tendencia estable). <strong>Web Ciencuadras:</strong> INS 29, NPS 62 — volumen alto (5,602 resp junio), NPS sólido pero INS bajo por fricción en flujos transaccionales. <strong>WA Ciencuadras:</strong> INS -4, NPS -15 — canal más crítico, 45% insatisfechos (2,434/5,425). Detractores superan promotores.</p>
+          </div>
+          <div style="margin-top: 15px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #6c757d;">
+            <h5 style="color: #495057; margin-bottom: 8px; font-size: 0.9rem;">📋 Análisis</h5>
+            <p style="font-size: 0.85rem; margin-bottom: 0;">El canal WhatsApp (WA Ciencuadras) mantiene indicadores negativos persistentes (INS -4, NPS -15) con tendencia descendente desde abril. El alto volumen de insatisfechos (45%) sugiere problemas en la experiencia conversacional o expectativas no cumplidas. Web MIA y Web Ciencuadras se mantienen en zona positiva con NPS superiores a 50, indicando buena percepción general del portal.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. ESTADO NORMATIVO Y VULNERABILIDADES -->
+    <div class="metric-card normative">
+      <div class="icon">🛡️</div>
+      <h3>7. Estado Normativo y Vulnerabilidades</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras</h4>
+          <div class="sub-section orange">
+            <h4>🔴 Vulnerabilidades Críticas</h4>
+            <p style="font-size:0.85rem;">✅ SonarQube: Sin hotspots críticos ni issues HIGH/BLOCKER de seguridad en repos principales esta semana (resultados-ms, auth-ms, monorepo-mf).</p>
+            <p style="font-size:0.85rem;">⚠️ CNTI abiertos: 1 Crítico (<a href="https://jirasegurosbolivar.atlassian.net/browse/CNTI-1274">CNTI-1274</a> — secreto en repo infra) + 1 Alto (<a href="https://jirasegurosbolivar.atlassian.net/browse/CNTI-2417">CNTI-2417</a> — S3 expuesto).</p>
+          </div>
+          <div class="sub-section green">
+            <h4>✅ Vulnerabilidades Altas</h4>
+            <p style="font-size:0.85rem;">✅ Sin vulnerabilidades altas nuevas detectadas por SonarQube esta semana.</p>
+            <p style="font-size:0.85rem;">📋 7 hallazgos CNTI de prioridad media activos (Ethical Hacking Retest, certificados SSL, vulnerabilidades en PRs). En proceso de remediación.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. ESTADO INCIDENTES -->
+    <div class="metric-card incidents">
+      <div class="icon">🚨</div>
+      <h3>8. Estado Incidentes</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras</h4>
+          <div class="metric-grid">
+            <div class="metric-item"><span class="value" style="color: #dc3545;">0</span><span class="label">Incidentes Activos</span></div>
+            <div class="metric-item"><span class="value" style="color: #28a745;">6</span><span class="label">Service Request</span></div>
+            <div class="metric-item"><span class="value" style="color: #28a745;">10</span><span class="label">Resueltos Semana</span></div>
+          </div>
+          <div class="sub-section red" style="margin-top: 15px;">
+            <h4>🔴 Incidentes Activos</h4>
+            <ul>
+            <li>✅ Sin incidentes activos esta semana. Los 2 incidentes masivos (MDSB-1071200, MDSB-1071095) se resolvieron el mismo día. El incidente MDSB-1066583 fue cerrado tras completar la gestión técnica.</li>
+            </ul>
+          </div>
+          <div class="sub-section green">
+            <h4>🟢 Service Requests Activos</h4>
+            <ul>
+            <li>🟢 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1070023">MDSB-1070023</a></strong> — Solicitud de Cambio de Datos | Hernan Castaño | Scaled (1 jul) — GD pendiente</li>
+            <li>🟢 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1070003">MDSB-1070003</a></strong> — Solicitud de Cambio de Datos | Hernan Castaño | Scaled (1 jul) — GD pendiente</li>
+            <li>🟢 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1063424">MDSB-1063424</a></strong> — Solicitud de Cambio de Datos | Oscar Lobaton | In Progreso — GD768-14294 Por Hacer</li>
+            <li>🟢 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1055820">MDSB-1055820</a></strong> — Solicitud de Cambio de Datos | Hernan Castaño | Pending — GD768-13998 Por Hacer</li>
+            <li>🟡 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1047326">MDSB-1047326</a></strong> — Solicitud de Cambio de Datos | Oscar Lobaton | In Progreso — GD768-13748 En Progreso (control cambio exitoso, pendiente validación)</li>
+            <li>🟡 <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1046970">MDSB-1046970</a></strong> — Solicitud de Cambio de Datos | Hernan Castaño | In Progreso — GD768-13731 En Progreso</li>
+            </ul>
+          </div>
+          <div class="sub-section green">
+            <h4>✅ Resueltos esta Semana</h4>
+            <ul>
+            <li>✅ <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1071200">MDSB-1071200</a></strong> — INC Falla Ciencuadras MASIVO (resuelto 2 jul — 1h14m)</li>
+            <li>✅ <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1071095">MDSB-1071095</a></strong> — INC Falla Plan Diamante MASIVO (resuelto 2 jul — 42m)</li>
+            <li>✅ <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1066583">MDSB-1066583</a></strong> — INC SOFTWARE Ciencuadras Home — Activación Plan Cuadra Todo (cerrado 3 jul)</li>
+            <li>✅ <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1052606">MDSB-1052606</a></strong> — SR Cambio Datos — Eliminación cliente de BD (cerrado 3 jul)</li>
+            <li>✅ <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1047771">MDSB-1047771</a></strong> — SR Cambio Datos — Agregado cupos destacados/ascendidos (cerrado 3 jul)</li>
+            <li>✅ <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1069138">MDSB-1069138</a></strong> — SR Cambio de Datos (resuelto 30 jun)</li>
+            <li>✅ <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1067669">MDSB-1067669</a></strong> — IMAC SOFTWARE Ciencuadras Home (resuelto 30 jun)</li>
+            <li>✅ <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1054751">MDSB-1054751</a></strong> — IMAC SOFTWARE Ciencuadras Home (resuelto 1 jul)</li>
+            <li>✅ <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1044420">MDSB-1044420</a></strong> — SR Cambio de Datos (resuelto 1 jul)</li>
+            <li>✅ <strong><a href="https://jirasegurosbolivar.atlassian.net/browse/MDSB-1043810">MDSB-1043810</a></strong> — SR Cambio de Datos (cerrado 30 jun)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. ESTADOS COSTOS AWS -->
+    <div class="metric-card costs">
+      <div class="icon">💰</div>
+      <h3>9. Estados Costos AWS</h3>
+      <div class="description">
+        <div class="sub-section blue">
+          <h4>💳 Costos AWS - Julio 2026 (Consolidado Portal + IA MIA)</h4>
+          <div class="metric-grid">
+            <div class="metric-item"><span class="value">$1,888</span><span class="label">Costo Actual*</span></div>
+            <div class="metric-item"><span class="value" style="color: #ffc107;">$13,088</span><span class="label">Proyección**</span></div>
+            <div class="metric-item"><span class="value">$12,379</span><span class="label">Promedio Histórico</span></div>
+          </div>
+          <p style="font-size:0.85rem; margin-top:10px;">📌 *Costo actual al 2 de julio. **Proyección basada en intervalo de predicción del 68.5% (AWS Cost Explorer).</p>
+        </div>
+        <div class="sub-section green">
+          <h4>📊 Análisis Histórico</h4>
+          <p style="font-size:0.85rem;">Tendencia creciente gradual: Ene $10,128 → Feb $14,455 → Mar $14,531 → Abr $15,961 → May $10,027 → Jun $12,592 → Jul (proy) $13,088. Promedio histórico 7 meses: $12,379/mes. Proyección julio está +5.7% por encima del promedio — dentro del rango aceptable.</p>
+        </div>
+        <div class="sub-section orange">
+          <h4>💡 Observaciones</h4>
+          <p style="font-size:0.85rem;">Costos controlados. La proyección de julio ($13,088) se mantiene dentro del rango histórico. Mayo tuvo una reducción atípica ($10,027) que se normalizó en junio. No se identifican picos anormales ni servicios con sobrecosto esta semana. El incidente del Lambda Authorizer (248K invocaciones fallidas) puede generar un delta marginal en Lambda/CloudWatch.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. CAPACITY PLANNER -->
+    <div class="metric-card capacity">
+      <div class="icon">⚙️</div>
+      <h3>10. Capacity Planner</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras - Capacidad</h4>
+          <div class="metric-grid">
+            <div class="metric-item"><span class="value">8</span><span class="label">Días Restantes</span></div>
+            <div class="metric-item"><span class="value">294h</span><span class="label">Capacidad</span></div>
+            <div class="metric-item"><span class="value" style="color:#dc3545;">98%</span><span class="label">Utilización</span></div>
+          </div>
+          <div class="sub-section blue" style="margin-top: 15px;">
+            <h4>👥 Equipo</h4>
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:8px; margin-top:8px;">
+            <div style="background:white; border-radius:6px; padding:8px 10px; border-left:3px solid #dc3545;"><strong>Duván Peñaloza (DP)</strong><br><span style="font-size:0.82rem; color:#666;">6.4h/día · 7.5 días · 1.5 off · <strong style="color:#dc3545;">117%</strong></span></div>
+            <div style="background:white; border-radius:6px; padding:8px 10px; border-left:3px solid #dc3545;"><strong>Hernán Castaño (HR)</strong><br><span style="font-size:0.82rem; color:#666;">4h/día · Leader · 8 días · <strong style="color:#dc3545;">114%</strong></span></div>
+            <div style="background:white; border-radius:6px; padding:8px 10px; border-left:3px solid #dc3545;"><strong>Andrés Herrera (AH)</strong><br><span style="font-size:0.82rem; color:#666;">6.4h/día · 7.5 días · 1.5 off · <strong style="color:#dc3545;">111%</strong></span></div>
+            <div style="background:white; border-radius:6px; padding:8px 10px; border-left:3px solid #dc3545;"><strong>John Castañeda (JC)</strong><br><span style="font-size:0.82rem; color:#666;">6.4h/día · 7.5 días · 1.5 off · <strong style="color:#dc3545;">110%</strong></span></div>
+            <div style="background:white; border-radius:6px; padding:8px 10px; border-left:3px solid #dc3545;"><strong>Alejandro Tique (AT)</strong><br><span style="font-size:0.82rem; color:#666;">6.4h/día · 8 días · 1 off · <strong style="color:#dc3545;">106%</strong></span></div>
+            <div style="background:white; border-radius:6px; padding:8px 10px; border-left:3px solid #ffc107;"><strong>Oscar Lobatón (OP)</strong><br><span style="font-size:0.82rem; color:#666;">6.4h/día · 7.5 días · 1.5 off · <strong style="color:#ffc107;">97%</strong></span></div>
+            <div style="background:white; border-radius:6px; padding:8px 10px; border-left:3px solid #28a745;"><strong>Juan Pablo Valencia (JQ)</strong><br><span style="font-size:0.82rem; color:#666;">6.4h/día · 8 días · <strong style="color:#28a745;">88%</strong></span></div>
+            <div style="background:white; border-radius:6px; padding:8px 10px; border-left:3px solid #28a745;"><strong>Katherine Gámez (KG)</strong><br><span style="font-size:0.82rem; color:#666;">1.0h/día · Test · 8 días · 1 off · <strong style="color:#28a745;">79%</strong></span></div>
+            </div>
+          </div>
+          <div class="sub-section orange">
+            <h4>⚠️ Alertas de Capacidad</h4>
+            <p style="font-size:0.85rem;">🔴 <strong>5 de 8 miembros sobre el 100% de capacidad.</strong> Rol Dev al 103%, Leader al 111%. Equipo en zona de sobrecarga. Duván (117%) y Hernán (114%) con la mayor presión. Riesgo de burnout y calidad si no se redistribuye carga o se ajusta scope del sprint.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11. TAREAS PENDIENTES -->
+    <div class="metric-card tasks">
+      <div class="icon">📝</div>
+      <h3>11. Tareas Pendientes y Seguimientos</h3>
+      <div class="description">
+        <div class="team-section" style="border-left-color: #1e3c72;">
+          <h4 style="color: #1e3c72;">🏗️ Ciencuadras</h4>
+          <div class="sub-section orange">
+            <h4>📋 Tareas Pendientes / Validaciones</h4>
+            <ul>
+            <li>📋 Seguimiento CNTI-1274 (secreto repo infra) — pendiente remediación con equipo de seguridad</li>
+            <li>📋 Seguimiento MDSB-1065304 (ACL S3 en ambientes bajos) — ticket Pending desde 23 junio</li>
+            <li>📋 Implementar Provisioned Concurrency en Lambda Authorizer (recomendación post-incidente P1)</li>
+            <li>📋 Pinear Datadog Extension Layer a versión estable en Lambda Authorizer</li>
+            <li>📋 Versionar package-lock.json en ciencuadras-home-mf (riesgo sistémico de builds impredecibles)</li>
+            <li>📋 Auditar paridad de configuración PRE vs PROD en buckets S3 y CloudFront</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <p>📅 Semana del 29 de junio de 2026 al 3 de julio de 2026 | 🚀 Proyecto: Ciencuadras | 👥 Equipo Ciencuadras - Servicios Bolivar</p>
+  </div>
+
+</div>
+</body>
+</html>
