@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📋 Reporte Individual — Daniel Bueno — Octubre 2026</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  min-height: 100vh;
+  padding: 100px;
+}
+.slide {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  padding: 32px;
+  width: 100%;
+  margin: 0;
+}
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  border-bottom: 3px solid #2a5298;
+  padding-bottom: 20px;
+}
+.header h1 { color: #1e3c72; font-size: 2.2rem; font-weight: bold; margin-bottom: 10px; }
+.header .subtitle { color: #666; font-size: 1.1rem; font-style: italic; }
+.sprint-info {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  border-left: 5px solid #2a5298;
+}
+.sprint-info h3 { color: #1e3c72; margin-bottom: 5px; }
+.sprint-info p { margin-bottom: 4px; font-size: 0.95rem; }
+.content-grid { display: flex; flex-direction: column; gap: 25px; margin-top: 30px; }
+.metric-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 15px;
+  padding: 25px;
+  border-left: 5px solid;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.metric-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  opacity: 0.1;
+  transform: translate(30%, -30%);
+}
+.metric-card.summary    { border-left-color: #0d6efd; } .metric-card.summary::before    { background: #0d6efd; }
+.metric-card.capacity   { border-left-color: #6f42c1; } .metric-card.capacity::before   { background: #6f42c1; }
+.metric-card.sprint7    { border-left-color: #6610f2; } .metric-card.sprint7::before    { background: #6610f2; }
+.metric-card.sprint8    { border-left-color: #20c997; } .metric-card.sprint8::before    { background: #20c997; }
+.metric-card.times      { border-left-color: #fd7e14; } .metric-card.times::before      { background: #fd7e14; }
+.metric-card.observations { border-left-color: #198754; } .metric-card.observations::before { background: #198754; }
+.metric-card h3 { color: #1e3c72; font-size: 1.3rem; margin-bottom: 15px; position: relative; z-index: 2; }
+.metric-card .icon { font-size: 2rem; margin-bottom: 10px; position: relative; z-index: 2; }
+.metric-card .description { color: #666; line-height: 1.6; position: relative; z-index: 2; }
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+.metric-item {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.metric-item .value { font-size: 2rem; font-weight: bold; color: #1e3c72; display: block; margin-bottom: 5px; }
+.metric-item .label { font-size: 0.85rem; color: #666; }
+table.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin-top: 12px;
+}
+table.report-table thead tr {
+  background: #1e3c72;
+  color: white;
+}
+table.report-table th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+}
+table.report-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #dee2e6;
+}
+table.report-table tbody tr:nth-child(even) { background: #f8f9fa; }
+table.report-table tbody tr:hover { background: #e9ecef; }
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: white;
+}
+.badge.done { background: #28a745; }
+.badge.pap { background: #17a2b8; }
+.badge.backlog { background: #6c757d; }
+.badge.historia { background: #6610f2; }
+.badge.error { background: #dc3545; }
+.badge.alta { background: #dc3545; }
+.badge.media { background: #ffc107; color: #333; }
+</style>
+</head>
+<body>
+<div class="slide">
+
+  <div class="header">
+    <h1>📋 Reporte Individual — Daniel Bueno</h1>
+    <p class="subtitle">Octubre 2026 · Sprint 19.26 y Sprint 20.26 · Operación Ciencuadras</p>
+  </div>
+
+  <div class="sprint-info">
+    <h3>👤 Información del Recurso</h3>
+    <p><strong>Nombre:</strong> Daniel Bueno (daniel.bueno.ext@segurosbolivar.com)</p>
+    <p><strong>Proyecto:</strong> [GD-768] E.O. Ciencuadras &amp; Ecosistema Home — Operación Ciencuadras</p>
+    <p><strong>Período evaluado:</strong> Octubre 2026 (Sprint 19.26 y Sprint 20.26)</p>
+    <p><strong>Fecha del reporte:</strong> 3 de noviembre de 2026</p>
+  </div>
+
+  <div class="content-grid">
+
+    <!-- SECCIÓN 1: RESUMEN EJECUTIVO -->
+    <div class="metric-card summary">
+      <div class="icon">📊</div>
+      <h3>1. Resumen Ejecutivo</h3>
+      <div class="description">
+        <div class="metric-grid">
+          <div class="metric-item"><span class="value">2</span><span class="label">HUs Completadas</span></div>
+          <div class="metric-item"><span class="value" style="color:#dc3545;">3</span><span class="label">Errores Productivos</span></div>
+          <div class="metric-item"><span class="value">114.5h</span><span class="label">Horas Estimadas</span></div>
+          <div class="metric-item"><span class="value" style="color:#28a745;">22%</span><span class="label">Tasa Completitud HUs</span></div>
+        </div>
+        <p style="margin-top:18px; font-size:0.92rem; color:#495057;">
+Segundo mes de Daniel en el equipo Ciencuadras (ingresó el 14 de septiembre), con foco en <strong>soporte operativo (Service Requests), errores productivos y ajustes de frontend</strong>. En el <strong>Sprint 19.26</strong> trabajó dos solicitudes de cambio de datos sobre campos de publicación (ascensores/depósitos y unificación de cuentas de Constructora Bolívar, GD768-15823 y 15850), atendió un error productivo de acceso (GD768-15852), avanzó el ajuste de direccionamiento de la Zona Broker del home (GD768-15936) y cerró a Pendiente PAP un error productivo (GD768-16105). En el <strong>Sprint 20.26</strong> resolvió un SR de corrección de ascensores en una publicación (GD768-16134, Hecho), avanzó dos SRs del banner/botón de contacto en planes de inmobiliarias (GD768-16152 y 16153), retomó la actualización de los botones de contacto del detalle según el nuevo Figma —reemplazo de la HU GD768-15678— (GD768-16231) y atendió un error productivo de descarga de leads (GD768-16404). <strong>Importante:</strong> casi ningún ítem tiene estimación formal en Jira (<code>timeoriginalestimate</code> vacío), por lo que el seguimiento se apoya en <strong>horas logueadas</strong>; además, solo 2 ítems llegaron a estado terminal en el mes y 7 quedaron en curso al cierre. Registró <strong>114.5h logueadas de 160h</strong> (71.6%), con 3 errores productivos atendidos y 0 defectos. <strong>Nota de cuenta:</strong> aún no está creada en Jira la cuenta nueva <code>daniel.bueno.ext@segurosbolivar.com</code>; todo el trabajo del mes está en su cuenta actual.
+        </p>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 2: APROVECHAMIENTO DE CAPACIDAD -->
+    <div class="metric-card capacity">
+      <div class="icon">⚙️</div>
+      <h3>2. Aprovechamiento de Capacidad Contratada</h3>
+      <div class="description">
+        <p style="font-size:0.92rem; color:#495057; margin-bottom:18px;">
+          Daniel Bueno es un recurso externo con <strong>160 horas contratadas por mes</strong>. Los sprints Sprint 19.26 y Sprint 20.26 cubren aproximadamente 30 días (~1 mes). A continuación se analiza cómo se distribuyeron esas horas.
+        </p>
+
+        <!-- Barra principal -->
+        <div style="margin-bottom:20px;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+            <span style="font-size:0.85rem; color:#495057; font-weight:600;">Horas logueadas en HUs: 114.5h de 160h contratadas</span>
+            <span style="font-size:0.85rem; color:#1e3c72; font-weight:bold;">71.6%</span>
+          </div>
+          <div style="background:#e9ecef; border-radius:10px; height:30px; overflow:hidden; position:relative;">
+            <div style="background:linear-gradient(90deg, #6f42c1 0%, #9b59b6 100%); width:71.6%; height:100%; border-radius:10px; position:relative;">
+              <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:white; font-weight:bold; font-size:0.85rem;">114.5h logueadas en HUs</span>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-top:4px; font-size:0.78rem; color:#6c757d;">
+            <span>0h</span>
+            <span>160h contratadas</span>
+          </div>
+        </div>
+
+        <!-- Desglose por sprint -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px;">
+          <div style="background:white; border-radius:10px; padding:15px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+            <h4 style="color:#6610f2; margin-bottom:10px; font-size:0.9rem;">🟣 Sprint 19.26</h4>
+            <div style="text-align:center; margin-bottom:8px;">
+              <span style="font-size:2rem; font-weight:bold; color:#6610f2;">95.5h</span>
+              <span style="display:block; font-size:0.8rem; color:#6c757d;">5 HUs · 59.7% de capacidad</span>
+            </div>
+            <div style="background:#e9ecef; border-radius:8px; height:12px; overflow:hidden;">
+              <div style="background:#6610f2; width:59.7%; height:100%; border-radius:8px;"></div>
+            </div>
+          </div>
+          <div style="background:white; border-radius:10px; padding:15px; border-left:4px solid #20c997; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+            <h4 style="color:#20c997; margin-bottom:10px; font-size:0.9rem;">🟢 Sprint 20.26</h4>
+            <div style="text-align:center; margin-bottom:8px;">
+              <span style="font-size:2rem; font-weight:bold; color:#20c997;">19h</span>
+              <span style="display:block; font-size:0.8rem; color:#6c757d;">5 HUs · 11.9% de capacidad</span>
+            </div>
+            <div style="background:#e9ecef; border-radius:8px; height:12px; overflow:hidden;">
+              <div style="background:#20c997; width:11.9%; height:100%; border-radius:8px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Distribución de horas -->
+        <div style="background:white; border-radius:10px; padding:18px; border-left:4px solid #1e3c72; box-shadow:0 2px 8px rgba(0,0,0,0.06); margin-bottom:15px;">
+          <h4 style="color:#1e3c72; margin-bottom:12px; font-size:0.95rem;">📊 Distribución de las 160h contratadas</h4>
+          <div style="display:flex; border-radius:8px; overflow:hidden; height:35px; margin-bottom:12px;">
+            <div style="background:#6610f2; width:59.7%; display:flex; align-items:center; justify-content:center;">
+              <span style="color:white; font-size:0.75rem; font-weight:600;">Sprint 19.26: 95.5h</span>
+            </div>
+            <div style="background:#20c997; width:11.9%; display:flex; align-items:center; justify-content:center;">
+              <span style="color:white; font-size:0.75rem; font-weight:600;">Sprint 20.26: 19h</span>
+            </div>
+            <div style="background:#e9ecef; width:28.4%; display:flex; align-items:center; justify-content:center;">
+              <span style="color:#495057; font-size:0.72rem; font-weight:600;">45.5h</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:20px; font-size:0.82rem; color:#495057; flex-wrap:wrap;">
+            <span>🟣 Sprint 19.26: <strong>95.5h (59.7%)</strong></span>
+            <span>🟢 Sprint 20.26: <strong>19h (11.9%)</strong></span>
+            <span>⬜ Sin asignar a HUs: <strong>45.5h (28.4%)</strong></span>
+          </div>
+        </div>
+
+        <!-- Nota sobre horas sin asignar -->
+        <div style="background:#fff3cd; border-radius:8px; padding:12px; border-left:4px solid #ffc107;">
+          <strong style="color:#856404;">📌 Sobre las 45.5h sin asignar a HUs (28.4%)</strong>
+          <p style="font-size:0.85rem; color:#856404; margin-top:6px; line-height:1.6;">
+            Estas horas no necesariamente son tiempo ocioso. En un equipo Scrum con 4 ambientes, es normal que un desarrollador dedique entre un 10–20% de su capacidad a: ceremonias (planning, daily, retro, refinamiento), soporte a QA, code reviews, investigación técnica, y coordinación con el equipo. Un 28.4% está dentro del rango esperado.
+          </p>
+        </div>
+
+        <!-- Horas logueadas vs estimadas -->
+        <div style="background:white; border-radius:10px; padding:18px; border-left:4px solid #28a745; box-shadow:0 2px 8px rgba(0,0,0,0.06); margin-top:15px;">
+          <h4 style="color:#28a745; margin-bottom:12px; font-size:0.95rem;">✅ Horas Logueadas vs Capacidad (en subtareas)</h4>
+          <div style="display:flex; border-radius:8px; overflow:hidden; height:35px; margin-bottom:12px;">
+            <div style="background:#28a745; width:71.6%; display:flex; align-items:center; justify-content:center;">
+              <span style="color:white; font-size:0.75rem; font-weight:600;">Logueadas: 114.5h (71.6%)</span>
+            </div>
+            <div style="background:#e9ecef; width:28.4%; display:flex; align-items:center; justify-content:center;">
+              <span style="color:#495057; font-size:0.72rem; font-weight:600;">45.5h</span>
+            </div>
+          </div>
+          <p style="font-size:0.85rem; color:#495057; line-height:1.6;">
+La mayoría de los ítems de Daniel <strong>no tienen estimación formal en Jira</strong> (SRs y errores productivos sin <code>timeoriginalestimate</code>), por lo que el indicador se construye sobre <strong>horas logueadas</strong>, no estimadas. Registró <strong>114.5h logueadas</strong> de 160h contratadas (71.6%). El grueso del esfuerzo del mes se concentró en pocos ítems de alto peso en horas (GD768-15823 con 42.5h y GD768-15852 con 23.5h), ambos aún en curso al cierre. Las ~45.5h no logueadas en HUs corresponden a ceremonias, soporte, adaptación al proyecto (segundo mes en el equipo) y trabajo no registrado en subtareas.
+          </p>
+        </div>
+
+        <!-- Nota sobre horas restantes -->
+        <div style="background:#fff3cd; border-radius:8px; padding:12px; border-left:4px solid #ffc107; margin-top:15px;">
+          <strong style="color:#856404;">📌 Sobre las horas no asignadas a HUs</strong>
+          <p style="font-size:0.85rem; color:#856404; margin-top:6px; line-height:1.6;">
+            En un equipo Scrum con 4 ambientes (dev→qa→pre→prod), es normal que un desarrollador dedique entre un 10–20% de su capacidad a: ceremonias (planning, daily, retro, refinamiento), soporte a QA, code reviews, investigación técnica, y coordinación con el equipo. El porcentaje de Daniel Bueno está dentro del rango esperado.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 3: SPRINT A -->
+    <div class="metric-card sprint7">
+      <div class="icon">🟣</div>
+      <h3>3. Sprint 19.26 — Detalle de HUs</h3>
+      <div class="description">
+        <div class="metric-grid" style="margin-bottom:20px;">
+          <div class="metric-item"><span class="value">1</span><span class="label">HUs Completadas</span></div>
+          <div class="metric-item"><span class="value">95.5h</span><span class="label">Horas Estimadas</span></div>
+          <div class="metric-item"><span class="value" style="color:#28a745;">20%</span><span class="label">Completitud</span></div>
+        </div>
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>Resumen</th>
+              <th>Est. Daniel</th>
+              <th>Est. Referencial</th>
+              <th>Δ</th>
+              <th>Días en tablero (cal.)</th>
+              <th>Estado</th>
+              <th>Análisis de Coherencia</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-15823" style="color:#0d6efd;">GD768-15823</a></td>
+              <td>SR — Habilitar edición de campos ascensores/depósitos en publicador (no disponibles vs CRM)</td>
+              <td>— (43h log)</td>
+              <td style="color:#1e3c72; font-weight:bold;">s/est</td>
+              <td style="color:#6c757d;">— Sin estimación</td>
+              <td>En curso</td>
+              <td><span class="badge" style="background:#ffc107; color:#333;">En Progreso</span></td>
+              <td style="font-size:0.8rem;">Habilitar edición de los campos ascensores y depósitos (disponibles en CRM y publicaciones antiguas, pero no en el publicador actual ni en el Gestor). SR sin <code>timeoriginalestimate</code>; registró 42.5h logueadas y al cierre quedó En Progreso. Es el ítem de mayor peso en horas del mes.</td>
+            </tr>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-15850" style="color:#0d6efd;">GD768-15850</a></td>
+              <td>SR — Unificación de cuentas de Constructora Bolívar en Ciencuadras</td>
+              <td>— (4h log)</td>
+              <td style="color:#1e3c72; font-weight:bold;">s/est</td>
+              <td style="color:#6c757d;">— Sin estimación</td>
+              <td>En curso</td>
+              <td><span class="badge" style="background:#ffc107; color:#333;">En Progreso</span></td>
+              <td style="font-size:0.8rem;">Unificar las 2 cuentas de Constructora Bolívar en una sola, por cambio de estrategia. SR sin estimación formal; registró 4h logueadas y quedó En Progreso al cierre.</td>
+            </tr>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-15852" style="color:#0d6efd;">GD768-15852</a></td>
+              <td>Error Productivo — INC-SOFTWARE (incidente de acceso a cuenta en Ciencuadras)</td>
+              <td>— (23.5h log)</td>
+              <td style="color:#1e3c72; font-weight:bold;">s/est</td>
+              <td style="color:#6c757d;">— Sin estimación</td>
+              <td>En curso</td>
+              <td><span class="badge" style="background:#ffc107; color:#333;">En Progreso</span></td>
+              <td style="font-size:0.8rem;">Error productivo de acceso reportado por un usuario afectado. Sin estimación formal; registró 23.5h logueadas (segundo ítem de mayor peso) y quedó En Progreso al cierre.</td>
+            </tr>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-15936" style="color:#0d6efd;">GD768-15936</a></td>
+              <td>Ajustar direccionamiento y nombre de la sección Zona Broker en el home</td>
+              <td>— (7.5h log)</td>
+              <td style="color:#1e3c72; font-weight:bold;">s/est</td>
+              <td style="color:#6c757d;">— Sin estimación</td>
+              <td>En curso</td>
+              <td><span class="badge" style="background:#ffc107; color:#333;">En Pruebas QC</span></td>
+              <td style="font-size:0.8rem;">Corregir el nombre de la sección y el direccionamiento de los botones de la Zona Broker (vinculación e inventario). Sin estimación formal; registró 7.5h logueadas y al cierre quedó En Pruebas QC (en curso).</td>
+            </tr>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16105" style="color:#0d6efd;">GD768-16105</a></td>
+              <td>Error Productivo — INC-SOFTWARE Ciencuadras</td>
+              <td>— (18h log)</td>
+              <td style="color:#1e3c72; font-weight:bold;">s/est</td>
+              <td style="color:#6c757d;">— Sin estimación</td>
+              <td>10 días</td>
+              <td><span class="badge pap">Pendiente PAP</span></td>
+              <td style="font-size:0.8rem;">Error productivo reportado por una usuaria afectada. Sin estimación formal; registró 18h logueadas y lo llevó a Pendiente PAP el 13-oct (uno de los 2 ítems que alcanzó estado terminal en el mes).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 4: SPRINT B -->
+    <div class="metric-card sprint8">
+      <div class="icon">🟢</div>
+      <h3>4. Sprint 20.26 — Detalle de HUs</h3>
+      <div class="description">
+        <div class="metric-grid" style="margin-bottom:20px;">
+          <div class="metric-item"><span class="value">1</span><span class="label">HUs Completadas</span></div>
+          <div class="metric-item"><span class="value" style="color:#dc3545;">2</span><span class="label">Errores Productivos</span></div>
+          <div class="metric-item"><span class="value">19h</span><span class="label">Horas Estimadas</span></div>
+          <div class="metric-item"><span class="value" style="color:#28a745;">20%</span><span class="label">Completitud HUs</span></div>
+        </div>
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>Tipo</th>
+              <th>Resumen</th>
+              <th>Est. Daniel</th>
+              <th>Est. Referencial</th>
+              <th>Δ</th>
+              <th>Días en tablero (cal.)</th>
+              <th>Estado</th>
+              <th>Análisis de Coherencia</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16134" style="color:#0d6efd;">GD768-16134</a></td>
+              <td><span class="badge" style="background:#17a2b8;">Service Request</span></td>
+              <td>SR — Corregir ascensores en publicación 10187-683326 (2 → 1)</td>
+              <td>— (3h log)</td>
+              <td style="color:#1e3c72; font-weight:bold;">s/est</td>
+              <td style="color:#6c757d;">— Sin estimación</td>
+              <td>11 días</td>
+              <td><span class="badge pap" style="background:#17a2b8;">Hecho</span></td>
+              <td style="font-size:0.8rem;">Ajustar el número de ascensores de una publicación (registraba 2, el inmueble tiene 1), relacionado con MDSB-1123938 ante la imposibilidad de editar el campo desde Gestor/Zona Privada. Sin estimación formal; 3h logueadas; resuelto a Hecho el 16-oct (uno de los 2 ítems terminales del mes).</td>
+            </tr>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16152" style="color:#0d6efd;">GD768-16152</a></td>
+              <td><span class="badge" style="background:#17a2b8;">Service Request</span></td>
+              <td>SR — Cambiar texto y CTA del banner de planes de inmobiliarias</td>
+              <td>— (0h log)</td>
+              <td style="color:#1e3c72; font-weight:bold;">s/est</td>
+              <td style="color:#6c757d;">— No iniciada</td>
+              <td>Sin iniciar</td>
+              <td><span class="badge backlog">Por Hacer</span></td>
+              <td style="font-size:0.8rem;">Cambiar el texto y CTA del banner de planes de inmobiliarias a "¿Tienes dudas para elegir tu plan? Recibe asesoría personalizada...". Sin estimación formal; al cierre seguía en Por Hacer sin horas logueadas (no iniciada).</td>
+            </tr>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16153" style="color:#0d6efd;">GD768-16153</a></td>
+              <td><span class="badge" style="background:#17a2b8;">Service Request</span></td>
+              <td>SR — Añadir botón de datos de contacto en la página de planes de inmobiliarias</td>
+              <td>— (2h log)</td>
+              <td style="color:#1e3c72; font-weight:bold;">s/est</td>
+              <td style="color:#6c757d;">— Sin estimación</td>
+              <td>En curso</td>
+              <td><span class="badge" style="background:#ffc107; color:#333;">En Progreso</span></td>
+              <td style="font-size:0.8rem;">Añadir un botón de datos de contacto en la página de planes de inmobiliarias que muestre los canales de contacto. Sin estimación formal; 2h logueadas; quedó En Progreso al cierre.</td>
+            </tr>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16231" style="color:#0d6efd;">GD768-16231</a></td>
+              <td><span class="badge historia">Historia</span></td>
+              <td>Front: Actualizar botones de contacto del detalle según nuevo Figma (reemplaza GD768-15678)</td>
+              <td>— (3.5h log)</td>
+              <td style="color:#1e3c72; font-weight:bold;">s/est</td>
+              <td style="color:#6c757d;">— Sin estimación</td>
+              <td>En curso</td>
+              <td><span class="badge" style="background:#ffc107; color:#333;">En Pruebas UAT</span></td>
+              <td style="font-size:0.8rem;">Actualizar los botones de contacto del detalle del inmueble según el nuevo diseño de Figma (desktop y mobile), reemplazando la HU GD768-15678 que quedó desactualizada. Sin estimación formal; 3.5h logueadas; tras un rebote PAP → UAT quedó En Pruebas UAT al cierre.</td>
+            </tr>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16404" style="color:#0d6efd;">GD768-16404</a></td>
+              <td><span class="badge error">Error Productivo</span></td>
+              <td>Error Productivo — Falla al descargar leads en "Mis reportes" (segunda descarga)</td>
+              <td>— (10.5h log)</td>
+              <td style="color:#1e3c72; font-weight:bold;">s/est</td>
+              <td style="color:#6c757d;">— Sin estimación</td>
+              <td>En curso</td>
+              <td><span class="badge" style="background:#ffc107; color:#333;">En Progreso</span></td>
+              <td style="font-size:0.8rem;">Corregir la falla en la descarga de leads: la segunda descarga con un rango de fecha distinto no funciona. Sin estimación formal; 10.5h logueadas; quedó En Progreso al cierre.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 5: ANÁLISIS DE TIEMPOS -->
+    <div class="metric-card times">
+      <div class="icon">⏱️</div>
+      <h3>5. Análisis de Tiempos</h3>
+      <div class="description">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Métrica</th>
+              <th>Sprint 19.26</th>
+              <th>Sprint 20.26</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ítems trabajados</td>
+              <td>5</td>
+              <td>5</td>
+              <td><strong>10</strong></td>
+            </tr>
+            <tr>
+              <td>Ítems a estado terminal</td>
+              <td>1</td>
+              <td>1</td>
+              <td><strong>2</strong></td>
+            </tr>
+            <tr>
+              <td>Ítems en curso al cierre</td>
+              <td>4</td>
+              <td>3 (+1 sin iniciar)</td>
+              <td><strong>7 (+1 sin iniciar)</strong></td>
+            </tr>
+            <tr>
+              <td>Errores Productivos</td>
+              <td>2</td>
+              <td>1</td>
+              <td><strong>3</strong></td>
+            </tr>
+            <tr>
+              <td>Horas estimadas (timeoriginalestimate)</td>
+              <td>s/est</td>
+              <td>s/est</td>
+              <td><strong>Sin estimación formal</strong></td>
+            </tr>
+            <tr>
+              <td>Horas logueadas (en subtareas)</td>
+              <td>95.5h</td>
+              <td>19h</td>
+              <td><strong>114.5h</strong></td>
+            </tr>
+            <tr>
+              <td>Promedio días en tablero por ítem terminal (calendario)</td>
+              <td>10 días</td>
+              <td>11 días</td>
+              <td><strong>10.5 días</strong></td>
+            </tr>
+            <tr>
+              <td>Tasa de completitud (terminales / trabajados)</td>
+              <td>20%</td>
+              <td>20%</td>
+              <td><strong>22%</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:18px; padding:15px; background:white; border-radius:8px; border-left:4px solid #fd7e14;">
+          <h4 style="color:#fd7e14; margin-bottom:10px; font-size:0.95rem;">📌 Notas sobre tiempos de ciclo</h4>
+          <ul style="list-style:disc; padding-left:20px; font-size:0.88rem; color:#495057; line-height:1.7;">
+            <li>La mayoría de los ítems <strong>no tienen estimación formal</strong> en Jira (SRs y errores productivos), por lo que no se puede evaluar coherencia de estimaciones; el seguimiento se apoya en horas logueadas.</li>
+            <li>Solo 2 de 10 ítems alcanzaron estado terminal en el mes (GD768-16105 a Pendiente PAP y GD768-16134 a Hecho); 7 quedaron en curso y 1 sin iniciar al cierre.</li>
+            <li>El esfuerzo se concentró en pocos ítems de alto peso en horas que siguen abiertos: GD768-15823 (42.5h, campos de publicación) y GD768-15852 (23.5h, error productivo de acceso), ambos En Progreso.</li>
+            <li>Varios ítems tardaron bastante en salir de Backlog/Por Hacer (GD768-15823 ~24 días laborales, GD768-15936 ~23, GD768-16153 ~12), reflejo de priorización/espera más que de desarrollo continuo.</li>
+            <li>GD768-16231 (botones de contacto, nuevo Figma) tuvo un rebote PAP → UAT el 30-oct y quedó En Pruebas UAT; reemplaza a GD768-15678 que se había reportado en septiembre.</li>
+          </ul>
+        </div>
+        <div style="margin-top:18px; padding:15px; background:white; border-radius:8px; border-left:4px solid #0d6efd;">
+          <h4 style="color:#0d6efd; margin-bottom:10px; font-size:0.95rem;">📊 Resumen de Estado de los Ítems</h4>
+          <table class="report-table" style="margin-top:8px;">
+            <thead>
+              <tr>
+                <th>Estado</th>
+                <th>Cantidad</th>
+                <th>Ítems</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>✅ Estado terminal</td>
+                <td>2</td>
+                <td>GD768-16105 (Pendiente PAP), GD768-16134 (Hecho)</td>
+              </tr>
+              <tr>
+                <td>— En curso</td>
+                <td>7</td>
+                <td>GD768-15823, 15850, 15852, 15936, 16153, 16231, 16404</td>
+              </tr>
+              <tr>
+                <td>— Sin iniciar</td>
+                <td>1</td>
+                <td>GD768-16152 (Por Hacer)</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="margin-top:12px; font-size:0.88rem; color:#495057; line-height:1.7;">
+No es posible evaluar coherencia de estimaciones porque <strong>los ítems del mes no tienen <code>timeoriginalestimate</code></strong> en Jira (son en su mayoría Service Requests y errores productivos). El análisis se basa en horas logueadas y estado. De 10 ítems trabajados, <strong>solo 2 llegaron a estado terminal</strong> (GD768-16105 y GD768-16134), 7 quedaron en curso y 1 sin iniciar. Recomendación: estimar los ítems antes de trabajarlos (al menos las Historias) para poder medir coherencia y previsibilidad, y cerrar dentro del mes el trabajo de alto peso en horas que hoy queda abierto.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 6: TIEMPOS DE TRANSICIÓN -->
+    <div class="metric-card" style="border-left-color: #e83e8c;">
+      <div class="icon">🔄</div>
+      <h3>6. Tiempo de Transición entre Etapas por HU</h3>
+      <div class="description">
+        <p style="font-size:0.88rem; color:#495057; margin-bottom:12px;">
+          Tiempo transcurrido entre cada cambio de estado en el flujo de trabajo de Jira. Permite identificar cuellos de botella y etapas donde las HUs permanecen más tiempo.
+        </p>
+
+        <!-- Nota metodológica -->
+        <div style="background:#e8f4fd; border-radius:8px; padding:14px; border-left:4px solid #0d6efd; margin-bottom:18px;">
+          <h4 style="color:#0d6efd; margin-bottom:8px; font-size:0.9rem;">📐 Metodología de cálculo</h4>
+          <p style="font-size:0.84rem; color:#495057; line-height:1.7; margin-bottom:8px;">
+            Estos tiempos se obtienen directamente del <strong>changelog (historial de cambios)</strong> de cada issue en Jira, consultado vía API con el parámetro <code>expand=changelog</code>. Jira registra automáticamente un timestamp exacto cada vez que alguien cambia el campo <code>status</code> de una HU.
+          </p>
+          <p style="font-size:0.84rem; color:#495057; line-height:1.7; margin-bottom:8px;">
+            El cálculo se realiza en <strong>horas laborales</strong>: jornada de <strong>8 horas efectivas por día</strong> (8:00 AM – 5:00 PM hora Colombia, descontando 1h de almuerzo), <strong>solo días hábiles (lunes a viernes)</strong>. Se excluyen noches, fines de semana y festivos. Un "Día" en este reporte equivale a 8 horas laborales.
+          </p>
+          <p style="font-size:0.84rem; color:#495057; line-height:1.7; margin-bottom:0;">
+            <strong>Nota:</strong> El tiempo en "Backlog → Por Hacer" mide desde la <em>fecha de creación</em> de la HU hasta que se mueve a "Por Hacer". No refleja tiempo de trabajo del desarrollador, sino tiempo de espera en el backlog antes de ser priorizada.
+          </p>
+        </div>
+
+        <!-- BLOQUES DE TRANSICIÓN POR HU -->
+<!-- GD768-15823 (Sprint A) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#6610f2; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-15823" style="color:#6610f2; text-decoration:none;">GD768-15823</a> — SR: edición de ascensores/depósitos en publicador
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>24 Días | 1 Horas | 11 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#dc3545; margin-top:8px; font-style:italic;">⚠️ En curso al cierre — pasó ~24 días laborales en Por Hacer antes de iniciarse el 22-oct; sin transiciones posteriores aún.</p>
+        </div>
+
+        <!-- GD768-15850 (Sprint A) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#6610f2; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-15850" style="color:#6610f2; text-decoration:none;">GD768-15850</a> — SR: unificación de cuentas Constructora Bolívar
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>11 Días | 7 Horas | 53 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#dc3545; margin-top:8px; font-style:italic;">⚠️ En curso al cierre — inició En Progreso el 7-oct; sin transiciones posteriores aún.</p>
+        </div>
+
+        <!-- GD768-15852 (Sprint A - Error Productivo) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #dc3545; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#dc3545; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-15852" style="color:#dc3545; text-decoration:none;">GD768-15852</a> — Error Productivo: incidente de acceso (INC-SOFTWARE)
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>9 Días | 4 Horas | 48 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#dc3545; margin-top:8px; font-style:italic;">⚠️ En curso al cierre — en Progreso desde el 6-oct, con 23.5h logueadas; sin transiciones posteriores aún.</p>
+        </div>
+
+        <!-- GD768-15936 (Sprint A) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#6610f2; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-15936" style="color:#6610f2; text-decoration:none;">GD768-15936</a> — Ajustar direccionamiento Zona Broker
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🧪 Backlog → En Pruebas QC — <strong>23 Días | 0 Horas | 15 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#dc3545; margin-top:8px; font-style:italic;">⚠️ En curso al cierre — pasó ~23 días laborales desde su creación hasta llegar a En Pruebas QC el 30-oct.</p>
+        </div>
+
+        <!-- GD768-16105 (Sprint A - Error Productivo) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #dc3545; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#dc3545; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16105" style="color:#dc3545; text-decoration:none;">GD768-16105</a> — Error Productivo: INC-SOFTWARE Ciencuadras
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>2 Días | 0 Horas | 40 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🧪 En Progreso → En Pruebas UAT — <strong>4 Días | 6 Horas | 5 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">✅ En Pruebas UAT → Pendiente PAP — <strong>0 Días | 0 Horas | 9 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#6c757d; margin-top:8px; font-style:italic;">✅ Uno de los 2 ítems llevados a estado terminal: cerró a Pendiente PAP el 13-oct.</p>
+        </div>
+
+        <!-- GD768-16134 (Sprint B - SR) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #20c997; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#20c997; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16134" style="color:#20c997; text-decoration:none;">GD768-16134</a> — SR: corregir ascensores en publicación 10187-683326
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🏁 Por Hacer → Hecho — <strong>9 Días | 1 Horas | 41 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#6c757d; margin-top:8px; font-style:italic;">✅ Uno de los 2 ítems terminales: resuelto a Hecho el 16-oct.</p>
+        </div>
+
+        <!-- GD768-16152 (Sprint B - No iniciada) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #20c997; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#20c997; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16152" style="color:#20c997; text-decoration:none;">GD768-16152</a> — SR: cambiar texto y CTA del banner de planes
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">— Sin transiciones de status</span>
+          </div>
+          <p style="font-size:0.8rem; color:#dc3545; margin-top:8px; font-style:italic;">⚠️ No iniciada — permaneció en Por Hacer todo el mes (sin horas logueadas).</p>
+        </div>
+
+        <!-- GD768-16153 (Sprint B - SR) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #20c997; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#20c997; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16153" style="color:#20c997; text-decoration:none;">GD768-16153</a> — SR: botón de datos de contacto en planes de inmobiliarias
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>12 Días | 0 Horas | 3 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#dc3545; margin-top:8px; font-style:italic;">⚠️ En curso al cierre — inició En Progreso el 22-oct; sin transiciones posteriores aún.</p>
+        </div>
+
+        <!-- GD768-16231 (Sprint B) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #20c997; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#20c997; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16231" style="color:#20c997; text-decoration:none;">GD768-16231</a> — Botones de contacto del detalle (nuevo Figma)
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>6 Días | 0 Horas | 51 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 1 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🧪 En Progreso → En Pruebas UAT — <strong>1 Días | 1 Horas | 35 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">✅ En Pruebas UAT → Pendiente PAP — <strong>2 Días | 5 Horas | 33 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🔁 Pendiente PAP → En Pruebas UAT — <strong>0 Días | 2 Horas | 8 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#dc3545; margin-top:8px; font-style:italic;">⚠️ En curso al cierre — rebote de PAP a En Pruebas UAT el 30-oct; quedó en Pruebas UAT.</p>
+        </div>
+
+        <!-- GD768-16404 (Sprint B - Error Productivo) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #dc3545; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#dc3545; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16404" style="color:#dc3545; text-decoration:none;">GD768-16404</a> — Error Productivo: falla al descargar leads
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>2 Días | 7 Horas | 19 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#dc3545; margin-top:8px; font-style:italic;">⚠️ En curso al cierre — en Progreso desde el 28-oct, con 10.5h logueadas; sin transiciones posteriores aún.</p>
+        </div>
+
+        <!-- Nota de análisis -->
+        <div style="margin-top:18px; padding:15px; background:white; border-radius:8px; border-left:4px solid #e83e8c;">
+          <h4 style="color:#e83e8c; margin-bottom:10px; font-size:0.95rem;">📌 Hallazgos sobre tiempos de transición</h4>
+          <ul style="list-style:disc; padding-left:20px; font-size:0.88rem; color:#495057; line-height:1.7;">
+            <li>Solo 2 de 10 ítems alcanzaron estado terminal con transiciones completas: GD768-16105 (error productivo, a Pendiente PAP el 13-oct) y GD768-16134 (SR, a Hecho el 16-oct).</li>
+            <li>La mayoría de ítems quedó con una o dos transiciones y en curso al cierre; los tiempos largos están en Backlog/Por Hacer (GD768-15823 ~24 días laborales, GD768-15936 ~23, GD768-16153 ~12), es decir espera antes de iniciar, no desarrollo.</li>
+            <li>Los ítems de mayor peso en horas (GD768-15823 con 42.5h y GD768-15852 con 23.5h) siguen En Progreso: el esfuerzo está invertido pero aún no cierra.</li>
+            <li>GD768-16231 (botones de contacto) tuvo un rebote PAP → UAT el 30-oct y quedó En Pruebas UAT; reemplaza a GD768-15678 reportada en septiembre.</li>
+            <li>GD768-16152 no registró ninguna transición de status (permaneció en Por Hacer todo el mes).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 7: OBSERVACIONES Y RECOMENDACIONES -->
+    <div class="metric-card observations">
+      <div class="icon">💡</div>
+      <h3>7. Observaciones y Recomendaciones</h3>
+      <div class="description">
+        <div style="padding:15px; background:white; border-radius:8px; border-left:4px solid #28a745; margin-bottom:15px;">
+          <h4 style="color:#28a745; margin-bottom:10px; font-size:0.95rem;">✅ Aspectos Positivos</h4>
+          <ul style="list-style:disc; padding-left:20px; font-size:0.88rem; color:#495057; line-height:1.7;">
+            <li>Registro activo de horas: 114.5h logueadas en el mes (71.6% de la capacidad), concentradas en soporte operativo y errores productivos.</li>
+            <li>Atendió 3 errores productivos del portal (acceso, incidente Ciencuadras y descarga de leads), llevando uno a Pendiente PAP dentro del mes.</li>
+            <li>Dio respuesta a varias solicitudes de cambio de datos (ascensores/depósitos, unificación de cuentas, corrección de ascensores) y a ajustes de frontend (Zona Broker, botones de contacto, banner/botón de planes).</li>
+            <li>Retomó la actualización de los botones de contacto del detalle con el nuevo diseño de Figma (GD768-16231), dando continuidad al trabajo iniciado en septiembre.</li>
+            <li>Segundo mes en el equipo: sigue consolidando conocimiento del portal y del flujo de negocio de Ciencuadras.</li>
+          </ul>
+        </div>
+        <div style="padding:15px; background:white; border-radius:8px; border-left:4px solid #ffc107; margin-bottom:15px;">
+          <h4 style="color:#e6a800; margin-bottom:10px; font-size:0.95rem;">⚠️ Puntos de Atención</h4>
+          <ul style="list-style:disc; padding-left:20px; font-size:0.88rem; color:#495057; line-height:1.7;">
+            <li><strong>Baja tasa de cierre:</strong> solo 2 de 10 ítems llegaron a estado terminal; 7 quedaron en curso y 1 sin iniciar. Conviene enfocar el cierre de los ítems de alto peso en horas (GD768-15823 con 42.5h y GD768-15852 con 23.5h) que hoy siguen abiertos.</li>
+            <li><strong>Falta de estimación:</strong> casi ningún ítem tiene <code>timeoriginalestimate</code> en Jira, lo que impide medir coherencia y previsibilidad. Se recomienda estimar al menos las Historias antes de trabajarlas (punto de mejora ya señalado en septiembre).</li>
+            <li><strong>Ítems arrastrados de septiembre:</strong> GD768-15823, 15850, 15852 y 15936 se crearon en septiembre y seguían abiertos; es su primer reporte, pero conviene cerrarlos pronto para que no se arrastren más.</li>
+            <li><strong>GD768-16152 sin iniciar:</strong> permaneció en Por Hacer todo el mes; conviene priorizarla o reasignarla.</li>
+            <li><strong>Transición de cuenta:</strong> la cuenta nueva <code>daniel.bueno.ext@segurosbolivar.com</code> aún no está en Jira; todo el trabajo quedó en su cuenta actual. Conviene provisionarla para evitar fragmentación futura.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="text-align:center; margin-top:40px; padding-top:20px; border-top:2px solid #e9ecef; color:#666; font-size:0.9rem;">
+    <p>📅 Reporte mensual · Octubre 2026 · 🏗️ [GD-768] E.O. Ciencuadras &amp; Ecosistema Home · Operación Ciencuadras — Servicios Bolívar</p>
+  </div>
+
+</div>
+</body>
+</html>

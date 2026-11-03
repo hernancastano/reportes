@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📋 Reporte Individual — Juan Pablo Valencia — Octubre 2026</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  min-height: 100vh;
+  padding: 100px;
+}
+.slide {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  padding: 32px;
+  width: 100%;
+  margin: 0;
+}
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  border-bottom: 3px solid #2a5298;
+  padding-bottom: 20px;
+}
+.header h1 { color: #1e3c72; font-size: 2.2rem; font-weight: bold; margin-bottom: 10px; }
+.header .subtitle { color: #666; font-size: 1.1rem; font-style: italic; }
+.sprint-info {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  border-left: 5px solid #2a5298;
+}
+.sprint-info h3 { color: #1e3c72; margin-bottom: 5px; }
+.sprint-info p { margin-bottom: 4px; font-size: 0.95rem; }
+.content-grid { display: flex; flex-direction: column; gap: 25px; margin-top: 30px; }
+.metric-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 15px;
+  padding: 25px;
+  border-left: 5px solid;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.metric-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  opacity: 0.1;
+  transform: translate(30%, -30%);
+}
+.metric-card.summary    { border-left-color: #0d6efd; } .metric-card.summary::before    { background: #0d6efd; }
+.metric-card.capacity   { border-left-color: #6f42c1; } .metric-card.capacity::before   { background: #6f42c1; }
+.metric-card.sprint7    { border-left-color: #6610f2; } .metric-card.sprint7::before    { background: #6610f2; }
+.metric-card.sprint8    { border-left-color: #20c997; } .metric-card.sprint8::before    { background: #20c997; }
+.metric-card.times      { border-left-color: #fd7e14; } .metric-card.times::before      { background: #fd7e14; }
+.metric-card.observations { border-left-color: #198754; } .metric-card.observations::before { background: #198754; }
+.metric-card h3 { color: #1e3c72; font-size: 1.3rem; margin-bottom: 15px; position: relative; z-index: 2; }
+.metric-card .icon { font-size: 2rem; margin-bottom: 10px; position: relative; z-index: 2; }
+.metric-card .description { color: #666; line-height: 1.6; position: relative; z-index: 2; }
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+.metric-item {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.metric-item .value { font-size: 2rem; font-weight: bold; color: #1e3c72; display: block; margin-bottom: 5px; }
+.metric-item .label { font-size: 0.85rem; color: #666; }
+table.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin-top: 12px;
+}
+table.report-table thead tr {
+  background: #1e3c72;
+  color: white;
+}
+table.report-table th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+}
+table.report-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #dee2e6;
+}
+table.report-table tbody tr:nth-child(even) { background: #f8f9fa; }
+table.report-table tbody tr:hover { background: #e9ecef; }
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: white;
+}
+.badge.done { background: #28a745; }
+.badge.pap { background: #17a2b8; }
+.badge.backlog { background: #6c757d; }
+.badge.historia { background: #6610f2; }
+.badge.error { background: #dc3545; }
+.badge.alta { background: #dc3545; }
+.badge.media { background: #ffc107; color: #333; }
+</style>
+</head>
+<body>
+<div class="slide">
+
+  <div class="header">
+    <h1>📋 Reporte Individual — Juan Pablo Valencia</h1>
+    <p class="subtitle">Octubre 2026 · Sprint 19.26 y Sprint 20.26 · Operación Ciencuadras</p>
+  </div>
+
+  <div class="sprint-info">
+    <h3>👤 Información del Recurso</h3>
+    <p><strong>Nombre:</strong> Juan Pablo Valencia (juan.valencia@digitalprof-it.co)</p>
+    <p><strong>Proyecto:</strong> [GD-768] E.O. Ciencuadras &amp; Ecosistema Home — Operación Ciencuadras</p>
+    <p><strong>Período evaluado:</strong> Octubre 2026 (Sprint 19.26 y Sprint 20.26)</p>
+    <p><strong>Fecha del reporte:</strong> 3 de noviembre de 2026</p>
+  </div>
+
+  <div class="content-grid">
+
+    <!-- SECCIÓN 1: RESUMEN EJECUTIVO -->
+    <div class="metric-card summary">
+      <div class="icon">📊</div>
+      <h3>1. Resumen Ejecutivo</h3>
+      <div class="description">
+        <div class="metric-grid">
+          <div class="metric-item"><span class="value">7</span><span class="label">HUs Completadas</span></div>
+          <div class="metric-item"><span class="value" style="color:#dc3545;">2</span><span class="label">Errores Productivos</span></div>
+          <div class="metric-item"><span class="value">128.5h</span><span class="label">Horas Estimadas</span></div>
+          <div class="metric-item"><span class="value" style="color:#28a745;">88%</span><span class="label">Tasa Completitud HUs</span></div>
+        </div>
+        <p style="margin-top:18px; font-size:0.92rem; color:#495057;">
+Mes variado y balanceado para Juan Pablo entre <strong>integración de infraestructura, frontend del flujo de leads por WhatsApp, errores productivos y seguridad</strong>. En el <strong>Sprint 19.26</strong> ejecutó la migración del apuntamiento de ArcGIS on-premise a los nuevos endpoints en la nube para no romper la geocodificación del portal (GD768-15917), cerró el flujo de exclusión de notificaciones de leads excluyendo el envío al correo de la propia cuenta —finalizando el trabajo iniciado en GD768-14900/14901— (GD768-16008), y mejoró el contacto por WhatsApp en el detalle del inmueble: eliminó el drawer que interrumpía la redirección en todas las tiendas (GD768-16128) y ocultó el botón de WhatsApp cuando <code>advisorWhatsApp</code> es nulo, quitando además el botón "Aceptar" del drawer (GD768-16201); también atendió el error productivo del botón de WhatsApp que no redirigía en iOS (GD768-16126). En el <strong>Sprint 20.26</strong> atendió un segundo error productivo —números con indicativo +1 (EE.UU.) que no se reconocían al publicar (GD768-16218)— y remedió la vulnerabilidad crítica <strong>PHP2Shell</strong> (RCE sin autenticación, CVE-2026-109618/109619, CVSS 9.2) actualizando el motor PHP a las versiones parcheadas (GD768-16492). Dejó en curso el campo Teléfono obligatorio en la modal de registro (GD768-15952, En Progreso). En total llevó <strong>7 casos a estado terminal</strong> (5 Historias + 2 errores productivos) sin defectos. Su capacidad facturable del mes fue de <strong>140h</strong> (160 − 20h por 2.5 días de incapacidad por extracción de muelas: ½ día 26-oct + 27 y 28 completos). Aprovechamiento del <strong>91.8%</strong> (128.5h estimadas de 140h), con 118.5h logueadas (84.6%).
+        </p>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 2: APROVECHAMIENTO DE CAPACIDAD -->
+    <div class="metric-card capacity">
+      <div class="icon">⚙️</div>
+      <h3>2. Aprovechamiento de Capacidad Contratada</h3>
+      <div class="description">
+        <p style="font-size:0.92rem; color:#495057; margin-bottom:18px;">
+          Juan Pablo Valencia es un recurso externo con <strong>140 horas contratadas por mes</strong>. Los sprints Sprint 19.26 y Sprint 20.26 cubren aproximadamente 30 días (~1 mes). A continuación se analiza cómo se distribuyeron esas horas.
+        </p>
+
+        <!-- Barra principal -->
+        <div style="margin-bottom:20px;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+            <span style="font-size:0.85rem; color:#495057; font-weight:600;">Horas estimadas en HUs: 128.5h de 140h contratadas</span>
+            <span style="font-size:0.85rem; color:#1e3c72; font-weight:bold;">91.8%</span>
+          </div>
+          <div style="background:#e9ecef; border-radius:10px; height:30px; overflow:hidden; position:relative;">
+            <div style="background:linear-gradient(90deg, #6f42c1 0%, #9b59b6 100%); width:91.8%; height:100%; border-radius:10px; position:relative;">
+              <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:white; font-weight:bold; font-size:0.85rem;">128.5h asignadas a HUs</span>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-top:4px; font-size:0.78rem; color:#6c757d;">
+            <span>0h</span>
+            <span>140h contratadas</span>
+          </div>
+        </div>
+
+        <!-- Desglose por sprint -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px;">
+          <div style="background:white; border-radius:10px; padding:15px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+            <h4 style="color:#6610f2; margin-bottom:10px; font-size:0.9rem;">🟣 Sprint 19.26</h4>
+            <div style="text-align:center; margin-bottom:8px;">
+              <span style="font-size:2rem; font-weight:bold; color:#6610f2;">97.5h</span>
+              <span style="display:block; font-size:0.8rem; color:#6c757d;">6 HUs · 69.6% de capacidad</span>
+            </div>
+            <div style="background:#e9ecef; border-radius:8px; height:12px; overflow:hidden;">
+              <div style="background:#6610f2; width:69.6%; height:100%; border-radius:8px;"></div>
+            </div>
+          </div>
+          <div style="background:white; border-radius:10px; padding:15px; border-left:4px solid #20c997; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+            <h4 style="color:#20c997; margin-bottom:10px; font-size:0.9rem;">🟢 Sprint 20.26</h4>
+            <div style="text-align:center; margin-bottom:8px;">
+              <span style="font-size:2rem; font-weight:bold; color:#20c997;">31h</span>
+              <span style="display:block; font-size:0.8rem; color:#6c757d;">2 HUs · 22.1% de capacidad</span>
+            </div>
+            <div style="background:#e9ecef; border-radius:8px; height:12px; overflow:hidden;">
+              <div style="background:#20c997; width:22.1%; height:100%; border-radius:8px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Distribución de horas -->
+        <div style="background:white; border-radius:10px; padding:18px; border-left:4px solid #1e3c72; box-shadow:0 2px 8px rgba(0,0,0,0.06); margin-bottom:15px;">
+          <h4 style="color:#1e3c72; margin-bottom:12px; font-size:0.95rem;">📊 Distribución de las 140h contratadas</h4>
+          <div style="display:flex; border-radius:8px; overflow:hidden; height:35px; margin-bottom:12px;">
+            <div style="background:#6610f2; width:69.6%; display:flex; align-items:center; justify-content:center;">
+              <span style="color:white; font-size:0.75rem; font-weight:600;">Sprint 19.26: 97.5h</span>
+            </div>
+            <div style="background:#20c997; width:22.1%; display:flex; align-items:center; justify-content:center;">
+              <span style="color:white; font-size:0.75rem; font-weight:600;">Sprint 20.26: 31h</span>
+            </div>
+            <div style="background:#e9ecef; width:8.2%; display:flex; align-items:center; justify-content:center;">
+              <span style="color:#495057; font-size:0.72rem; font-weight:600;">11.5h</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:20px; font-size:0.82rem; color:#495057; flex-wrap:wrap;">
+            <span>🟣 Sprint 19.26: <strong>97.5h (69.6%)</strong></span>
+            <span>🟢 Sprint 20.26: <strong>31h (22.1%)</strong></span>
+            <span>⬜ Sin asignar a HUs: <strong>11.5h (8.2%)</strong></span>
+          </div>
+        </div>
+
+        <!-- Nota sobre horas sin asignar -->
+        <div style="background:#fff3cd; border-radius:8px; padding:12px; border-left:4px solid #ffc107;">
+          <strong style="color:#856404;">📌 Sobre las 11.5h sin asignar a HUs (8.2%)</strong>
+          <p style="font-size:0.85rem; color:#856404; margin-top:6px; line-height:1.6;">
+            Estas horas no necesariamente son tiempo ocioso. En un equipo Scrum con 4 ambientes, es normal que un desarrollador dedique entre un 10–20% de su capacidad a: ceremonias (planning, daily, retro, refinamiento), soporte a QA, code reviews, investigación técnica, y coordinación con el equipo. Un 8.2% está dentro del rango esperado.
+          </p>
+        </div>
+
+        <!-- Horas logueadas vs estimadas -->
+        <div style="background:white; border-radius:10px; padding:18px; border-left:4px solid #28a745; box-shadow:0 2px 8px rgba(0,0,0,0.06); margin-top:15px;">
+          <h4 style="color:#28a745; margin-bottom:12px; font-size:0.95rem;">✅ Horas Logueadas vs Estimadas (en subtareas)</h4>
+          <div style="display:flex; border-radius:8px; overflow:hidden; height:35px; margin-bottom:12px;">
+            <div style="background:#28a745; width:84.6%; display:flex; align-items:center; justify-content:center;">
+              <span style="color:white; font-size:0.75rem; font-weight:600;">Logueadas: 118.5h (84.6%)</span>
+            </div>
+            <div style="background:#e9ecef; width:15.4%; display:flex; align-items:center; justify-content:center;">
+              <span style="color:#495057; font-size:0.72rem; font-weight:600;">21.5h</span>
+            </div>
+          </div>
+          <p style="font-size:0.85rem; color:#495057; line-height:1.6;">
+De las 140h facturables, Juan Pablo registró <strong>118.5h logueadas</strong> (84.6%) en las 8 HUs trabajadas del mes, muy cerca de las 128.5h estimadas. El registro es fiel: en casi todas las HUs cerradas las horas logueadas coinciden con lo estimado (e incluso lo superan en 15917 y 16201). La única brecha marcada está en GD768-15952 (campo Teléfono), que quedó En Progreso con 10h logueadas de 20h estimadas. Las ~11.5h sin asignar corresponden a ceremonias, soporte a QA, revisión de PRs y coordinación, dentro del rango esperado.
+          </p>
+        </div>
+
+        <!-- Nota sobre horas restantes -->
+        <div style="background:#fff3cd; border-radius:8px; padding:12px; border-left:4px solid #ffc107; margin-top:15px;">
+          <strong style="color:#856404;">📌 Sobre las horas no asignadas a HUs</strong>
+          <p style="font-size:0.85rem; color:#856404; margin-top:6px; line-height:1.6;">
+            En un equipo Scrum con 4 ambientes (dev→qa→pre→prod), es normal que un desarrollador dedique entre un 10–20% de su capacidad a: ceremonias (planning, daily, retro, refinamiento), soporte a QA, code reviews, investigación técnica, y coordinación con el equipo. El porcentaje de Juan Pablo Valencia está dentro del rango esperado.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 3: SPRINT A -->
+    <div class="metric-card sprint7">
+      <div class="icon">🟣</div>
+      <h3>3. Sprint 19.26 — Detalle de HUs</h3>
+      <div class="description">
+        <div class="metric-grid" style="margin-bottom:20px;">
+          <div class="metric-item"><span class="value">5</span><span class="label">HUs Completadas</span></div>
+          <div class="metric-item"><span class="value">97.5h</span><span class="label">Horas Estimadas</span></div>
+          <div class="metric-item"><span class="value" style="color:#28a745;">83%</span><span class="label">Completitud</span></div>
+        </div>
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>Resumen</th>
+              <th>Est. Juan Pablo</th>
+              <th>Est. Referencial</th>
+              <th>Δ</th>
+              <th>Días en tablero (cal.)</th>
+              <th>Estado</th>
+              <th>Análisis de Coherencia</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-15917" style="color:#0d6efd;">GD768-15917</a></td>
+              <td>Migración ArcGIS on-premise a la nube — repunte de endpoints (geocodificador)</td>
+              <td>26h</td>
+              <td style="color:#1e3c72; font-weight:bold;">20–30h</td>
+              <td style="color:#28a745;">✅ Coherente</td>
+              <td>23 días</td>
+              <td><span class="badge done">Cerrado</span></td>
+              <td style="font-size:0.8rem;">Actualizar el apuntamiento de los servicios de ArcGIS a los nuevos endpoints en la nube para que los flujos de geocodificación sigan operando tras dar de baja el on-premise (~18–24h dev + análisis de integraciones). Pruebas y paso a producción en 4 ambientes con fecha límite (~4–6h). Logueadas 27h, coherente.</td>
+            </tr>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16008" style="color:#0d6efd;">GD768-16008</a></td>
+              <td>Excluir envío de correos de leads al correo de la cuenta (cierre del flujo de exclusión)</td>
+              <td>26h</td>
+              <td style="color:#1e3c72; font-weight:bold;">18–28h</td>
+              <td style="color:#28a745;">✅ Coherente</td>
+              <td>28 días</td>
+              <td><span class="badge pap">Pendiente PAP</span></td>
+              <td style="font-size:0.8rem;">Finalizar el flujo de bloqueo de notificaciones de leads excluyendo el envío al correo de la propia inmobiliaria, sobre la tabla de exclusiones + Lambda (GD768-14900) y el CRUD del gestor (GD768-14901) (~18–22h dev). Validación en ambientes (~4–5h). Logueadas 24.5h, coherente. Los 28 días calendario incluyen espera en En Progreso por dependencias del flujo.</td>
+            </tr>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16128" style="color:#0d6efd;">GD768-16128</a></td>
+              <td>Eliminar el drawer al dejar lead en el botón de WhatsApp del detalle (todas las tiendas)</td>
+              <td>13h</td>
+              <td style="color:#1e3c72; font-weight:bold;">8–14h</td>
+              <td style="color:#28a745;">✅ Coherente</td>
+              <td>7 días</td>
+              <td><span class="badge done">Cerrado</span></td>
+              <td style="font-size:0.8rem;">Eliminar el drawer que interrumpía la redirección a WhatsApp al dejar un lead desde el detalle del inmueble y redirigir directo, mostrando inmuebles sugeridos al volver, para todas las tiendas (~9–11h dev). Validación (~2–3h). Logueadas 12.5h, coherente.</td>
+            </tr>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16201" style="color:#0d6efd;">GD768-16201</a></td>
+              <td>Ocultar botón de WhatsApp cuando advisorWhatsApp es nulo y eliminar botón "Aceptar" del drawer</td>
+              <td>12.5h</td>
+              <td style="color:#1e3c72; font-weight:bold;">8–14h</td>
+              <td style="color:#28a745;">✅ Coherente</td>
+              <td>13 días</td>
+              <td><span class="badge done">Cerrado</span></td>
+              <td style="font-size:0.8rem;">Dos ajustes de frontend del sanity check 7-oct: ocultar el botón de WhatsApp cuando <code>advisorWhatsApp</code> viene null (publicaciones de persona natural) y quitar el botón "Aceptar" del drawer (~8–11h dev). Validación (~2–3h). Logueadas 13h; desarrollo el mismo 8-oct, luego ~9 días laborales de espera en Pendiente PAP.</td>
+            </tr>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16126" style="color:#0d6efd;">GD768-16126</a></td>
+              <td><span class="badge error">Error Productivo</span> — Botón de WhatsApp no redirige en iOS (derivado de MDSB-1134797)</td>
+              <td>—</td>
+              <td style="color:#1e3c72; font-weight:bold;">4–8h</td>
+              <td style="color:#6c757d;">— Sin estimación</td>
+              <td>2 días</td>
+              <td><span class="badge done">Cerrado</span></td>
+              <td style="font-size:0.8rem;">Corregir la lógica de frontend que, en iPhone (iOS), cerraba el drawer pero no abría WhatsApp al dejar lead (~4–7h entre reproducción en iOS y fix). No tiene <code>timeoriginalestimate</code> en Jira; se registró como error productivo y las transiciones quedaron documentadas el mismo día de creación.</td>
+            </tr>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-15952" style="color:#0d6efd;">GD768-15952</a></td>
+              <td>Agregar campo Teléfono (obligatorio) en la modal de registro</td>
+              <td>20h</td>
+              <td style="color:#1e3c72; font-weight:bold;">14–22h</td>
+              <td style="color:#28a745;">✅ Coherente</td>
+              <td>En curso</td>
+              <td><span class="badge" style="background:#ffc107; color:#333;">En Progreso</span></td>
+              <td style="font-size:0.8rem;">Agregar el campo Teléfono obligatorio en la modal de registro para todos los perfiles (constructora, agente, persona natural, inmobiliaria), guardándolo en los datos del usuario (~14–18h dev). Registró 10h logueadas; al cierre quedó En Progreso (en curso, no cuenta como completada).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 4: SPRINT B -->
+    <div class="metric-card sprint8">
+      <div class="icon">🟢</div>
+      <h3>4. Sprint 20.26 — Detalle de HUs</h3>
+      <div class="description">
+        <div class="metric-grid" style="margin-bottom:20px;">
+          <div class="metric-item"><span class="value">2</span><span class="label">HUs Completadas</span></div>
+          <div class="metric-item"><span class="value" style="color:#dc3545;">1</span><span class="label">Errores Productivos</span></div>
+          <div class="metric-item"><span class="value">31h</span><span class="label">Horas Estimadas</span></div>
+          <div class="metric-item"><span class="value" style="color:#28a745;">100%</span><span class="label">Completitud HUs</span></div>
+        </div>
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>Tipo</th>
+              <th>Resumen</th>
+              <th>Est. Juan Pablo</th>
+              <th>Est. Referencial</th>
+              <th>Δ</th>
+              <th>Días en tablero (cal.)</th>
+              <th>Estado</th>
+              <th>Análisis de Coherencia</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16218" style="color:#0d6efd;">GD768-16218</a></td>
+              <td><span class="badge error">Error Productivo</span></td>
+              <td>INC-SOFTWARE Cien Cuadras — números con indicativo +1 (EE.UU.) no se reconocen al publicar</td>
+              <td>18h</td>
+              <td style="color:#1e3c72; font-weight:bold;">12–20h</td>
+              <td style="color:#28a745;">✅ Coherente</td>
+              <td>8 días</td>
+              <td><span class="badge pap">Pendiente PAP</span></td>
+              <td style="font-size:0.8rem;">Corregir el registro/visualización de números de contacto con indicativo internacional: el portal no reconocía ni mostraba números con indicativo de EE.UU. (+1), afectando publicaciones (~12–16h entre análisis de validación de teléfonos y fix). Validación (~3–4h). Resuelto en 18h logueadas, coherente.</td>
+            </tr>
+            <tr>
+              <td><a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16492" style="color:#0d6efd;">GD768-16492</a></td>
+              <td><span class="badge historia">Historia</span></td>
+              <td>[Ciber][PHP] Remediar PHP2Shell (CVE-2026-109618/109619) RCE sin auth en repos y servicios</td>
+              <td>13h</td>
+              <td style="color:#1e3c72; font-weight:bold;">10–16h</td>
+              <td style="color:#28a745;">✅ Coherente</td>
+              <td>1 día</td>
+              <td><span class="badge pap">Pendiente PAP</span></td>
+              <td style="font-size:0.8rem;">Actualizar el motor PHP a las versiones parcheadas (parches del 21-oct) en repositorios e imágenes base y aplicar mitigaciones sobre <code>multipart/form-data</code> para eliminar la exposición a RCE sin autenticación y fuga de memoria (PHP2Shell, CVSS 9.2) (~10–14h dev). Validación (~2–3h). Logueadas 13.5h; respuesta rápida (1 día calendario) ante una vulnerabilidad crítica.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 5: ANÁLISIS DE TIEMPOS -->
+    <div class="metric-card times">
+      <div class="icon">⏱️</div>
+      <h3>5. Análisis de Tiempos</h3>
+      <div class="description">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Métrica</th>
+              <th>Sprint 19.26</th>
+              <th>Sprint 20.26</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Casos completados (estado terminal)</td>
+              <td>5 (+1 en curso)</td>
+              <td>2</td>
+              <td><strong>7 (+1 en curso)</strong></td>
+            </tr>
+            <tr>
+              <td>Errores Productivos</td>
+              <td>1</td>
+              <td>1</td>
+              <td><strong>2</strong></td>
+            </tr>
+            <tr>
+              <td>Horas estimadas</td>
+              <td>97.5h</td>
+              <td>31h</td>
+              <td><strong>128.5h</strong></td>
+            </tr>
+            <tr>
+              <td>Horas logueadas (en subtareas)</td>
+              <td>87h</td>
+              <td>31.5h</td>
+              <td><strong>118.5h</strong></td>
+            </tr>
+            <tr>
+              <td>Promedio estimación por caso (con estimación)</td>
+              <td>19.5h</td>
+              <td>15.5h</td>
+              <td><strong>18.4h</strong></td>
+            </tr>
+            <tr>
+              <td>Promedio días en tablero por caso cerrado (calendario)</td>
+              <td>14.6 días</td>
+              <td>4.5 días</td>
+              <td><strong>11.7 días</strong></td>
+            </tr>
+            <tr>
+              <td>Tasa de completitud</td>
+              <td>83%</td>
+              <td>100%</td>
+              <td><strong>88%</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:18px; padding:15px; background:white; border-radius:8px; border-left:4px solid #fd7e14;">
+          <h4 style="color:#fd7e14; margin-bottom:10px; font-size:0.95rem;">📌 Notas sobre tiempos de ciclo</h4>
+          <ul style="list-style:disc; padding-left:20px; font-size:0.88rem; color:#495057; line-height:1.7;">
+            <li>El desarrollo efectivo fue ágil en las HUs de frontend/WhatsApp (menos de 1 a ~2 días laborales) y proporcional al alcance en las de mayor peso (ArcGIS ~7–8 días laborales de En Progreso a QC).</li>
+            <li>Los "días en tablero" calendario incluyen espera que no es desarrollo: GD768-16008 estuvo ~18 días laborales en En Progreso por dependencias del flujo de exclusión, y GD768-16201 esperó ~9 días laborales en Pendiente PAP antes del despliegue del 22-oct.</li>
+            <li>Respuesta rápida ante seguridad: GD768-16492 (PHP2Shell, CVSS 9.2) pasó de Backlog a Pendiente PAP en ~1 día calendario, acorde a la criticidad.</li>
+            <li>Los 2 errores productivos (WhatsApp iOS GD768-16126 e indicativo +1 GD768-16218) se atendieron dentro del mes; el de iOS quedó con transiciones documentadas el mismo día de creación.</li>
+            <li>GD768-15952 (campo Teléfono) quedó En Progreso al cierre; su ciclo se completará en noviembre. La incapacidad de 2.5 días (26–28 oct) coincidió con el último tramo del mes.</li>
+          </ul>
+        </div>
+        <div style="margin-top:18px; padding:15px; background:white; border-radius:8px; border-left:4px solid #0d6efd;">
+          <h4 style="color:#0d6efd; margin-bottom:10px; font-size:0.95rem;">📊 Resumen de Coherencia de Estimaciones</h4>
+          <table class="report-table" style="margin-top:8px;">
+            <thead>
+              <tr>
+                <th>Veredicto</th>
+                <th>Cantidad</th>
+                <th>HUs</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>✅ Coherente</td>
+                <td>7 de 7</td>
+                <td>GD768-15917, 16008, 16128, 16201, 15952, 16218, 16492</td>
+              </tr>
+              <tr>
+                <td>— Sin estimación</td>
+                <td>1</td>
+                <td>GD768-16126 (Error Productivo iOS; sin timeoriginalestimate)</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="margin-top:12px; font-size:0.88rem; color:#495057; line-height:1.7;">
+Considerando el ciclo completo de desarrollo (dev + pruebas + despliegue en 4 ambientes: dev→qa→pre→prod), las estimaciones de Juan Pablo son <strong>coherentes en el 100% de los casos con estimación</strong> (7 de 7 dentro del rango referencial). Las HUs abarcan frentes distintos —infraestructura (ArcGIS), backend/Lambda (exclusión de leads), frontend (WhatsApp/registro) y seguridad (PHP2Shell)— y todas quedaron bien dimensionadas. En la mayoría las horas logueadas coinciden con lo estimado (registro fiel). El único ítem sin estimación es GD768-16126 (error productivo de iOS), atendido con rapidez. La HU GD768-15952 (campo Teléfono) quedó en curso al cierre.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 6: TIEMPOS DE TRANSICIÓN -->
+    <div class="metric-card" style="border-left-color: #e83e8c;">
+      <div class="icon">🔄</div>
+      <h3>6. Tiempo de Transición entre Etapas por HU</h3>
+      <div class="description">
+        <p style="font-size:0.88rem; color:#495057; margin-bottom:12px;">
+          Tiempo transcurrido entre cada cambio de estado en el flujo de trabajo de Jira. Permite identificar cuellos de botella y etapas donde las HUs permanecen más tiempo.
+        </p>
+
+        <!-- Nota metodológica -->
+        <div style="background:#e8f4fd; border-radius:8px; padding:14px; border-left:4px solid #0d6efd; margin-bottom:18px;">
+          <h4 style="color:#0d6efd; margin-bottom:8px; font-size:0.9rem;">📐 Metodología de cálculo</h4>
+          <p style="font-size:0.84rem; color:#495057; line-height:1.7; margin-bottom:8px;">
+            Estos tiempos se obtienen directamente del <strong>changelog (historial de cambios)</strong> de cada issue en Jira, consultado vía API con el parámetro <code>expand=changelog</code>. Jira registra automáticamente un timestamp exacto cada vez que alguien cambia el campo <code>status</code> de una HU.
+          </p>
+          <p style="font-size:0.84rem; color:#495057; line-height:1.7; margin-bottom:8px;">
+            El cálculo se realiza en <strong>horas laborales</strong>: jornada de <strong>8 horas efectivas por día</strong> (8:00 AM – 5:00 PM hora Colombia, descontando 1h de almuerzo), <strong>solo días hábiles (lunes a viernes)</strong>. Se excluyen noches, fines de semana y festivos. Un "Día" en este reporte equivale a 8 horas laborales.
+          </p>
+          <p style="font-size:0.84rem; color:#495057; line-height:1.7; margin-bottom:0;">
+            <strong>Nota:</strong> El tiempo en "Backlog → Por Hacer" mide desde la <em>fecha de creación</em> de la HU hasta que se mueve a "Por Hacer". No refleja tiempo de trabajo del desarrollador, sino tiempo de espera en el backlog antes de ser priorizada.
+          </p>
+        </div>
+
+        <!-- BLOQUES DE TRANSICIÓN POR HU -->
+<!-- GD768-15917 (Sprint A) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#6610f2; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-15917" style="color:#6610f2; text-decoration:none;">GD768-15917</a> — Migración ArcGIS on-premise a la nube
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>6 Días | 1 Horas | 49 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🔨 En Progreso → En Pruebas QC — <strong>7 Días | 6 Horas | 25 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">✅ En Pruebas QC → Pendiente PAP — <strong>1 Días | 0 Horas | 3 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🚀 Pendiente PAP → Producción — <strong>2 Días | 0 Horas | 58 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🏁 Producción → Cerrado — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#6c757d; margin-top:8px; font-style:italic;">🔨 Desarrollo efectivo de ~7–8 días laborales (En Progreso → QC), acorde al alcance de reapuntar la geocodificación en 4 ambientes.</p>
+        </div>
+
+        <!-- GD768-16008 (Sprint A) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#6610f2; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16008" style="color:#6610f2; text-decoration:none;">GD768-16008</a> — Excluir correos de leads al correo de la cuenta
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>1 Días | 5 Horas | 17 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">✅ En Progreso → Pendiente PAP — <strong>18 Días | 6 Horas | 48 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#6c757d; margin-top:8px; font-style:italic;">⏳ ~18 días laborales en En Progreso por dependencias del flujo de exclusión (trabajo arrastrado de GD768-14900/14901); cerró a Pendiente PAP el 29-oct.</p>
+        </div>
+
+        <!-- GD768-16128 (Sprint A) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#6610f2; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16128" style="color:#6610f2; text-decoration:none;">GD768-16128</a> — Eliminar drawer al dejar lead por WhatsApp
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → En Progreso — <strong>0 Días | 0 Horas | 2 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🧪 En Progreso → En Pruebas UAT — <strong>1 Días | 6 Horas | 24 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">✅ En Pruebas UAT → Pendiente PAP — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🚀 Pendiente PAP → Producción — <strong>4 Días | 1 Horas | 19 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🏁 Producción → Cerrado — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+          </div>
+        </div>
+
+        <!-- GD768-16201 (Sprint A) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#6610f2; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16201" style="color:#6610f2; text-decoration:none;">GD768-16201</a> — Ocultar WhatsApp con advisorWhatsApp nulo
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>0 Días | 1 Horas | 25 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🔨 En Progreso → En Progreso — <strong>0 Días | 0 Horas | 21 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">✅ En Progreso → Pendiente PAP — <strong>0 Días | 2 Horas | 40 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🚀 Pendiente PAP → Producción — <strong>9 Días | 0 Horas | 58 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🏁 Producción → Cerrado — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#6c757d; margin-top:8px; font-style:italic;">⚡ Desarrollo completo el mismo 8-oct; luego ~9 días laborales de espera en Pendiente PAP hasta el despliegue del 22-oct.</p>
+        </div>
+
+        <!-- GD768-16126 (Sprint A - Error Productivo) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #dc3545; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#dc3545; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16126" style="color:#dc3545; text-decoration:none;">GD768-16126</a> — Error Productivo: botón de WhatsApp no redirige en iOS
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Backlog → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🧪 En Progreso → En Pruebas UAT — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">✅ En Pruebas UAT → Pendiente PAP — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🚀 Pendiente PAP → Producción — <strong>0 Días | 1 Horas | 14 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🏁 Producción → Cerrado — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#6c757d; margin-top:8px; font-style:italic;">📌 Error productivo con transiciones documentadas el mismo día de creación (2-oct); desplegado a Producción el 5-oct.</p>
+        </div>
+
+        <!-- GD768-15952 (Sprint A - En curso) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #6610f2; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#6610f2; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-15952" style="color:#6610f2; text-decoration:none;">GD768-15952</a> — Campo Teléfono obligatorio en modal de registro
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>18 Días | 0 Horas | 40 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#dc3545; margin-top:8px; font-style:italic;">⚠️ En curso al cierre — en Progreso desde el 26-oct (mismo tramo de la incapacidad), sin transiciones posteriores aún.</p>
+        </div>
+
+        <!-- GD768-16218 (Sprint B - Error Productivo) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #dc3545; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#dc3545; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16218" style="color:#dc3545; text-decoration:none;">GD768-16218</a> — Error Productivo: indicativo +1 (EE.UU.) no reconocido
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>3 Días | 0 Horas | 45 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">🧪 En Progreso → En Pruebas UAT — <strong>2 Días | 3 Horas | 0 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">✅ En Pruebas UAT → Pendiente PAP — <strong>0 Días | 4 Horas | 24 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#6c757d; margin-top:8px; font-style:italic;">✅ Error productivo resuelto a Pendiente PAP el 21-oct; desarrollo efectivo de ~2 días laborales.</p>
+        </div>
+
+        <!-- GD768-16492 (Sprint B) -->
+        <div style="background:white; border-radius:10px; padding:15px; margin-bottom:12px; border-left:4px solid #20c997; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <h4 style="color:#20c997; margin-bottom:10px; font-size:0.9rem;">
+            <a href="https://jirasegurosbolivar.atlassian.net/browse/GD768-16492" style="color:#20c997; text-decoration:none;">GD768-16492</a> — Ciber: remediar PHP2Shell (RCE sin auth, CVSS 9.2)
+          </h4>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📋 Backlog → Por Hacer — <strong>0 Días | 2 Horas | 44 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">📝 Por Hacer → En Progreso — <strong>0 Días | 0 Horas | 5 Min</strong></span>
+            <span style="background:#f8f9fa; padding:5px 10px; border-radius:6px; font-size:0.8rem; border:1px solid #dee2e6;">✅ En Progreso → Pendiente PAP — <strong>1 Días | 2 Horas | 15 Min</strong></span>
+          </div>
+          <p style="font-size:0.8rem; color:#6c757d; margin-top:8px; font-style:italic;">⚡ Respuesta rápida ante vulnerabilidad crítica: de Backlog a Pendiente PAP en ~1 día calendario (29–30 oct).</p>
+        </div>
+
+        <!-- Nota de análisis -->
+        <div style="margin-top:18px; padding:15px; background:white; border-radius:8px; border-left:4px solid #e83e8c;">
+          <h4 style="color:#e83e8c; margin-bottom:10px; font-size:0.95rem;">📌 Hallazgos sobre tiempos de transición</h4>
+          <ul style="list-style:disc; padding-left:20px; font-size:0.88rem; color:#495057; line-height:1.7;">
+            <li>El desarrollo efectivo fue ágil en las HUs de frontend/WhatsApp (menos de 1 a ~2 días laborales) y proporcional al alcance en la migración de ArcGIS (~7–8 días laborales de En Progreso a QC).</li>
+            <li>Los tiempos largos corresponden a espera o dependencias, no a desarrollo continuo: GD768-16008 acumuló ~18 días laborales en En Progreso por el flujo de exclusión arrastrado de julio, y GD768-16201 esperó ~9 días laborales en Pendiente PAP hasta el despliegue del 22-oct.</li>
+            <li>Respuesta rápida ante seguridad: GD768-16492 (PHP2Shell, CVSS 9.2) pasó de Backlog a Pendiente PAP en ~1 día calendario, acorde a la criticidad del RCE sin autenticación.</li>
+            <li>Los 2 errores productivos se atendieron dentro del mes: el de WhatsApp en iOS (GD768-16126) con transiciones documentadas el mismo día, y el de indicativo +1 (GD768-16218) con desarrollo efectivo de ~2 días laborales.</li>
+            <li>GD768-15952 (campo Teléfono) entró a En Progreso el 26-oct, coincidiendo con el inicio de la incapacidad (26–28 oct), y quedó en curso al cierre; registra 0 transiciones posteriores.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 7: OBSERVACIONES Y RECOMENDACIONES -->
+    <div class="metric-card observations">
+      <div class="icon">💡</div>
+      <h3>7. Observaciones y Recomendaciones</h3>
+      <div class="description">
+        <div style="padding:15px; background:white; border-radius:8px; border-left:4px solid #28a745; margin-bottom:15px;">
+          <h4 style="color:#28a745; margin-bottom:10px; font-size:0.95rem;">✅ Aspectos Positivos</h4>
+          <ul style="list-style:disc; padding-left:20px; font-size:0.88rem; color:#495057; line-height:1.7;">
+            <li>Alto aprovechamiento de capacidad ajustada: 128.5h estimadas de 140h facturables (91.8%) y 118.5h logueadas (84.6%).</li>
+            <li>7 casos a estado terminal (5 Historias + 2 errores productivos) con 0 defectos y 0 cambios con problema.</li>
+            <li>Versatilidad técnica demostrada: infraestructura (migración ArcGIS a la nube), backend/Lambda (exclusión de leads), frontend (flujo WhatsApp y registro) y seguridad (remediación crítica PHP2Shell).</li>
+            <li>Respuesta rápida ante incidentes: 2 errores productivos atendidos en el mes y una vulnerabilidad crítica (RCE sin auth, CVSS 9.2) llevada a PAP en ~1 día.</li>
+            <li>Estimaciones coherentes en el 100% de las HUs con estimación (7 de 7) y registro de horas fiel (logueadas ≈ estimadas en casi todas).</li>
+            <li>Continuidad y compromiso pese a la incapacidad médica de 2.5 días al cierre del mes.</li>
+          </ul>
+        </div>
+        <div style="padding:15px; background:white; border-radius:8px; border-left:4px solid #ffc107; margin-bottom:15px;">
+          <h4 style="color:#e6a800; margin-bottom:10px; font-size:0.95rem;">⚠️ Puntos de Atención</h4>
+          <ul style="list-style:disc; padding-left:20px; font-size:0.88rem; color:#495057; line-height:1.7;">
+            <li><strong>HU en curso al cierre:</strong> GD768-15952 (campo Teléfono en la modal de registro) quedó En Progreso. Conviene cerrarla en el Sprint 21.26 para no arrastrarla.</li>
+            <li><strong>Espera en Pendiente PAP:</strong> GD768-16201 pasó ~9 días laborales esperando el despliegue a Producción (22-oct). Conviene acortar la ventana entre PAP y producción para que las HUs cierren dentro del mes en que se desarrollan.</li>
+            <li><strong>Dependencias arrastradas:</strong> GD768-16008 estuvo ~18 días laborales en En Progreso por depender del flujo de exclusión iniciado en julio (GD768-14900/14901); vale la pena cerrar las cadenas de HUs dependientes dentro del mismo ciclo.</li>
+            <li><strong>Capacidad reducida:</strong> la capacidad facturable se ajustó a 140h por 2.5 días de incapacidad médica (extracción de muelas: ½ día 26-oct + 27 y 28 completos). Horas correctamente descontadas y no facturables.</li>
+            <li><strong>Transición de cuenta:</strong> aún no se ha provisionado en Jira la cuenta nueva <code>juan.valencia.ext@segurosbolivar.com</code>; todo el trabajo del mes está en la cuenta <code>juan.valencia@digitalprof-it.co</code>. Conviene crear/migrar la cuenta nueva para evitar fragmentación en meses futuros.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="text-align:center; margin-top:40px; padding-top:20px; border-top:2px solid #e9ecef; color:#666; font-size:0.9rem;">
+    <p>📅 Reporte mensual · Octubre 2026 · 🏗️ [GD-768] E.O. Ciencuadras &amp; Ecosistema Home · Operación Ciencuadras — Servicios Bolívar</p>
+  </div>
+
+</div>
+</body>
+</html>
